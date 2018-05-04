@@ -1,2 +1,2 @@
 # pronouns
-# i have no idea what i'm doing, just tryna put my code somewhere
+repository of the files used to calculate gender bias of names
