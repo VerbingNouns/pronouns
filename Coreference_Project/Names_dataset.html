@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-11-14">
+
+<title>International (English) Names Dataset Creation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Names_dataset_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Names_dataset_files/libs/quarto-html/quarto.js"></script>
+<script src="Names_dataset_files/libs/quarto-html/popper.min.js"></script>
+<script src="Names_dataset_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Names_dataset_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Names_dataset_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Names_dataset_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Names_dataset_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Names_dataset_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Names_dataset_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="Names_dataset_files/libs/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+<script src="Names_dataset_files/libs/tabwid-1.1.3/tabwid.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#gathering-raw-data" id="toc-gathering-raw-data" class="nav-link" data-scroll-target="#gathering-raw-data">Gathering raw data</a>
+  <ul class="collapse">
+  <li><a href="#usa" id="toc-usa" class="nav-link" data-scroll-target="#usa">USA</a></li>
+  <li><a href="#canada" id="toc-canada" class="nav-link" data-scroll-target="#canada">Canada</a></li>
+  <li><a href="#united-kingdom" id="toc-united-kingdom" class="nav-link" data-scroll-target="#united-kingdom">United Kingdom</a>
+  <ul class="collapse">
+  <li><a href="#england-and-wales" id="toc-england-and-wales" class="nav-link" data-scroll-target="#england-and-wales">England and Wales</a></li>
+  <li><a href="#scotland" id="toc-scotland" class="nav-link" data-scroll-target="#scotland">Scotland</a></li>
+  <li><a href="#northern-ireland" id="toc-northern-ireland" class="nav-link" data-scroll-target="#northern-ireland">Northern Ireland</a></li>
+  </ul></li>
+  <li><a href="#new-zealand" id="toc-new-zealand" class="nav-link" data-scroll-target="#new-zealand">New Zealand</a></li>
+  <li><a href="#ireland" id="toc-ireland" class="nav-link" data-scroll-target="#ireland">Ireland</a></li>
+  <li><a href="#australia" id="toc-australia" class="nav-link" data-scroll-target="#australia">Australia</a>
+  <ul class="collapse">
+  <li><a href="#australian-capital-territory" id="toc-australian-capital-territory" class="nav-link" data-scroll-target="#australian-capital-territory">Australian Capital Territory</a></li>
+  <li><a href="#new-south-wales" id="toc-new-south-wales" class="nav-link" data-scroll-target="#new-south-wales">New South Wales</a></li>
+  <li><a href="#northern-territory" id="toc-northern-territory" class="nav-link" data-scroll-target="#northern-territory">Northern Territory</a></li>
+  <li><a href="#queensland" id="toc-queensland" class="nav-link" data-scroll-target="#queensland">Queensland</a></li>
+  <li><a href="#south-australia" id="toc-south-australia" class="nav-link" data-scroll-target="#south-australia">South Australia</a></li>
+  <li><a href="#tasmania" id="toc-tasmania" class="nav-link" data-scroll-target="#tasmania">Tasmania</a></li>
+  <li><a href="#victoria" id="toc-victoria" class="nav-link" data-scroll-target="#victoria">Victoria</a></li>
+  <li><a href="#western-australia" id="toc-western-australia" class="nav-link" data-scroll-target="#western-australia">Western Australia</a></li>
+  <li><a href="#australia-combined" id="toc-australia-combined" class="nav-link" data-scroll-target="#australia-combined">Australia Combined</a></li>
+  </ul></li>
+  <li><a href="#south-africa" id="toc-south-africa" class="nav-link" data-scroll-target="#south-africa">South Africa</a></li>
+  <li><a href="#other-places" id="toc-other-places" class="nav-link" data-scroll-target="#other-places">Other places</a></li>
+  </ul></li>
+  <li><a href="#international-combined" id="toc-international-combined" class="nav-link" data-scroll-target="#international-combined">International Combined</a></li>
+  <li><a href="#demonstration" id="toc-demonstration" class="nav-link" data-scroll-target="#demonstration">Demonstration</a>
+  <ul class="collapse">
+  <li><a href="#unisex-or-gender-balanced-names" id="toc-unisex-or-gender-balanced-names" class="nav-link" data-scroll-target="#unisex-or-gender-balanced-names">Unisex or gender-balanced names</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">International (English) Names Dataset Creation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 14, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse); <span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.3     ✔ purrr     1.0.2
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flextable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'flextable'
+
+The following object is masked from 'package:purrr':
+
+    compose</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="purpose" class="level1">
+<h1>Purpose</h1>
+<p>While there are many projects around collating and exploring baby name data, I have yet to find one that looks at frequency (popularity) over time and country for all the countries I’m interested in.</p>
+<ul>
+<li><a href="https://opendata.stackexchange.com/questions/46/multinational-list-of-popular-first-names-and-surnames">Multinational (but no time dimension)</a></li>
+<li><a href="https://cran.r-project.org/web/packages/babynames/index.html">CRAN <code>babynames</code> package (only USA until 2017)</a></li>
+<li><a href="https://github.com/robjhyndman/ozbabynames">Australian data <code>ozbabynames</code> package (last updated 5+ years ago)</a>
+<ul>
+<li><a href="https://www.monicaalexander.com/posts/2019-20-01-babynames/">Another attempt to analyze this dataset</a></li>
+</ul></li>
+<li><a href="https://damegender.davidam.com/">DAMEgender gender estimator (no years)</a> (<a href="https://github.com/davidam/damegender/blob/dev/faq.org">suspicious views on gender</a>)</li>
+<li><a href="https://github.com/philipperemy/name-dataset">First and Last Names Database (no years or counts, just rank)</a></li>
+<li><a href="https://github.com/sigpwned/popular-names-by-country-dataset">Popular Names by Country Dataset (excellent but fewer than 3k forenames)</a></li>
+</ul>
+<p>There are some good and fairly comprehensive ones out there, but many of them don’t document their gathering and wrangling processes or are designed for different purposes. Here is mine.</p>
+<p>When designing linguistic stimuli, sometimes we use gender stereotypes to probe comprehension processes. Sometimes we just need a bunch of names in order to vary the content of sentences without distracting from other aspects. Sometimes we need gender ambiguous names. Sometimes we need gender balanced names. Sometimes we need names that evoke certain beliefs or stereotypes. Regardless, the social properties of names change over time as new stereotypes and distributions come to the forefront and are incorporated into individuals understanding of the world.</p>
+<p>My project aims to:</p>
+<ol type="1">
+<li>Collect information about the names (primarily) English-speaking people (in primarily English-speaking countries) are exposed to</li>
+<li>Identify how exposure in peer groups and in parent/grandparent/child peer groups influences perceptions and stereotypes about names</li>
+<li>Identify how views of gender influence perceptions and stereotypes about names</li>
+<li>Investigate how perceptions and stereotypes about names influence related grammatical processes (e.g.&nbsp;coreference)</li>
+<li>Investigate how perceptions and stereotypes about names influence unrelated grammatical processes (e.g.&nbsp;filled gap effects)</li>
+<li>Provide a dataset and tools for building informed linguistics example sentences and stimuli
+<ul>
+<li>gender-fair name selection informed by participant age range</li>
+<li>finding and selecting racially/ethnically representative names</li>
+<li>generating age-appropriate lists of gender-balanced (unisex) names</li>
+<li>identifying names perceived to be (more) ‘nonbinary’ or ‘binary’</li>
+<li>identifying names perceived to be (more) ‘young’ or ‘old’ (relative to participants’ age)</li>
+<li>identifying names marked for other stereotypes (e.g.&nbsp;race, country of origin, socio-economic class)</li>
+<li>gathering this information <em>by region</em> and <em>by age</em>, as these stereotypes can vary internationally and generationally</li>
+</ul></li>
+</ol>
+</section>
+<section id="gathering-raw-data" class="level1">
+<h1>Gathering raw data</h1>
+<section id="usa" class="level2">
+<h2 class="anchored" data-anchor-id="usa">USA</h2>
+<ul>
+<li>Hadley Wickham’s <code>babynames</code> package only goes to 2017, but that is an alternative for smaller scope projects</li>
+<li><a href="https://www.ssa.gov/OACT/babynames/limits.html">Beyond the Top 1000 Names</a></li>
+<li>Rank info compiled from: <a href="https://www.ssa.gov/OACT/babynames/index.html">Popular Baby Names (by Birth Year; Number)</a>
+<ul>
+<li>Ranks are eventually recalculated using the same method as used by the SSA (<code>ties.method = "first"</code>).</li>
+</ul></li>
+<li>Proportion info compiled from: <a href="https://www.ssa.gov/OACT/babynames/numberUSbirths.html">SSN Holders</a>
+<ul>
+<li>Proportions are estimates based on SSN registrations in a given year and number of babies registered under a given name</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_delim</span>(<span class="at">file =</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"data/USA"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">pattern =</span> <span class="st">"yob"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">full.names =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">col_names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">id =</span> <span class="st">"file"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">substr</span>(file,<span class="dv">13</span>,<span class="dv">16</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">name =</span> X1, <span class="at">asab =</span> X2, <span class="at">number =</span> X3) <span class="sc">|&gt;</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>file) <span class="sc">|&gt;</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join with SSN applications by year</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read_csv</span>(<span class="st">"data/USA/USA_SSA_applications_1880-2022.csv"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rename</span>(<span class="at">year =</span> <span class="st">`</span><span class="at">year of birth</span><span class="st">`</span>),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"year"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,asab) <span class="sc">|&gt;</span> </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate proportion based on ASAB SSN applications</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> <span class="fu">case_when</span>(asab <span class="sc">==</span> <span class="st">"M"</span> <span class="sc">~</span> number<span class="sc">/</span>Male,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                                asab <span class="sc">==</span> <span class="st">"F"</span> <span class="sc">~</span> number<span class="sc">/</span>Female),</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>number, <span class="at">ties.method =</span> <span class="st">"first"</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>(),</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="sc">|&gt;</span> </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">"Male"</span>,<span class="st">"Female"</span>,<span class="st">"Total"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="st">"USA"</span>) <span class="ot">-&gt;</span> names_USA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="canada" class="level2">
+<h2 class="anchored" data-anchor-id="canada">Canada</h2>
+<ul>
+<li><a href="https://www150.statcan.gc.ca/n1/pub/71-607-x/71-607-x2023021-eng.htm">Baby Names Observatory</a></li>
+<li>Downloaded from: <a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710014701">https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710014701</a> on 1 November 2023</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="at">file =</span> <span class="st">"data/Canada/17100147-eng/17100147.csv"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">"REF_DATE"</span>,<span class="st">"GEO"</span>,<span class="st">"Sex at birth"</span>,<span class="st">"First name at birth"</span>,<span class="st">"Indicator"</span>,<span class="st">"VALUE"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Indicator, <span class="at">values_from =</span> VALUE) <span class="sc">|&gt;</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">year =</span> REF_DATE, <span class="at">region =</span> GEO,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">asab =</span> <span class="st">`</span><span class="at">Sex at birth</span><span class="st">`</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="st">`</span><span class="at">First name at birth</span><span class="st">`</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">number =</span> Frequency,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">rank =</span> Rank,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">proportion =</span> <span class="st">`</span><span class="at">Proportion (%)</span><span class="st">`</span>) <span class="sc">|&gt;</span> <span class="co"># proportion by ASAB</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">str_to_title</span>(name),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">proportion =</span> proportion<span class="sc">/</span><span class="dv">100</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">asab =</span> <span class="fu">case_when</span>(asab <span class="sc">==</span> <span class="st">"Male"</span> <span class="sc">~</span> <span class="st">"M"</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                          asab <span class="sc">==</span> <span class="st">"Female"</span> <span class="sc">~</span> <span class="st">"F"</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"X"</span>)) <span class="ot">-&gt;</span> names_Canada</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="united-kingdom" class="level2">
+<h2 class="anchored" data-anchor-id="united-kingdom">United Kingdom</h2>
+<section id="england-and-wales" class="level3">
+<h3 class="anchored" data-anchor-id="england-and-wales">England and Wales</h3>
+<ul>
+<li><a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/datasets/babynamesinenglandandwalesfrom1996">Baby names for England and Wales</a></li>
+<li>Only up to 2021</li>
+<li>Does not distinguish between England and Wales</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(<span class="st">"data/EnglandWales/babynames1996to2021_EnglandWales.xlsx"</span>, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">sheet =</span> <span class="st">"1"</span>, <span class="co"># boy baby names</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">na =</span> <span class="st">"[x]"</span>, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">skip =</span> <span class="dv">7</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">53</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"year_type"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_wider_delim</span>(<span class="at">cols =</span> year_type, <span class="at">delim =</span> <span class="st">" "</span>, <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"type"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type, <span class="at">values_from =</span> value) <span class="sc">|&gt;</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">asab =</span> <span class="st">"M"</span>, <span class="at">region =</span> <span class="st">"England and Wales"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join with girl baby names</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(<span class="fu">read_excel</span>(<span class="st">"data/EnglandWales/babynames1996to2021_EnglandWales.xlsx"</span>, </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheet =</span> <span class="st">"2"</span>, <span class="co"># girl baby names</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">na =</span> <span class="st">"[x]"</span>, </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">skip =</span> <span class="dv">7</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>          <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">53</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                       <span class="at">names_to =</span> <span class="st">"year_type"</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                       <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>          <span class="fu">separate_wider_delim</span>(<span class="at">cols =</span> year_type, </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>                               <span class="at">delim =</span> <span class="st">" "</span>, </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>                               <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"type"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>          <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type, <span class="at">values_from =</span> value) <span class="sc">|&gt;</span> </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">asab =</span> <span class="st">"F"</span>, <span class="at">region =</span> <span class="st">"England and Wales"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tidy and remove empty rows</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">name =</span> Name, <span class="at">rank =</span> Rank, <span class="at">number =</span> Count) <span class="sc">|&gt;</span> </span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(number)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,asab) <span class="sc">|&gt;</span> </span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> number<span class="sc">/</span><span class="fu">sum</span>(number, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="ot">-&gt;</span> names_EW</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="scotland" class="level3">
+<h3 class="anchored" data-anchor-id="scotland">Scotland</h3>
+<ul>
+<li>National Records of Scotland: Full list 1974-2022 <a href="https://www.nrscotland.gov.uk/statistics-and-data/statistics/statistics-by-theme/vital-events/names/babies-first-names/babies-first-names-2022">here</a></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"data/Scotland/babies-first-names-all-names-all-years.csv"</span>,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>position) <span class="sc">|&gt;</span> <span class="co"># rank is not calculated the same way as for USA, position is a char string</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">year =</span> yr, <span class="at">asab =</span> sex, <span class="at">name =</span> FirstForename) <span class="sc">|&gt;</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">asab =</span> <span class="fu">case_when</span>(asab <span class="sc">==</span> <span class="st">"B"</span> <span class="sc">~</span> <span class="st">"M"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                          asab <span class="sc">==</span> <span class="st">"G"</span> <span class="sc">~</span> <span class="st">"F"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"X"</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">region =</span> <span class="st">"Scotland"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,asab) <span class="sc">|&gt;</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> number<span class="sc">/</span><span class="fu">sum</span>(number, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="ot">-&gt;</span> names_Scotland</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="northern-ireland" class="level3">
+<h3 class="anchored" data-anchor-id="northern-ireland">Northern Ireland</h3>
+<ul>
+<li>NISRA Data for Baby Name Dashboard: <a href="https://www.nisra.gov.uk/publications/data-baby-names-dashboard">https://www.nisra.gov.uk/publications/data-baby-names-dashboard</a></li>
+<li>Too many duplicates (due to missing diacritics?) so summing duplicates to calculate numbers by approximate spelling (and re-ranking)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(<span class="st">"data/NorthernIreland/Data for Dashboard 2022.xlsx"</span>, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">sheet =</span> <span class="st">"Table 1 - Ranks and Geography"</span>, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">skip =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">year =</span> <span class="st">"Year of Registration"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">asab =</span> <span class="st">"Sex"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="st">"First name"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">number =</span> <span class="st">"Number Given this Name"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="st">"Northern Ireland"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">asab =</span> <span class="fu">case_when</span>(asab <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"M"</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                          asab <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"F"</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"X"</span>),</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, name, asab) <span class="sc">|&gt;</span> </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number =</span> <span class="fu">sum</span>(number), <span class="at">.groups =</span> <span class="st">"keep"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>(name) <span class="sc">|&gt;</span> </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join with birth data</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read_excel</span>(<span class="st">"data/NorthernIreland/Section 3 - Births_Tables_2022_Revised_Final.xlsx"</span>, </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sheet =</span> <span class="st">"Table 3.1"</span>, <span class="at">skip =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rename</span>(<span class="at">year =</span> <span class="st">"Year"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>              <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Females)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">as.numeric</span>(year)),</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"year"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tidy and organize</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>number, <span class="at">ties.method =</span> <span class="st">"first"</span>),</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">proportion =</span> <span class="fu">case_when</span>(asab <span class="sc">==</span> <span class="st">"M"</span> <span class="sc">~</span> number<span class="sc">/</span>Males,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>                                asab <span class="sc">==</span> <span class="st">"F"</span> <span class="sc">~</span> number<span class="sc">/</span>Females),</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">region =</span> <span class="st">"Northern Ireland"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">All Births</span><span class="st">`</span>,Males,Females)) <span class="ot">-&gt;</span> names_NI</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="new-zealand" class="level2">
+<h2 class="anchored" data-anchor-id="new-zealand">New Zealand</h2>
+<ul>
+<li>Top 100 names since 1954: <a href="https://smartstart.services.govt.nz/news/baby-names">https://smartstart.services.govt.nz/news/baby-names</a></li>
+<li>Minimal hand-editing of columns for readability (did not use <code>tidyxl</code>)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(<span class="st">"data/NewZealand/Top-100-girls-and-boys-names-since-1954-EDITED.xlsx"</span>, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">sheet =</span> <span class="st">"Boys' Names"</span>, </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">skip =</span> <span class="dv">6</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">rank =</span> Rank) <span class="sc">|&gt;</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">139</span>, </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"X"</span>, </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Y"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_prefix =</span> <span class="st">"x"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_transform =</span> as.character) <span class="sc">|&gt;</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(rank)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_wider_delim</span>(<span class="at">cols =</span> X, </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">delim =</span> <span class="st">"..."</span>, </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>                        <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"type"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">case_when</span>(<span class="fu">as.numeric</span>(type) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"name"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">as.numeric</span>(type) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"number"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> <span class="st">"Y"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">asab =</span> <span class="st">"M"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join with girl names</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(<span class="fu">read_excel</span>(<span class="st">"data/NewZealand/Top-100-girls-and-boys-names-since-1954-EDITED.xlsx"</span>, </span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheet =</span> <span class="st">"Girls' Names"</span>, </span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>                   <span class="at">skip =</span> <span class="dv">6</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rename</span>(<span class="at">rank =</span> Rank) <span class="sc">|&gt;</span> </span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>          <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">139</span>, </span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>                       <span class="at">names_to =</span> <span class="st">"X"</span>, </span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>                       <span class="at">values_to =</span> <span class="st">"Y"</span>,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>                       <span class="at">names_prefix =</span> <span class="st">"x"</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>                       <span class="at">values_transform =</span> as.character) <span class="sc">|&gt;</span> </span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>          <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(rank)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>          <span class="fu">separate_wider_delim</span>(<span class="at">cols =</span> X, </span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>                               <span class="at">delim =</span> <span class="st">"..."</span>, </span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>                               <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"type"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">case_when</span>(<span class="fu">as.numeric</span>(type) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"name"</span>,</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">as.numeric</span>(type) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"number"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>          <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type,</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values_from =</span> <span class="st">"Y"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">asab =</span> <span class="st">"F"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> year <span class="sc">|&gt;</span> <span class="fu">as.integer</span>(),</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>         <span class="at">number =</span> number <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join with birth data</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read_delim</span>(<span class="st">"data/NewZealand/live_births_1954-2022-EDITED.txt"</span>, </span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>                       <span class="at">delim =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">escape_double =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>                       <span class="at">na =</span> <span class="st">".."</span>, <span class="at">trim_ws =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>                       <span class="at">show_col_types =</span> <span class="cn">FALSE</span>), </span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(year)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,asab) <span class="sc">|&gt;</span> </span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> <span class="fu">case_when</span>(<span class="fu">is.na</span>(male) <span class="sc">|</span> <span class="fu">is.na</span>(female) <span class="sc">~</span> number<span class="sc">/</span><span class="fu">sum</span>(number, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="co">#number/total, #(total/2)</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>                                asab <span class="sc">==</span> <span class="st">"M"</span> <span class="sc">~</span> number<span class="sc">/</span>male,</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>                                asab <span class="sc">==</span> <span class="st">"F"</span> <span class="sc">~</span> number<span class="sc">/</span>female),</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>         <span class="at">region =</span> <span class="st">"New Zealand"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>  <span class="do">#### SEEMS TO HAVE A DUPLICATE MICHAEL, I DONT KNOW HOW BEST TO HANDLE THIS ####</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">!=</span> <span class="dv">1988</span>, rank <span class="sc">!=</span> <span class="dv">100</span>, name <span class="sc">!=</span> <span class="st">"Michael"</span>) <span class="sc">|&gt;</span> <span class="co"># Remove duplicate Michael - no evidence this is diacritics</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(male, female, total)) <span class="ot">-&gt;</span> names_NZ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="ireland" class="level2">
+<h2 class="anchored" data-anchor-id="ireland">Ireland</h2>
+<ul>
+<li><a href="https://data.cso.ie/">https://data.cso.ie/</a> &gt;</li>
+<li>search “name” &gt;</li>
+<li>select Girls/Boys Names in Ireland with 3 or More Occurrences</li>
+<li>select Statistic (all)</li>
+<li>select Year (all)</li>
+<li>Download to CSV</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"data/Ireland/VSA50.20231102T161146-boys.csv"</span>,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">asab =</span> <span class="st">"M"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Statistic Label</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">case_when</span>(<span class="fu">substr</span>(<span class="st">`</span><span class="at">Statistic Label</span><span class="st">`</span>, <span class="dv">50</span>,<span class="dv">50</span>)<span class="sc">==</span><span class="st">"R"</span> <span class="sc">~</span> <span class="st">"rank"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                                       <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"number"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">`</span><span class="at">Statistic Label</span><span class="st">`</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> VALUE) <span class="sc">|&gt;</span> </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(<span class="fu">read_csv</span>(<span class="st">"data/Ireland/VSA60.20231102T161100-girls.csv"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">asab =</span> <span class="st">"F"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                 <span class="st">`</span><span class="at">Statistic Label</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">case_when</span>(<span class="fu">substr</span>(<span class="st">`</span><span class="at">Statistic Label</span><span class="st">`</span>, <span class="dv">51</span>,<span class="dv">51</span>)<span class="sc">==</span><span class="st">"R"</span> <span class="sc">~</span> <span class="st">"rank"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>                                               <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"number"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>          <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">`</span><span class="at">Statistic Label</span><span class="st">`</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values_from =</span> VALUE)) <span class="sc">|&gt;</span> </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>UNIT) <span class="sc">|&gt;</span> </span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">name =</span> Names, <span class="at">year =</span> Year) <span class="sc">|&gt;</span> </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(number)) <span class="sc">|&gt;</span> </span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="st">"Ireland"</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="sc">|&gt;</span> </span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,asab) <span class="sc">|&gt;</span> </span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> number<span class="sc">/</span><span class="fu">sum</span>(number, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="ot">-&gt;</span> names_Ireland</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="australia" class="level2">
+<h2 class="anchored" data-anchor-id="australia">Australia</h2>
+<ul>
+<li>Australian birth data is collected at the State/Territory regional level <em>only</em></li>
+<li>There is a</li>
+<li><a href="https://data.sa.gov.au/data/dataset/popular-baby-names">South Australia</a></li>
+<li><a href="https://data.nsw.gov.au/data/dataset/popular-baby-names-from-1952">New South Wales</a></li>
+<li><a href="https://www.data.qld.gov.au/dataset/top-100-baby-names">Queensland</a></li>
+<li><a href="https://discover.data.vic.gov.au/dataset/popular-baby-names-victoria-api">Victoria</a></li>
+<li><a href="https://data.gov.au/data/organization/department-of-justice-tasmania?q=names&amp;sort=score+desc%2C+metadata_modified+desc">Tasmania</a></li>
+<li><a href="https://nt.gov.au/law/bdm/popular-baby-names">Northern Territory</a></li>
+<li><a href="https://www.act.gov.au/our-canberra/latest-news/2022/december/the-most-popular-baby-names-of-2022">Australian Capital Territory</a> (<a href="https://www.act.gov.au/archive/archived-shortlinks/topbabynames">404 Data currently not available</a>; as of 3 November 2023)</li>
+<li><a href="https://bdm.justice.wa.gov.au/_apps/BabyNames/Default.aspx">Western Australia</a> (or <a href="https://www.wa.gov.au/organisation/department-of-justice/the-registry-of-births-deaths-and-marriages/popular-baby-names">here</a>)</li>
+<li><a href="https://explore.data.abs.gov.au/vis?tm=births&amp;pg=0&amp;df%5Bds%5D=ABS_ABS_TOPICS&amp;df%5Bid%5D=BIRTHS_SUMMARY&amp;df%5Bag%5D=ABS&amp;df%5Bvs%5D=1.0.0&amp;hc%5BMeasure%5D=Births&amp;pd=1975%2C&amp;dq=5%2B4%2B1..A&amp;ly%5Bcl%5D=TIME_PERIOD">Data Explorer for Births</a> (from 1975 to 2022)</li>
+<li>National birth data since 1934 (but not by ASAB)</li>
+</ul>
+<pre><code># Thanks to Hadas Kotek for parsing the JSON (3 November 2022)
+import pandas as pd
+import json
+with open('victoria_babies_json_query_return.txt') as f:
+    json_data = json.load(f)
+
+pd.DataFrame(json_data['popular_baby_names']).to_csv('popular_baby_names.csv', index=False)</code></pre>
+<section id="australian-capital-territory" class="level3">
+<h3 class="anchored" data-anchor-id="australian-capital-territory">Australian Capital Territory</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ACT</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># no data, too small (only releases brief statement)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="new-south-wales" class="level3">
+<h3 class="anchored" data-anchor-id="new-south-wales">New South Wales</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new south wales</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>names_nsw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Australia/NSW/popular_baby_names_1952_to_2022-v2.csv"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">rank =</span> Rank,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> Name,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">number =</span> Number,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">asab =</span> Gender,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> Year) <span class="sc">|&gt;</span> </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="st">"New South Wales"</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">str_to_title</span>(name),</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">asab =</span> <span class="fu">case_when</span>(asab <span class="sc">==</span> <span class="st">"Male"</span> <span class="sc">~</span> <span class="st">"M"</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                          asab <span class="sc">==</span> <span class="st">"Female"</span> <span class="sc">~</span> <span class="st">"F"</span>,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"X"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="northern-territory" class="level3">
+<h3 class="anchored" data-anchor-id="northern-territory">Northern Territory</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># northern territory (hand-compiled)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>names_nt <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Australia/NT/NT_babynames_1980_2002-2022.csv"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, asab) <span class="sc">|&gt;</span>  </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>number, <span class="at">ties.method =</span> <span class="st">"first"</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>(),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">region =</span> <span class="st">"Northern Territory"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="queensland" class="level3">
+<h3 class="anchored" data-anchor-id="queensland">Queensland</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># queensland</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2006-2022</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="at">file =</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"data/Australia/Queensland"</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">pattern =</span> <span class="st">".csv"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">full.names =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">col_names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">id =</span> <span class="st">"file"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">file =</span> <span class="fu">str_remove</span>(file, <span class="st">"data/Australia/Queensland/"</span>),</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">file =</span> <span class="fu">str_remove</span>(file, <span class="st">"bdm_top-100-baby-names-"</span>),</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">file =</span> <span class="fu">str_remove</span>(file, <span class="st">".csv"</span>),</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">row =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">year =</span> file,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">name_F =</span> <span class="st">"Girl Names"</span>,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">number_F =</span> <span class="st">"Count of Girl Names"</span>,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">name_M =</span> <span class="st">"Boy Names"</span>,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">number_M =</span> <span class="st">"Count of Boy Names"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>),</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"label"</span>,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"values"</span>,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_transform =</span> <span class="fu">list</span>(<span class="at">values =</span> as.character)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(label, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"label"</span>, <span class="st">"asab"</span>), <span class="at">sep =</span> <span class="st">"_"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> label, <span class="at">values_from =</span> values) <span class="sc">|&gt;</span> </span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>row) <span class="sc">|&gt;</span> </span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, asab) <span class="sc">|&gt;</span> </span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">str_sub</span>(year, <span class="at">start =</span> <span class="sc">-</span><span class="dv">4</span>, <span class="at">end =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">number =</span> <span class="fu">as.numeric</span>(number),</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">as.numeric</span>(year),</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>number, <span class="at">ties.method =</span> <span class="st">"first"</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>(),</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">region =</span> <span class="st">"Queensland"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(name)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join with data from 1960-2005</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(queensland_1960_2005 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="at">file =</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"data/Australia/Queensland/long_format"</span>,</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>                                                           <span class="at">pattern =</span> <span class="st">".csv"</span>,</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>                                                           <span class="at">full.names =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">col_names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">id =</span> <span class="st">"file"</span>,</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rename</span>(<span class="at">name =</span> <span class="st">"Name"</span>,</span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>                 <span class="at">asab =</span> <span class="st">"Sex"</span>,</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>                 <span class="at">year =</span> <span class="st">"Year"</span>,</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>                 <span class="at">number =</span> <span class="st">"Count"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>          <span class="fu">group_by</span>(year, asab) <span class="sc">|&gt;</span> </span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">str_to_title</span>(name),</span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>                 <span class="at">asab =</span> <span class="fu">case_when</span>(asab <span class="sc">==</span> <span class="st">"Male"</span> <span class="sc">~</span> <span class="st">"M"</span>,</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>                                  asab <span class="sc">==</span> <span class="st">"Female"</span> <span class="sc">~</span> <span class="st">"F"</span>,</span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>                                  <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"X"</span>),</span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>                 <span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>number) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>(),</span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>                 <span class="at">region =</span> <span class="st">"Queensland"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>          <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>file)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="ot">-&gt;</span> names_queensland</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="south-australia" class="level3">
+<h3 class="anchored" data-anchor-id="south-australia">South Australia</h3>
+<p>Possible South Australia name data problem:</p>
+<ul>
+<li>female_cy1968_top.csv : <code>(NOT</code></li>
+<li>male_cy1968_top.csv : <code>(NOT</code></li>
+<li>male_cy1968_top.csv : <code>(NOT</code></li>
+<li>male_cy1976_top.csv : <code>?LIAM</code></li>
+</ul>
+<p>These are likely errors in data entry but they do not seem to be recoverable as this is the data as provided. Since <code>?LIAM</code> only occurs once, I believe it is safe to keep it in as noise, but since <code>(NOT</code> occurs 8 times in one year across both ASAB categories, I believe it should be removed. A brief exploration suggests there is not another word or words in 1968 in South Australia that have been erroneously included (i.e.&nbsp;whatever text followed ‘NOT’), but I am not 100% certain.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># south australia</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="at">file =</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"data/Australia/SouthAustralia/Baby Names 1944-2013"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">pattern =</span> <span class="st">".csv"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">full.names =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">col_names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">id =</span> <span class="st">"file"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">file =</span> <span class="fu">str_remove</span>(file, <span class="st">"data/Australia/SouthAustralia/Baby Names 1944-2013/"</span>),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">file =</span> <span class="fu">str_remove</span>(file, <span class="st">"_top.csv"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(<span class="co"># had to manually rename "Number" to "Amount" for 2016 files</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_csv</span>(<span class="at">file =</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"data/Australia/SouthAustralia"</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>                               <span class="at">pattern =</span> <span class="st">".csv"</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>                               <span class="at">full.names =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">col_names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">id =</span> <span class="st">"file"</span>,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">file =</span> <span class="fu">str_remove</span>(file, <span class="st">"data/Australia/SouthAustralia/"</span>),</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">file =</span> <span class="fu">str_remove</span>(file, <span class="st">".csv"</span>),</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">file =</span> <span class="fu">str_remove</span>(file, <span class="st">"top"</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">name =</span> <span class="st">"Given Name"</span>,</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">number =</span> <span class="st">"Amount"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># several files were only top 100 names, not all names, so this throws a warning about file name</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(file, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"asab"</span>,<span class="st">"year"</span>), <span class="at">sep =</span> <span class="st">"_"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, asab) <span class="sc">|&gt;</span> </span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">str_to_title</span>(name),</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>number, <span class="at">ties.method =</span> <span class="st">"first"</span>) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>(),</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">asab =</span> <span class="fu">case_when</span>(asab <span class="sc">==</span> <span class="st">"female"</span> <span class="sc">~</span> <span class="st">"F"</span>,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>                          asab <span class="sc">==</span> <span class="st">"male"</span> <span class="sc">~</span> <span class="st">"M"</span>,</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>                          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"X"</span>),</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">region =</span> <span class="st">"South Australia"</span>,</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">str_sub</span>(year, <span class="sc">-</span><span class="dv">4</span>, <span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Position) <span class="sc">|&gt;</span> </span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">!=</span> <span class="st">"TOTAL"</span>, <span class="co"># 2016 included "TOTAL" as if it were a name</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>         name <span class="sc">!=</span> <span class="st">"(Not"</span>) <span class="sc">|&gt;</span> <span class="co"># REMOVE HIGHER FREQUENCY BAD DATA</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="ot">-&gt;</span> names_soz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expected 2 pieces. Additional pieces discarded in 1000 rows [222239, 222240,
+222241, 222242, 222243, 222244, 222245, 222246, 222247, 222248, 222249, 222250,
+222251, 222252, 222253, 222254, 222255, 222256, 222257, 222258, ...].</code></pre>
+</div>
+</div>
+</section>
+<section id="tasmania" class="level3">
+<h3 class="anchored" data-anchor-id="tasmania">Tasmania</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tasmania (2015 and 2016 only, from website)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># taz_top_baby_names_for_2016 </span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(<span class="st">"data/Australia/Tasmania/top-baby-names-for-2016.xlsx"</span>, <span class="co"># needs BIG cleaning</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">col_names =</span> <span class="cn">FALSE</span>, <span class="at">range =</span> <span class="st">"A3:B136"</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">asab =</span> <span class="st">"F"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span><span class="st">`</span><span class="at">...2</span><span class="st">`</span>, <span class="at">ties.method =</span> <span class="st">"first"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(<span class="fu">read_excel</span>(<span class="st">"data/Australia/Tasmania/top-baby-names-for-2016.xlsx"</span>, <span class="co"># needs BIG cleaning</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col_names =</span> <span class="cn">FALSE</span>, <span class="at">range =</span> <span class="st">"A141:B284"</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">asab =</span> <span class="st">"M"</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span><span class="st">`</span><span class="at">...2</span><span class="st">`</span>, <span class="at">ties.method =</span> <span class="st">"first"</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">name =</span> <span class="st">`</span><span class="at">...1</span><span class="st">`</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">number =</span> <span class="st">`</span><span class="at">...2</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">str_to_title</span>(name),</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="dv">2016</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">region =</span> <span class="st">"Tasmania"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join taz_dataset_topbabynamesfor2015 girls names</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(<span class="fu">read_excel</span>(<span class="st">"data/Australia/Tasmania/dataset-topbabynamesfor2015.xlsx"</span>, </span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheet =</span> <span class="st">"Top Baby Names 2015 - Female"</span>, </span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col_names =</span> <span class="cn">FALSE</span>, <span class="at">skip =</span> <span class="dv">1</span>,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rename</span>(<span class="at">name =</span> <span class="st">`</span><span class="at">...1</span><span class="st">`</span>,</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>                 <span class="at">number =</span> <span class="st">`</span><span class="at">...2</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">str_to_title</span>(name),</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>                 <span class="at">year =</span> <span class="dv">2015</span>,</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>                 <span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>number) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>(),</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>                 <span class="at">asab =</span> <span class="st">"F"</span>,</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>                 <span class="at">region =</span> <span class="st">"Tasmania"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join taz_dataset_topbabynamesfor2015 boys names</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(<span class="fu">read_excel</span>(<span class="st">"data/Australia/Tasmania/dataset-topbabynamesfor2015.xlsx"</span>, </span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sheet =</span> <span class="st">"Top Baby Names 2015 - Male"</span>, </span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>                   <span class="at">col_names =</span> <span class="cn">FALSE</span>, <span class="at">skip =</span> <span class="dv">1</span>,</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.name_repair =</span> <span class="st">"unique_quiet"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rename</span>(<span class="at">name =</span> <span class="st">`</span><span class="at">...1</span><span class="st">`</span>,</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>                 <span class="at">number =</span> <span class="st">`</span><span class="at">...2</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">str_to_title</span>(name),</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>                 <span class="at">year =</span> <span class="dv">2015</span>,</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>                 <span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>number) <span class="sc">|&gt;</span> <span class="fu">as.integer</span>(),</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>                 <span class="at">asab =</span> <span class="st">"M"</span>,</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>                 <span class="at">region =</span> <span class="st">"Tasmania"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="ot">-&gt;</span> names_tasmania</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="victoria" class="level3">
+<h3 class="anchored" data-anchor-id="victoria">Victoria</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># victoria (parsed from JSON)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"data/Australia/Victoria/popular_baby_names.csv"</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">rank =</span> position,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">number =</span> count,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">asab =</span> sex) <span class="sc">|&gt;</span> </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="st">"Victoria"</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">asab =</span> <span class="fu">case_when</span>(asab <span class="sc">==</span> <span class="st">"MALE"</span> <span class="sc">~</span> <span class="st">"M"</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>                          asab <span class="sc">==</span> <span class="st">"FEMALE"</span> <span class="sc">~</span> <span class="st">"F"</span>,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"X"</span>),</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="ot">-&gt;</span> names_victoria</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="western-australia" class="level3">
+<h3 class="anchored" data-anchor-id="western-australia">Western Australia</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># western australia (hand-compiled from website)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#WA_babynames_1930_2022 &lt;- </span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"data/Australia/WesternAustralia/WA_babynames_1930-2022.csv"</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="st">"Western Australia"</span>,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">name =</span> <span class="fu">str_to_title</span>(name)) <span class="ot">-&gt;</span> names_woz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="australia-combined" class="level3">
+<h3 class="anchored" data-anchor-id="australia-combined">Australia Combined</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># combine australian data</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>names_nsw <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_nt) <span class="sc">|&gt;</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_queensland) <span class="sc">|&gt;</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_soz) <span class="sc">|&gt;</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_tasmania) <span class="sc">|&gt;</span> </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_victoria) <span class="sc">|&gt;</span> </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_woz) <span class="sc">|&gt;</span> <span class="co">#-&gt; names_Australia</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name, asab, year) <span class="sc">|&gt;</span> </span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number =</span> <span class="fu">sum</span>(number),</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join with detailed births information</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read_csv</span>(<span class="st">"data/Australia/ABS_BIRTHS_SUMMARY_1.0.0_4+5+1..A.csv"</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> <span class="co"># messy data, needs cleaning</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rename</span>(<span class="at">measure =</span> <span class="st">`</span><span class="at">MEASURE: Measure</span><span class="st">`</span>,</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">region2 =</span> <span class="st">`</span><span class="at">REGION: Region</span><span class="st">`</span>,</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>                     <span class="at">year =</span> <span class="st">`</span><span class="at">TIME_PERIOD: Time Period</span><span class="st">`</span>,</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>                     <span class="at">population =</span> OBS_VALUE) <span class="sc">|&gt;</span> </span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(measure, region2, year, population) <span class="sc">|&gt;</span> </span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>              <span class="fu">filter</span>(region2 <span class="sc">==</span> <span class="st">"AUS: Australia"</span>,</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>                     measure <span class="sc">!=</span> <span class="st">"1: Births"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>              <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> measure,</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>                          <span class="at">values_from =</span> population),</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"year"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> <span class="fu">case_when</span>(asab <span class="sc">==</span> <span class="st">"M"</span> <span class="sc">~</span> number<span class="sc">/</span><span class="st">`</span><span class="at">4: Male births</span><span class="st">`</span>,</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>                                asab <span class="sc">==</span> <span class="st">"F"</span> <span class="sc">~</span> number<span class="sc">/</span><span class="st">`</span><span class="at">5: Female births</span><span class="st">`</span>),</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">region =</span> <span class="st">"Australia"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, asab) <span class="sc">|&gt;</span> </span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>number, <span class="at">ties.method =</span> <span class="st">"first"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, name, number, rank, asab, region, proportion) <span class="sc">|&gt;</span> </span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join with older historical data (missing ASAB; solution *estimate* by multiplying annual births by .5)</span></span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read_csv</span>(<span class="st">"data/Australia/Births registered – 1934 to 2022(a).csv"</span>, <span class="at">skip =</span> <span class="dv">1</span>,</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>                     <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rename</span>(<span class="at">year =</span> Year, </span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>                     <span class="at">population =</span> <span class="st">`</span><span class="at">Births registered</span><span class="st">`</span>),</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"year"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> <span class="fu">case_when</span>(<span class="fu">is.na</span>(proportion) <span class="sc">~</span> number<span class="sc">/</span>(population<span class="sc">*</span>.<span class="dv">5</span>), <span class="co"># no births by ASAB data, going by .5 of annual births</span></span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>                                <span class="cn">TRUE</span> <span class="sc">~</span> proportion)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>population) <span class="ot">-&gt;</span> names_Australia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="south-africa" class="level2">
+<h2 class="anchored" data-anchor-id="south-africa">South Africa</h2>
+<ul>
+<li>Can’t find annual name data beyond <a href="https://www.statssa.gov.za/?p=11472">this</a></li>
+</ul>
+</section>
+<section id="other-places" class="level2">
+<h2 class="anchored" data-anchor-id="other-places">Other places</h2>
+<ul>
+<li>Eventually, I would like to add India, China, Japan, Germany, Mexico, and perhaps other places that have large English-speaking populations or large immigrant communities in English-speaking countries. However, this requires resources beyond what I currently have.</li>
+</ul>
+</section>
+</section>
+<section id="international-combined" class="level1">
+<h1>International Combined</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>names_Australia <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_Canada) <span class="sc">|&gt;</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_EW) <span class="sc">|&gt;</span> </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_Ireland) <span class="sc">|&gt;</span> </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_NI) <span class="sc">|&gt;</span> </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_NZ) <span class="sc">|&gt;</span> </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_Scotland) <span class="sc">|&gt;</span> </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(names_USA) <span class="ot">-&gt;</span> names_combined</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Write to file for ease of use elsewhere</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(names_combined, <span class="st">"data/names_combined.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="demonstration" class="level1">
+<h1>Demonstration</h1>
+<p>Briefly, here are some tests of the dataset to demonstrate its utility.</p>
+<section id="unisex-or-gender-balanced-names" class="level2">
+<h2 class="anchored" data-anchor-id="unisex-or-gender-balanced-names">Unisex or gender-balanced names</h2>
+<p>The names in <code>unisex_names</code> are a complete list of names that occur at least once in both AMAB and AFAB entries. This does not account for data entry errors or other noise in the datasets.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a list of AFAB names</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>names_combined <span class="sc">|&gt;</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(asab <span class="sc">==</span> <span class="st">"F"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>         region <span class="sc">==</span> <span class="st">"USA"</span> <span class="sc">&amp;</span> number <span class="sc">&gt;</span> <span class="dv">50</span> <span class="sc">|</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>           region <span class="sc">!=</span> <span class="st">"USA"</span> <span class="sc">&amp;</span> number <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="ot">-&gt;</span> afab_names</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create a list of AMAB names</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>names_combined <span class="sc">|&gt;</span> <span class="fu">filter</span>(asab <span class="sc">==</span> <span class="st">"M"</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>         region <span class="sc">==</span> <span class="st">"USA"</span> <span class="sc">&amp;</span> number <span class="sc">&gt;</span> <span class="dv">50</span> <span class="sc">|</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>           region <span class="sc">!=</span> <span class="st">"USA"</span> <span class="sc">&amp;</span> number <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="ot">-&gt;</span> amab_names</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co"># find intersection of AFAB and AMAB names, regardless of frequency</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="fu">intersect</span>(afab_names <span class="sc">|&gt;</span> </span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">pull</span>(name), </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>          amab_names <span class="sc">|&gt;</span> </span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">pull</span>(name)) <span class="ot">-&gt;</span> unisex_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Of the <code>unisex_names</code>, which ones occur in at least 0.05% of the population? This helps control for wildly different population sizes of each country, but also helps weed out noise from data entry errors.</p>
+<p>However, I believe the large population of the USA and some possible larger-scale data entry errors could be boosting names like “Mary” and “Samantha” into this list. It is worth exploring in the future.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>names_combined <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="do">## CHECK FOR DUPLICATES BEFORE PIVOTING</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># group_by(name,asab,region,year) |&gt; </span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># summarise(n = n(),</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#           .groups = "drop") |&gt; </span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter(n != 1)</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="do">## COMBINE NAMES IF DATA IS WELL STRUCTURED</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"asab"</span>, </span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> <span class="fu">c</span>(number,proportion,rank)) <span class="sc">|&gt;</span> <span class="co"># view() # ,values_fn = list(ppg = length)</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%in%</span> unisex_names,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>         proportion_M <span class="sc">&gt;</span> <span class="fl">0.0005</span>,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>         proportion_F <span class="sc">&gt;</span> <span class="fl">0.0005</span>,</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(proportion_M),</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(proportion_F)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(name) <span class="sc">|&gt;</span> <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "Amy"       "Ashley"    "Charlie"   "Chloe"     "Courtney"  "Emily"    
+  [7] "Emma"      "Georgia"   "Hannah"    "Jessica"   "Jordan"    "Kerry"    
+ [13] "Kim"       "Kym"       "Lee"       "Olivia"    "Riley"     "Samantha" 
+ [19] "Sarah"     "Shannon"   "Taylor"    "Unnamed"   "Alexis"    "Baby"     
+ [25] "Dakota"    "Devon"     "Jamie"     "Jessie"    "Jessy"     "Kelly"    
+ [31] "Mackenzie" "Morgan"    "Robin"     "Casey"     "Alex"      "Bailey"   
+ [37] "Avery"     "Hunter"    "Cameron"   "Jaden"     "Jayden"    "Logan"    
+ [43] "Peyton"    "Rowan"     "Maxim"     "Quinn"     "Hayden"    "Phoenix"  
+ [49] "Blake"     "Emerson"   "Sawyer"    "Finley"    "Parker"    "River"    
+ [55] "Remi"      "Eden"      "Rory"      "Lou"       "Oakley"    "Lennon"   
+ [61] "Beau"      "Ellis"     "Frankie"   "Harley"    "Tyler"     "Dara"     
+ [67] "Leslie"    "Karol"     "Leigh"     "Ali"       "Cody"      "Naoise"   
+ [73] "Brooklyn"  "Jude"      "Kenzie"    "Rylee"     "Georgie"   "Lindsay"  
+ [79] "Nikki"     "Brodie"    "Mckenzie"  "Brogan"    "Marley"    "Blair"    
+ [85] "Pearl"     "Willie"    "Ollie"     "Ora"       "Marion"    "Francis"  
+ [91] "Mary"      "Cecil"     "Johnnie"   "Billie"    "Bobbie"    "Jackie"   
+ [97] "Jimmie"    "Lynn"      "Terry"     "Dana"      "Dale"      "Tracy"    
+[103] "Chris"     "Shawn"     "Stacey"    "Stacy"     "Jody"      "Angel"    
+[109] "Jaime"     "Dominique" "Devin"     "Skyler"    "Payton"    "Amari"    
+[115] "Tatum"    </code></pre>
+</div>
+</div>
+<p>what was i doing here? looks like creating datasets to label plots (see sandbox)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#names_combined |&gt; </span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  pivot_wider(names_from = "asab", values_from = c(number,proportion,rank)) |&gt;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  filter(name %in% unisex_names,</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         !is.na(proportion_M),</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#         !is.na(proportion_F),</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">#         number_M &gt;= 3,</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">#         number_F &gt;= 3,</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#         #proportion_M &gt; 0.0001,</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co">#         #proportion_F &gt; 0.0001,</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">#         #name != "Mary",</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co">#         name != "Baby"</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co">#         ) |&gt; </span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co">#  group_by(name, region) |&gt; </span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="co">#  summarise(proportion_M = max(proportion_M),</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co">#            proportion_F = max(proportion_F),</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="co">#            .groups = "drop") -&gt; prop.labels</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>names_combined <span class="sc">|&gt;</span> </span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"asab"</span>, <span class="at">values_from =</span> <span class="fu">c</span>(number,proportion,rank)) <span class="sc">|&gt;</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%in%</span> unisex_names,</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(proportion_M),</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(proportion_F),</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>         number_M <span class="sc">&gt;=</span> <span class="dv">3</span>,</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>         number_F <span class="sc">&gt;=</span> <span class="dv">3</span>,</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>         <span class="co">#proportion_M &gt; 0.0001,</span></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>         <span class="co">#proportion_F &gt; 0.0001,</span></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>         <span class="co">#name != "Mary",</span></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>         name <span class="sc">!=</span> <span class="st">"Baby"</span></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">|&gt;</span> </span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name, region) <span class="sc">|&gt;</span> </span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_M =</span> <span class="fu">max</span>(number_M),</span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>            <span class="at">number_F =</span> <span class="fu">max</span>(number_F),</span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="ot">-&gt;</span> num.labels</span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>num.labels <span class="sc">|&gt;</span> </span>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">|&gt;</span> </span>
+<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>(),</span>
+<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>count) <span class="sc">|&gt;</span> </span>
+<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filter(count &gt;=7) |&gt; </span></span>
+<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(name) <span class="ot">-&gt;</span> top.names.combined</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Create a table of international names, but why with <code>num.labels</code>? go back to this</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>names_combined <span class="sc">|&gt;</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"asab"</span>, <span class="at">values_from =</span> <span class="fu">c</span>(number,proportion,rank)) <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%in%</span> unisex_names,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(proportion_M),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(proportion_F),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># WHAT TO EXCLUDE BASED ON RARITY?</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>         <span class="co">#number_M &gt;= 3,</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>         <span class="co">#number_F &gt;= 3,</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>         <span class="co">#proportion_M &gt; 0.0001,</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>         <span class="co">#proportion_F &gt; 0.0001,</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>         <span class="co">#name != "Mary",</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>         name <span class="sc">!=</span> <span class="st">"Baby"</span>,</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>         name <span class="sc">!=</span> <span class="st">"Unnamed"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name, region) <span class="sc">|&gt;</span> </span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_M =</span> <span class="fu">max</span>(number_M),</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">number_F =</span> <span class="fu">max</span>(number_F),</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"keep"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>(region) <span class="sc">|&gt;</span> </span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">abs</span>(number_M<span class="sc">/</span>number_F) <span class="sc">&gt;=</span> <span class="fl">0.1</span>,</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>         <span class="fu">abs</span>(number_F<span class="sc">/</span>number_M) <span class="sc">&gt;=</span> <span class="fl">0.1</span>,</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>         number_M <span class="sc">&gt;</span> <span class="dv">3</span>,</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>         number_F <span class="sc">&gt;</span> <span class="dv">3</span>)<span class="sc">|&gt;</span> </span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>(), </span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">countries =</span> <span class="fu">paste</span>(region, <span class="at">collapse =</span> <span class="st">"; "</span>),</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(count)  <span class="sc">|&gt;</span> </span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="ot">-&gt;</span> top.names.summary</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>names.table <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">max</span>(top.names.summary<span class="sc">$</span>count)) {</span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>  max_length <span class="ot">&lt;-</span> top.names.summary <span class="sc">|&gt;</span> <span class="fu">group_by</span>(count) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> <span class="fu">pull</span>(n) <span class="sc">|&gt;</span> <span class="fu">max</span>()</span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>  name_vector <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="at">times =</span> max_length)</span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>  num_of_names <span class="ot">&lt;-</span> top.names.summary <span class="sc">|&gt;</span> <span class="fu">group_by</span>(count) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> <span class="fu">filter</span>(count<span class="sc">==</span>i) <span class="sc">|&gt;</span> <span class="fu">pull</span>(n)</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>num_of_names) {</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>    name_vector[j] <span class="ot">&lt;-</span> top.names.summary <span class="sc">|&gt;</span> <span class="fu">filter</span>(count <span class="sc">==</span> i) <span class="sc">|&gt;</span> <span class="fu">pull</span>(name) <span class="sc">|&gt;</span> <span class="fu">nth</span>(j)</span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>  names.table[[i]] <span class="ot">&lt;-</span> name_vector</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span>(name_vector, num_of_names,max_length)</span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>names.table <span class="sc">%&gt;%</span> <span class="fu">map_dfr</span>(<span class="sc">~</span> .x <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>(), <span class="at">.id =</span> <span class="st">"count"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> count, <span class="at">values_from =</span> value, <span class="at">values_fn =</span> list) <span class="sc">|&gt;</span> </span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">everything</span>()) <span class="ot">-&gt;</span> international_unisex_names</span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>international_unisex_names <span class="sc">|&gt;</span> </span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="st">`</span><span class="at">4</span><span class="st">`</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flextable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-dceb025a{}.cl-dce678d4{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-dce86388{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-dce86f4a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dce86f54{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-dce86f55{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-dceb025a"><thead><tr style="overflow-wrap:break-word;"><th class="cl-dce86f4a"><p class="cl-dce86388"><span class="cl-dce678d4">4</span></p></th><th class="cl-dce86f4a"><p class="cl-dce86388"><span class="cl-dce678d4">5</span></p></th><th class="cl-dce86f4a"><p class="cl-dce86388"><span class="cl-dce678d4">6</span></p></th><th class="cl-dce86f4a"><p class="cl-dce86388"><span class="cl-dce678d4">7</span></p></th><th class="cl-dce86f4a"><p class="cl-dce86388"><span class="cl-dce678d4">8</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Alex</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Ashley</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Avery</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Bailey</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Jordan</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Ali</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Blair</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Brogan</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Casey</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Taylor</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Arden</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Blake</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Charlie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Marley</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Ayomide</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Brooklyn</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Eden</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Morgan</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Bayley</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Charley</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Ellis</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Quinn</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Beau</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Codie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Frankie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">River</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Bowie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Dara</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Harley</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Robin</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Brook</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Drew</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Jody</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Rylee</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Codi</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Jaden</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Leigh</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Cody</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Jaime</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Phoenix</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Dallas</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Kerry</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Reagan</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Darcy</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Kim</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Reese</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Denver</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Lee</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Regan</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Devon</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Leslie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Remi</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Divine</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Mackenzie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Rowan</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Emerson</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Nikita</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Georgie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Noa</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Harlow</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Remy</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Hayden</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Rio</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Jackie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Shae</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Jamie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Stevie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Jan</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Wren</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Jayme</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Yu</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Jia</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Jordyn</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Kasey</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Kaya</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Kendall</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Kenzie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Kiran</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Koa</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Kodi</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Kodie</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Kori</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Lake</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Lennox</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Monroe</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Murphy</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Nicky</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Nikola</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Praise</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Reign</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Riley</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Sage</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Skyler</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Sunny</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Tayler</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Terry</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Wai</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Wing</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4">Yi</span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f54"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-dce86f55"><p class="cl-dce86388"><span class="cl-dce678d4">Zi</span></p></td><td class="cl-dce86f55"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f55"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f55"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td><td class="cl-dce86f55"><p class="cl-dce86388"><span class="cl-dce678d4"></span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>names_combined <span class="sc">|&gt;</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="fu">pull</span>(<span class="at">.data =</span> international_unisex_names, <span class="at">var =</span> <span class="st">`</span><span class="at">7</span><span class="st">`</span>),</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">pull</span>(<span class="at">.data =</span> international_unisex_names, <span class="at">var =</span> <span class="st">`</span><span class="at">8</span><span class="st">`</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"asab"</span>, <span class="at">values_from =</span> <span class="fu">c</span>(number,proportion,rank)) <span class="sc">|&gt;</span> </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> proportion_M, </span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> proportion_F,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> region,</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> region)) <span class="sc">+</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group =</span> region)) <span class="sc">+</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  ggrepel<span class="sc">::</span><span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> year), </span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>                           <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>                           <span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>                           <span class="at">alpha =</span> .<span class="dv">5</span>,<span class="at">max.overlaps =</span> <span class="dv">20</span>,) <span class="sc">+</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"proportion of the AMAB population registered with this name in a given year"</span>) <span class="sc">+</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"proportion of the AFAB population registered with this name in a given year"</span>) <span class="sc">+</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_color_manual(values = c("red","orange","gold","green3","cyan2","blue","blueviolet","violet")) +</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">option =</span> <span class="st">"turbo"</span>) <span class="sc">+</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name, <span class="at">scales =</span> <span class="st">"free"</span>, <span class="at">ncol =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Names_dataset_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="1728"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>names_combined <span class="sc">|&gt;</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="fu">pull</span>(<span class="at">.data =</span> international_unisex_names, <span class="at">var =</span> <span class="st">`</span><span class="at">7</span><span class="st">`</span>),</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">pull</span>(<span class="at">.data =</span> international_unisex_names, <span class="at">var =</span> <span class="st">`</span><span class="at">8</span><span class="st">`</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"asab"</span>, <span class="at">values_from =</span> <span class="fu">c</span>(number,proportion,rank)) <span class="sc">|&gt;</span> </span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> number_M, </span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> number_F,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> region,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> region)) <span class="sc">+</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group =</span> region)) <span class="sc">+</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  ggrepel<span class="sc">::</span><span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> year), </span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>                           <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>                           <span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>                           <span class="at">alpha =</span> .<span class="dv">5</span>,<span class="at">max.overlaps =</span> <span class="dv">20</span>,) <span class="sc">+</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"proportion of the AMAB population registered with this name in a given year"</span>) <span class="sc">+</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"proportion of the AFAB population registered with this name in a given year"</span>) <span class="sc">+</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_color_manual(values = c("red","orange","gold","green3","cyan2","blue","blueviolet","violet")) +</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">option =</span> <span class="st">"turbo"</span>) <span class="sc">+</span></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name, <span class="at">ncol =</span> <span class="dv">5</span>) <span class="sc">+</span> <span class="co">#, scales = "free"</span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Names_dataset_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="1728"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>names_combined <span class="sc">|&gt;</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"asab"</span>, <span class="at">values_from =</span> <span class="fu">c</span>(number,proportion,rank)) <span class="sc">|&gt;</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%in%</span> unisex_names,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(proportion_M),</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(proportion_F),</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>         proportion_M <span class="sc">&gt;</span> <span class="fl">0.0005</span>,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>         proportion_F <span class="sc">&gt;</span> <span class="fl">0.0005</span>,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>         name <span class="sc">!=</span> <span class="st">"Mary"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(region,name,year) <span class="sc">|&gt;</span> </span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%in%</span> top.names.combined) <span class="sc">|&gt;</span> </span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region, name) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> proportion_M, </span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> proportion_F,</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> region,</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> region)) <span class="sc">+</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group =</span> region)) <span class="sc">+</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>  ggrepel<span class="sc">::</span><span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> year), </span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>                           <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>                           <span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>                           <span class="at">alpha =</span> .<span class="dv">5</span>,<span class="at">max.overlaps =</span> <span class="dv">20</span>,) <span class="sc">+</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"proportion of the AMAB population registered with this name in a given year"</span>) <span class="sc">+</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"proportion of the AFAB population registered with this name in a given year"</span>) <span class="sc">+</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"orange"</span>,<span class="st">"gold"</span>,<span class="st">"green3"</span>,<span class="st">"cyan2"</span>,<span class="st">"blue"</span>,<span class="st">"blueviolet"</span>,<span class="st">"violet"</span>)) <span class="sc">+</span></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Names_dataset_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="2304"></p>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,257 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Births, Deaths and Marriages showcases the increasing diversity and variety of names and naming traditions in Victoria with its top 100 most popular baby names API.  \n\n# Getting Started\nThe data consists of a ranked list of the top 100 male and female baby names with frequency counts for every year since 2008. You can use four different filters to interrogate the dataset. Searching without specifying the year will search all years. Responses are sorted by position then year.\n\n## name\nUse to retrieve only specific names or variations of name.\n\nexample: `oli*` retrieves `Oliver`, `Olivia` \n\n## sex\nRetrieves the names by sex.\n\nexample: `MALE` or `FEMALE`\n\n## year\nFilter by year by entering any single year from `2008` to `previous year`. If not specified, data for all years will be returned.\n\nexample: `2018`\n\n## position\nFilter by the ranked position.\n\nexample: `1`\n\n\n# Authentication and Authorisation\nCalls to this API require an API Key. A sample API key is provided for testing via the Developer.Vic Portal.\n\nPlease register at https://developer.vic.gov.au to obtain your own API key.\n\n# Availability and Performance\nThe API is supported during business hours. No performance or availability targets have been defined.\n\n# Subscriptions and Rate Limits\nThis API is offered with 25 requests per minute for all request types.  Contact the [Developer.Vic Support Team](https://developer.vic.gov.au/contact) if you would like a higher rate.\n\n# Data and Data Classification\nThis data is Open Data offered under the [DataVic Access Policy](https://data.vic.gov.au/datavic-access-policy).\n\n# Terms of Use, Copyright and Attribution\n\nThis data is offered under a [Creative Commons Attribution Version 4.0 (international licence)](https://creativecommons.org/licenses/by/4.0/deed.en).\n\nPlease credit [Births, Deaths and Marriages Victoria](https://www.bdm.vic.gov.au/) when using this data.\n\n# Contact Us\nFor feedback, queries or requests relating to this data or the API design please contact [Births, Deaths and Marriages Victoria](https://www.bdm.vic.gov.au/contact-us).\n\nFor technical issues including intermittent availability, outages, access denial or security concerns contact the [Developer.Vic Support Team](https://developer.vic.gov.au/contact).\n",
+    "version" : "1.0.0",
+    "title" : "Popular Baby Names Victoria API",
+    "x-summary" : "Births, Deaths and Marriages showcases the increasing diversity and variety of names and naming traditions in Victoria with its top 100 most popular baby names API"
+  },
+  "host" : "wovg-community.gateway.prod.api.vic.gov.au",
+  "basePath" : "/bdm/names/v1.0",
+  "schemes" : [ "https" ],
+  "produces" : [ "application/json" ],
+  "security" : [ {
+    "API Key" : [ ]
+  } ],
+  "paths" : {
+    "/popular-baby-names" : {
+      "get" : {
+        "tags" : [ "Popular Baby Names" ],
+        "summary" : "Top 100 popular baby names",
+        "description" : "Top 100 most popular baby names in the State of Victoria",
+        "operationId" : "GET /popular-baby-names",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Baby name. Examples: `oliver`, `oli*`, etc.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "sex",
+          "in" : "query",
+          "description" : "Sex of the baby. Available values `MALE` and `FEMALE`\n",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "MALE", "FEMALE" ]
+        }, {
+          "name" : "year",
+          "in" : "query",
+          "description" : "Filter by year by entering any single year from `2008` to `previous year`. If not specified, data for all years will be returned.\n",
+          "required" : false,
+          "type" : "string",
+          "pattern" : "^\\d{4}$"
+        }, {
+          "name" : "position",
+          "in" : "query",
+          "description" : "Filter by the ranked position. Minimum is `1` and Maximum is `100`\n",
+          "required" : false,
+          "type" : "integer",
+          "maximum" : 100,
+          "minimum" : 1
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "The page number requested, starting from 1. Default is `1`\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 1
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of records displayed per page. Default is `100`\n",
+          "required" : false,
+          "type" : "integer",
+          "default" : 100
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/popularBabyNamesResponse"
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "schema" : {
+              "$ref" : "#/definitions/errorModel"
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "schema" : {
+              "$ref" : "#/definitions/errorModel"
+            }
+          }
+        },
+        "x-axway" : { }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "API Key" : {
+      "description" : "API Key",
+      "type" : "apiKey",
+      "name" : "apikey",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "linkModel" : {
+      "type" : "object",
+      "required" : [ "href" ],
+      "properties" : {
+        "href" : {
+          "type" : "string",
+          "description" : "The URL to the referenced resource"
+        },
+        "rel" : {
+          "type" : "string",
+          "description" : "The description of the relationship between the resources"
+        }
+      }
+    },
+    "popularBabyName" : {
+      "type" : "object",
+      "properties" : {
+        "position" : {
+          "type" : "integer",
+          "example" : 1
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Oliver"
+        },
+        "sex" : {
+          "type" : "string",
+          "example" : "Male"
+        },
+        "count" : {
+          "type" : "integer",
+          "example" : 540
+        },
+        "year" : {
+          "type" : "integer",
+          "example" : 2018
+        }
+      }
+    },
+    "metaModel" : {
+      "type" : "object",
+      "properties" : {
+        "response_time" : {
+          "type" : "string",
+          "example" : "120 seconds",
+          "description" : "The response time for this request in human readable format."
+        },
+        "response_time_ms" : {
+          "type" : "integer",
+          "example" : 120,
+          "description" : "The response time for this request in milliseconds."
+        },
+        "total_records" : {
+          "type" : "integer",
+          "example" : 50,
+          "description" : "Total number of the results which meets the search criteria regardless of the page and limit."
+        },
+        "page" : {
+          "type" : "integer",
+          "example" : 1,
+          "description" : "The current page for this collection request."
+        },
+        "limit" : {
+          "type" : "integer",
+          "example" : 20,
+          "description" : "The number of records per page."
+        },
+        "count" : {
+          "type" : "integer",
+          "example" : 20,
+          "description" : "Number of records in the current page"
+        }
+      },
+      "description" : "Meta object model"
+    },
+    "linksModel" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/linkModel"
+      }
+    },
+    "errorModel" : {
+      "type" : "object",
+      "required" : [ "id", "message" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "86032cbe-a804-4c3b-86ce-ec3041e3effc",
+          "description" : "Identifier of the specific error."
+        },
+        "message" : {
+          "type" : "string",
+          "example" : "Bad request",
+          "description" : "An application-specific error message."
+        },
+        "errorDetail" : {
+          "type" : "string",
+          "example" : "Invalid input query parameter",
+          "description" : "A human-readable explanation specific to this occurrence of the problem."
+        }
+      }
+    },
+    "popularBabyNamesResponse" : {
+      "type" : "object",
+      "properties" : {
+        "_meta" : {
+          "$ref" : "#/definitions/metaModel"
+        },
+        "_links" : {
+          "type" : "object",
+          "allOf" : [ {
+            "$ref" : "#/definitions/linksModel"
+          }, {
+            "example" : ""
+          } ]
+        },
+        "popular-baby-names" : {
+          "type" : "array",
+          "example" : [ {
+            "position" : 1,
+            "name" : "Oliver",
+            "sex" : "Male",
+            "count" : 507,
+            "year" : 2018
+          }, {
+            "position" : 1,
+            "name" : "Olivia",
+            "sex" : "Female",
+            "count" : 374,
+            "year" : 2018
+          } ],
+          "items" : {
+            "$ref" : "#/definitions/popularBabyName"
+          }
+        }
+      }
+    }
+  },
+  "x-axway" : {
+    "serviceType" : "rest",
+    "image" : "/api/portal/v1.3/discovery/swagger/apis/9eebc13b-f4fa-40ab-a9e7-8429da6f4e90/image",
+    "basePaths" : [ "https://wovg-community.gateway.prod.api.vic.gov.au" ],
+    "expired" : false,
+    "retirementDate" : 0,
+    "corsEnabled" : true,
+    "deprecated" : false,
+    "availableSDK" : {
+      "ios-swift" : "/discovery/sdk/9eebc13b-f4fa-40ab-a9e7-8429da6f4e90/ios-swift",
+      "titanium" : "/discovery/sdk/9eebc13b-f4fa-40ab-a9e7-8429da6f4e90/titanium",
+      "android" : "/discovery/sdk/9eebc13b-f4fa-40ab-a9e7-8429da6f4e90/android",
+      "nodejs" : "/discovery/sdk/9eebc13b-f4fa-40ab-a9e7-8429da6f4e90/nodejs"
+    },
+    "apiResourceType" : "swagger20",
+    "id" : "9eebc13b-f4fa-40ab-a9e7-8429da6f4e90",
+    "state" : "published",
+    "accessGrantedDate" : 1633316845929
+  }
+}

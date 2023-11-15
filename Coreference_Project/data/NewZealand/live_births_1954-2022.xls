@@ -1,0 +1,482 @@
+<html xmlns:x="urn:schemas-microsoft-com:office:excel">
+	<head>
+		<meta http-equiv="Content-Type" content="charset=windows-1252" />
+		<!--[if gte mso 9]>
+		<xml>
+			<x:ExcelWorkbook>
+				<x:ExcelWorksheets>
+					<x:ExcelWorksheet>
+						<x:Name>matrix</x:Name>
+						<x:WorksheetOptions>
+							<x:Print>
+								<x:ValidPrinterInfo/>
+							</x:Print>
+						</x:WorksheetOptions>
+					</x:ExcelWorksheet>
+				</x:ExcelWorksheets>
+			</x:ExcelWorkbook>
+		</xml>
+		<![endif]-->
+	</head>
+	<body>
+		<style>
+			.stub1 {
+				mso-style-parent:style0;
+				mso-number-format:\@;
+				vertical-align:middle;
+			}
+			.headfirst {
+				mso-style-parent:style0;
+				mso-number-format:\@;
+			}
+			.headlast {
+				mso-style-parent:style0;
+				mso-number-format:\@;
+			}
+			.headmid {
+				mso-style-parent:style0;
+				mso-number-format:\@;
+			}
+			.title
+				mso-style-parent:style0;
+				text-align:left;
+			}
+		</style>
+<table class="pxtable" cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<th colspan="4">Live births (by sex), stillbirths (Maori and total population) (Annual-Dec)</th>
+	</tr>
+	<tr>
+		<td class="headfirst" colspan="1" rowspan="2">&nbsp;</td>
+		<th class="headfirst" colspan="1">Live births, male</th>
+		<th class="headfirst" colspan="1">Live births, female</th>
+		<th class="headfirst" colspan="1">Live births</th>
+	</tr>
+	<tr>
+		<th class="headlast" colspan="1">Total</th>
+		<th class="headlast" colspan="1">Total</th>
+		<th class="headlast" colspan="1">Total</th>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1954</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">54,057</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1955</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">55,596</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1956</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">56,532</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1957</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">58,425</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1958</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">60,558</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1959</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">61,800</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1960</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">62,778</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1961</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">65,391</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1962</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">65,013</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1963</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">64,527</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1964</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">62,304</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1965</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">60,045</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1966</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">60,003</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1967</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">61,023</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1968</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">62,112</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1969</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">62,361</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1970</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">..</td>
+		<td style="white-space: nowrap;">62,052</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1971</td>
+		<td style="white-space: nowrap;">32,997</td>
+		<td style="white-space: nowrap;">31,464</td>
+		<td style="white-space: nowrap;">64,458</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1972</td>
+		<td style="white-space: nowrap;">32,289</td>
+		<td style="white-space: nowrap;">30,927</td>
+		<td style="white-space: nowrap;">63,216</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1973</td>
+		<td style="white-space: nowrap;">31,095</td>
+		<td style="white-space: nowrap;">29,628</td>
+		<td style="white-space: nowrap;">60,729</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1974</td>
+		<td style="white-space: nowrap;">30,510</td>
+		<td style="white-space: nowrap;">28,824</td>
+		<td style="white-space: nowrap;">59,334</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1975</td>
+		<td style="white-space: nowrap;">28,875</td>
+		<td style="white-space: nowrap;">27,765</td>
+		<td style="white-space: nowrap;">56,640</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1976</td>
+		<td style="white-space: nowrap;">28,542</td>
+		<td style="white-space: nowrap;">26,559</td>
+		<td style="white-space: nowrap;">55,104</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1977</td>
+		<td style="white-space: nowrap;">27,786</td>
+		<td style="white-space: nowrap;">26,391</td>
+		<td style="white-space: nowrap;">54,180</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1978</td>
+		<td style="white-space: nowrap;">26,064</td>
+		<td style="white-space: nowrap;">24,966</td>
+		<td style="white-space: nowrap;">51,030</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1979</td>
+		<td style="white-space: nowrap;">26,670</td>
+		<td style="white-space: nowrap;">25,608</td>
+		<td style="white-space: nowrap;">52,278</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1980</td>
+		<td style="white-space: nowrap;">25,938</td>
+		<td style="white-space: nowrap;">24,606</td>
+		<td style="white-space: nowrap;">50,541</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1981</td>
+		<td style="white-space: nowrap;">26,127</td>
+		<td style="white-space: nowrap;">24,666</td>
+		<td style="white-space: nowrap;">50,793</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1982</td>
+		<td style="white-space: nowrap;">25,698</td>
+		<td style="white-space: nowrap;">24,240</td>
+		<td style="white-space: nowrap;">49,938</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1983</td>
+		<td style="white-space: nowrap;">25,878</td>
+		<td style="white-space: nowrap;">24,600</td>
+		<td style="white-space: nowrap;">50,475</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1984</td>
+		<td style="white-space: nowrap;">26,493</td>
+		<td style="white-space: nowrap;">25,143</td>
+		<td style="white-space: nowrap;">51,636</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1985</td>
+		<td style="white-space: nowrap;">26,559</td>
+		<td style="white-space: nowrap;">25,242</td>
+		<td style="white-space: nowrap;">51,798</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1986</td>
+		<td style="white-space: nowrap;">26,898</td>
+		<td style="white-space: nowrap;">25,923</td>
+		<td style="white-space: nowrap;">52,821</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1987</td>
+		<td style="white-space: nowrap;">28,593</td>
+		<td style="white-space: nowrap;">26,661</td>
+		<td style="white-space: nowrap;">55,254</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1988</td>
+		<td style="white-space: nowrap;">29,511</td>
+		<td style="white-space: nowrap;">28,035</td>
+		<td style="white-space: nowrap;">57,546</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1989</td>
+		<td style="white-space: nowrap;">29,658</td>
+		<td style="white-space: nowrap;">28,434</td>
+		<td style="white-space: nowrap;">58,092</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1990</td>
+		<td style="white-space: nowrap;">30,708</td>
+		<td style="white-space: nowrap;">29,445</td>
+		<td style="white-space: nowrap;">60,153</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1991</td>
+		<td style="white-space: nowrap;">30,825</td>
+		<td style="white-space: nowrap;">29,085</td>
+		<td style="white-space: nowrap;">59,913</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1992</td>
+		<td style="white-space: nowrap;">30,726</td>
+		<td style="white-space: nowrap;">28,440</td>
+		<td style="white-space: nowrap;">59,166</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1993</td>
+		<td style="white-space: nowrap;">30,312</td>
+		<td style="white-space: nowrap;">28,467</td>
+		<td style="white-space: nowrap;">58,782</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1994</td>
+		<td style="white-space: nowrap;">29,409</td>
+		<td style="white-space: nowrap;">27,912</td>
+		<td style="white-space: nowrap;">57,321</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1995</td>
+		<td style="white-space: nowrap;">29,877</td>
+		<td style="white-space: nowrap;">27,792</td>
+		<td style="white-space: nowrap;">57,672</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1996</td>
+		<td style="white-space: nowrap;">29,460</td>
+		<td style="white-space: nowrap;">27,819</td>
+		<td style="white-space: nowrap;">57,282</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1997</td>
+		<td style="white-space: nowrap;">29,430</td>
+		<td style="white-space: nowrap;">28,173</td>
+		<td style="white-space: nowrap;">57,603</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1998</td>
+		<td style="white-space: nowrap;">28,584</td>
+		<td style="white-space: nowrap;">26,766</td>
+		<td style="white-space: nowrap;">55,350</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">1999</td>
+		<td style="white-space: nowrap;">29,184</td>
+		<td style="white-space: nowrap;">27,870</td>
+		<td style="white-space: nowrap;">57,051</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2000</td>
+		<td style="white-space: nowrap;">29,157</td>
+		<td style="white-space: nowrap;">27,447</td>
+		<td style="white-space: nowrap;">56,604</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2001</td>
+		<td style="white-space: nowrap;">28,332</td>
+		<td style="white-space: nowrap;">27,465</td>
+		<td style="white-space: nowrap;">55,800</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2002</td>
+		<td style="white-space: nowrap;">27,579</td>
+		<td style="white-space: nowrap;">26,445</td>
+		<td style="white-space: nowrap;">54,021</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2003</td>
+		<td style="white-space: nowrap;">28,818</td>
+		<td style="white-space: nowrap;">27,315</td>
+		<td style="white-space: nowrap;">56,136</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2004</td>
+		<td style="white-space: nowrap;">29,742</td>
+		<td style="white-space: nowrap;">28,329</td>
+		<td style="white-space: nowrap;">58,074</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2005</td>
+		<td style="white-space: nowrap;">29,544</td>
+		<td style="white-space: nowrap;">28,200</td>
+		<td style="white-space: nowrap;">57,744</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2006</td>
+		<td style="white-space: nowrap;">30,240</td>
+		<td style="white-space: nowrap;">28,953</td>
+		<td style="white-space: nowrap;">59,193</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2007</td>
+		<td style="white-space: nowrap;">33,012</td>
+		<td style="white-space: nowrap;">31,032</td>
+		<td style="white-space: nowrap;">64,044</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2008</td>
+		<td style="white-space: nowrap;">33,102</td>
+		<td style="white-space: nowrap;">31,242</td>
+		<td style="white-space: nowrap;">64,341</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2009</td>
+		<td style="white-space: nowrap;">32,112</td>
+		<td style="white-space: nowrap;">30,432</td>
+		<td style="white-space: nowrap;">62,541</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2010</td>
+		<td style="white-space: nowrap;">32,904</td>
+		<td style="white-space: nowrap;">30,993</td>
+		<td style="white-space: nowrap;">63,897</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2011</td>
+		<td style="white-space: nowrap;">31,476</td>
+		<td style="white-space: nowrap;">29,928</td>
+		<td style="white-space: nowrap;">61,404</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2012</td>
+		<td style="white-space: nowrap;">31,242</td>
+		<td style="white-space: nowrap;">29,934</td>
+		<td style="white-space: nowrap;">61,179</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2013</td>
+		<td style="white-space: nowrap;">30,141</td>
+		<td style="white-space: nowrap;">28,575</td>
+		<td style="white-space: nowrap;">58,719</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2014</td>
+		<td style="white-space: nowrap;">29,595</td>
+		<td style="white-space: nowrap;">27,648</td>
+		<td style="white-space: nowrap;">57,243</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2015</td>
+		<td style="white-space: nowrap;">31,356</td>
+		<td style="white-space: nowrap;">29,682</td>
+		<td style="white-space: nowrap;">61,038</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2016</td>
+		<td style="white-space: nowrap;">30,519</td>
+		<td style="white-space: nowrap;">28,908</td>
+		<td style="white-space: nowrap;">59,430</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2017</td>
+		<td style="white-space: nowrap;">30,588</td>
+		<td style="white-space: nowrap;">29,022</td>
+		<td style="white-space: nowrap;">59,610</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2018</td>
+		<td style="white-space: nowrap;">29,709</td>
+		<td style="white-space: nowrap;">28,308</td>
+		<td style="white-space: nowrap;">58,020</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2019</td>
+		<td style="white-space: nowrap;">30,567</td>
+		<td style="white-space: nowrap;">29,070</td>
+		<td style="white-space: nowrap;">59,637</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2020</td>
+		<td style="white-space: nowrap;">29,532</td>
+		<td style="white-space: nowrap;">28,041</td>
+		<td style="white-space: nowrap;">57,573</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2021</td>
+		<td style="white-space: nowrap;">30,027</td>
+		<td style="white-space: nowrap;">28,632</td>
+		<td style="white-space: nowrap;">58,659</td>
+	</tr>
+	<tr>
+		<td rowspan="1" class="stub1">2022</td>
+		<td style="white-space: nowrap;">29,925</td>
+		<td style="white-space: nowrap;">28,959</td>
+		<td style="white-space: nowrap;">58,887</td>
+	</tr>
+	<tr>
+		<td class="footnote" colspan="4">
+			<a id="information">
+				<b>Table information:</b>
+			</a>
+			<br />Units:<br />Number, Magnitude = Units<br /><br /><a id="footnotes"><b>Footnotes:</b></a><br />From September 1995, birth and death registrations collected ethnicity based on self-identification, rather than degree-of-blood.<br />Until 30 August 1995, a stillbirth was defined as a child born dead after 28 weeks of pregnancy. From 1 September 1995, a child is stillborn when it is dead at birth and either weighs 400g or more at birth, or is born after the 20th week of pregnancy.<br />Births and deaths data are based on date of registration (not date of occurrence). Data before 1991 includes New Zealand residents and overseas visitors. Data from 1991 includes New Zealand residents only.<br />Apart from some historical data, births exclude late registrations under section 16 of the Births, Deaths, Marriages, and Relationships Registration Act 1995.<br />Data has been randomly rounded to protect confidentiality. Individual figures may not add up to totals, and values for the same data may vary in different tables.<br /> <br />Symbols:<br />.. figure not available<br />C: Confidential<br />E: Early Estimate<br />P: Provisional<br />R: Revised<br />S: Suppressed<br /><br />Status flags are not displayed<br /><br />Table reference: <br />VSB038AA<br /><br />Last updated:<br />20 February 2023 10:45am<br /><br />Source: Statistics New Zealand<br />Contact: Information Centre<br />Telephone: 0508 525 525<br />Email:<a href="mailto:info@stats.govt.nz">info@stats.govt.nz</a><br /><br /><br /></td>
+	</tr>
+</table>	</body>
+</html>
