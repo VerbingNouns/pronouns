@@ -1,0 +1,303 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r setUp}
+library(tidyverse)
+library(viridis)
+library(lme4)
+data.full = read.csv("2021-02-14_data-lma.csv", header = TRUE, as.is = TRUE)
+```
+
+```{r}
+data.full %>% 
+  filter(Subject != "PRONOUN...") %>% 
+  mutate(L1 = case_when(L1=="Both simultaneously"~"Spanish",
+                        TRUE~L1),
+         `Image Gender` = substr(str_to_lower(Image, locale = "en"), 1, 1),
+         Picture = case_when(`Image Gender` == "f" ~ "feminine",
+                             `Image Gender` == "m" ~ "masculine",
+                             TRUE ~ "nonbinary / other")) -> data
+```
+
+
+```{r, warning=FALSE, message=FALSE}
+data %>% 
+  group_by(L1, Gender.Category.Coarse,Subject) %>% 
+  summarise(n = n())
+
+data %>% 
+  group_by(L1,Subject) %>% 
+  summarise(n = n())
+
+data %>% 
+  group_by(L1,Gender.Category.Coarse) %>% 
+  summarise(n = n()/20)
+```
+
+```{r, message=FALSE}
+data %>% 
+  group_by(L1, Gender.Category.Coarse,Subject,Picture) %>% 
+  summarise(n = n()) -> data.count;data.count
+```
+
+```{r}
+library(treemap)
+ 
+# treemap
+treemap(data.count,
+            index=c("Gender.Category.Coarse","L1","Subject","Picture"),
+            vSize="n",
+            type="index",
+            overlap.labels=1
+            ) 
+```
+
+
+```{r}
+glmer(Subj.Bin ~ Gender.Category.Coarse * L1 + (1|Participant.Private.ID) + (1|Picture),
+  data = data %>% 
+    mutate(Subj.Bin = case_when(Subject == "They" ~ 1, TRUE ~ 0)),
+  family="binomial"
+) %>% summary()
+```
+
+
+```{r}
+glm(n ~ Subject * L1 * Gender.Category.Coarse * Picture, data.count, family="poisson") %>% summary()
+
+glm(n ~ Subject * L1 * Gender.Category.Coarse * Picture, data.count %>% 
+      mutate(Gender.Category.Coarse = case_when(Gender.Category.Coarse=="nonbinary"~"agend", TRUE ~ Gender.Category.Coarse),
+             Subject = case_when(Subject=="They"~"asubj", TRUE ~ Subject),
+             Picture = case_when(Picture=="nonbinary/unknown"~"apic", TRUE ~ Subject)), 
+    family="poisson") %>% summary()
+```
+
+
+```{r}
+glm(n ~ Subject + L1 + Gender.Category.Coarse, data.count, family="poisson") %>% summary()
+
+glm(n ~ Subject +
+        L1 +
+        Gender.Category.Coarse +
+        L1:Gender.Category.Coarse +
+        Subject:Gender.Category.Coarse +
+        Subject:L1 +
+        Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  %>% summary()
+```
+
+# Poisson stuff
+
+```{r}
+glm(n ~ Subject +
+        L1 +
+        Gender.Category.Coarse +
+        L1:Gender.Category.Coarse +
+        Subject:Gender.Category.Coarse +
+        Subject:L1 +
+        Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.max
+glm(n ~ Subject +
+        L1 +
+        Gender.Category.Coarse +
+        L1:Gender.Category.Coarse +
+        Subject:Gender.Category.Coarse +
+        Subject:L1,# +
+        #Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.in3
+glm(n ~ Subject +
+        L1 +
+        Gender.Category.Coarse +
+        L1:Gender.Category.Coarse +
+        Subject:Gender.Category.Coarse,# +
+        #Subject:L1 +
+        #Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.isl
+glm(n ~ Subject +
+        L1 +
+        Gender.Category.Coarse +
+        L1:Gender.Category.Coarse +
+        #Subject:Gender.Category.Coarse +
+        Subject:L1,# +
+        #Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.isg
+glm(n ~ Subject +
+        L1 +
+        Gender.Category.Coarse +
+        #L1:Gender.Category.Coarse +
+        Subject:Gender.Category.Coarse +
+        Subject:L1,# +
+        #Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.ilg
+glm(n ~ Subject +
+        L1 +
+        #Gender.Category.Coarse +
+        #L1:Gender.Category.Coarse +
+        #Subject:Gender.Category.Coarse +
+        Subject:L1,# +
+        #Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.gen
+glm(n ~ Subject +
+        #L1 +
+        Gender.Category.Coarse +
+        #L1:Gender.Category.Coarse +
+        Subject:Gender.Category.Coarse,# +
+        #Subject:L1 +
+        #Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.lng
+glm(n ~ #Subject +
+        L1 +
+        Gender.Category.Coarse +
+        L1:Gender.Category.Coarse,# +
+        #Subject:Gender.Category.Coarse +
+        #Subject:L1 +
+        #Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.sub
+glm(n ~ Subject +
+        L1 +
+        Gender.Category.Coarse +
+        #L1:Gender.Category.Coarse +
+        #Subject:Gender.Category.Coarse +
+        Subject:L1,# +
+        #Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.ge2
+glm(n ~ Subject +
+        L1 +
+        Gender.Category.Coarse +
+        #L1:Gender.Category.Coarse +
+        Subject:Gender.Category.Coarse,# +
+        #Subject:L1 +
+        #Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.ln2
+glm(n ~ Subject +
+        L1 +
+        Gender.Category.Coarse +
+        L1:Gender.Category.Coarse,# +
+        #Subject:Gender.Category.Coarse +
+        #Subject:L1 +
+        #Subject:L1:Gender.Category.Coarse,
+    data.count, 
+    family="poisson")  -> mdl.su2
+
+anova(mdl.max,mdl.in3)
+anova(mdl.in3,mdl.isl)
+anova(mdl.in3,mdl.isg)
+anova(mdl.in3,mdl.ilg)
+anova(mdl.su2,mdl.sub)
+anova(mdl.ge2,mdl.gen)
+anova(mdl.ln2,mdl.lng)
+
+```
+
+
+# Binomial mistake
+
+```{r}
+glmer(as.factor(Subject) ~ 
+        L1 +
+        #Gender.Category.Coarse + 
+        #L1:Gender.Category.Coarse +
+       (1 | Participant.Private.ID),
+     data = dataSimple, # %>% filter(Subject != "PRONOUN...", Gender.Category.Coarse != "other"), 
+     family = "binomial") %>% 
+  summary()
+```
+
+```{r}
+glmer(as.factor(Subject) ~ 
+        L1 +
+        Gender.Category.Coarse + 
+        L1:Gender.Category.Coarse +
+       (1 | Participant.Private.ID),
+     data = data, 
+     family = "binomial") -> mdl1.max
+glmer(as.factor(Subject) ~ 
+        L1 +
+        Gender.Category.Coarse + 
+        #L1:Gender.Category.Coarse +
+       (1 | Participant.Private.ID),
+     data = data, 
+     family = "binomial") -> mdl1.int
+glmer(as.factor(Subject) ~ 
+        L1 +
+        #Gender.Category.Coarse + 
+        #L1:Gender.Category.Coarse +
+       (1 | Participant.Private.ID),
+     data = data, 
+     family = "binomial") -> mdl1.gnd
+glmer(as.factor(Subject) ~ 
+        #L1 +
+        Gender.Category.Coarse + 
+        #L1:Gender.Category.Coarse +
+       (1 | Participant.Private.ID),
+     data = data, 
+     family = "binomial") -> mdl1.lng
+
+anova(mdl1.max,mdl1.int)
+anova(mdl1.int,mdl1.gnd)
+anova(mdl1.int,mdl1.lng)
+```
+
+```{r}
+glmer(as.factor(Subject) ~ 
+        Gender.Category.Coarse +
+        Picture +
+        Picture:Gender.Category.Coarse +
+       (1 | Participant.Private.ID),
+     data = data, 
+     family = "binomial") -> mdl2.max
+glmer(as.factor(Subject) ~ 
+        Gender.Category.Coarse +
+        Picture +
+        #Picture:Gender.Category.Coarse +
+       (1 | Participant.Private.ID),
+     data = data, 
+     family = "binomial") -> mdl2.int
+glmer(as.factor(Subject) ~ 
+        #Gender.Category.Coarse +
+        Picture +
+        #Picture:Gender.Category.Coarse +
+       (1 | Participant.Private.ID),
+     data = data, 
+     family = "binomial") -> mdl2.gnd
+glmer(as.factor(Subject) ~ 
+        Gender.Category.Coarse +
+        #Picture +
+        #Picture:Gender.Category.Coarse +
+       (1 | Participant.Private.ID),
+     data = data, 
+     family = "binomial") -> mdl2.pic
+
+anova(mdl2.max,mdl2.int)
+anova(mdl2.int,mdl2.gnd)
+anova(mdl2.int,mdl2.pic)
+```
+
+```{r}
+# All participants used they more frequently with nonbinary/unknown images (stats). 
+mdl3.max <- glm(as.factor(Subject) ~
+                    L1 +
+                    Gender.Category.Coarse +
+                    Picture +
+                    L1:Gender.Category.Coarse +
+                    L1:Picture +
+                    Gender.Category.Coarse:Picture +
+                    L1:Gender.Category.Coarse:Picture,
+                  data=data,
+                family="binomial")
+summary(mdl3.max)
+```
+

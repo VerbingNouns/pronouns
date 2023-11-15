@@ -1,0 +1,207 @@
+---
+title: "CUNY prep"
+output: html_notebook
+---
+
+```{r setUp}
+library(tidyverse)
+library(viridis)
+library(lme4)
+library(cowplot)
+data.full = read.csv("2021-02-14_data-lma.csv", header = TRUE, as.is = TRUE)
+
+data.full %>% 
+  filter(Subject != "PRONOUN...") %>% 
+  mutate(L1 = case_when(L1=="Both simultaneously"~"Spanish",
+                        TRUE~L1),
+         `Image Gender` = substr(str_to_lower(Image, locale = "en"), 1, 1),
+         Picture = case_when(`Image Gender` == "f" ~ "feminine",
+                             `Image Gender` == "m" ~ "masculine",
+                             TRUE ~ "nonbinary / other")) -> data
+```
+
+```{r message=FALSE}
+data %>% 
+  filter(Image == "fem- dive.jpg") %>% 
+  group_by(L1,Gender.Category.Coarse) %>% 
+  summarise(n=n())
+```
+
+
+# Cara's graphs
+
+```{r fig2, warning=FALSE, message=FALSE}
+data %>% 
+  group_by(L1) %>% summarise(total = n()) -> total.column
+
+data %>% 
+  group_by(L1,Subject) %>% summarise(count=n()) %>% 
+  full_join(total.column, by=c("L1")) %>% 
+  mutate(percent = count/total,
+         Subject = factor(Subject, levels = c("She", "He","They"))) %>% 
+  ggplot(aes(x=`Subject`, y=percent, fill=`L1`)) +
+  geom_bar(stat="identity", position="dodge") +
+  theme_bw() +
+  scale_fill_viridis(begin = 0.1, end = .9, direction = 1, discrete = TRUE, option = "C") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("Figure 2.", subtitle = "Percentage of pronouns chosen \nby English and Spanish L1 speakers") #-> p1
+```
+
+
+```{r fig3, warning=FALSE, message=FALSE}
+data %>% 
+  group_by(Gender.Category.Coarse,L1) %>% summarise(total = n()) -> total.column
+
+data %>% 
+  group_by(Subject,Gender.Category.Coarse,L1) %>% summarise(count = n()) %>% 
+  full_join(total.column, by = c("Gender.Category.Coarse","L1")) %>% 
+  mutate(percent = count/total,
+         `Participant Gender` = Gender.Category.Coarse %>% as.factor(),
+         `Participant Gender` = factor(`Participant Gender`, levels=(c("woman","man","nonbinary","other"))),
+         Subject = factor(Subject, levels=c("They", "She", "He"))) %>% 
+  ggplot(aes(x=`Participant Gender`, y=percent, fill=`Subject`)) +
+  geom_bar(stat="identity", position="stack") +
+  theme_bw() +
+#  facet_wrap(~L1, scales = "free") +
+  scale_fill_viridis(begin = 0.1, end = .9, direction = 1, discrete = TRUE, option = "D") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("Fig X.", subtitle = "Percentage of pronouns chosen by each participant gender category")
+```
+
+
+
+```{r fig4, warning=FALSE, message=FALSE}
+data %>% 
+  group_by(Gender.Category.Coarse,L1) %>% summarise(total = n()) -> total.column
+
+data %>% 
+  group_by(Subject,Gender.Category.Coarse,L1) %>% summarise(count = n()) %>% 
+  full_join(total.column, by = c("Gender.Category.Coarse","L1")) %>% 
+  mutate(percent = count/total,
+         `Participant Gender` = Gender.Category.Coarse %>% as.factor(),
+         `Participant Gender` = factor(`Participant Gender`, levels=(c("woman","man","nonbinary","other"))),
+         Subject = factor(Subject, levels=c("They", "She", "He"))) %>% 
+  ggplot(aes(x=`Participant Gender`, y=percent, fill=`Subject`)) +
+  geom_bar(stat="identity", position="stack") +
+  theme_bw() +
+  facet_wrap(~L1, scales = "free") +
+  scale_fill_viridis(begin = 0.1, end = .9, direction = 1, discrete = TRUE, option = "D") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("Figure 3.", subtitle = "Percentage of pronouns chosen by each participant gender category") #-> p2
+```
+
+This needs some serious re-thinking.
+```{r fig5, warning=FALSE, message=FALSE}
+data %>% 
+  filter(Subject=="They") %>% 
+  group_by(Gender.Category.Coarse,L1) %>% summarise(total = n()) -> total.column
+
+data %>% 
+  filter(Subject=="They") %>% 
+  group_by(Gender.Category.Coarse,L1,Picture) %>% summarise(count = n()) %>% 
+  full_join(total.column, by = c("L1","Gender.Category.Coarse")) %>% 
+  mutate(percent = count/total,
+         `Participant Gender` = Gender.Category.Coarse %>% as.factor(),
+         `Participant Gender` = factor(`Participant Gender`, levels=(c("woman","man","nonbinary","other")))) %>% 
+  ggplot(aes(x=`Participant Gender`, y=percent, fill=`Picture`)) +
+  geom_bar(stat="identity", position="dodge") +
+  theme_bw() +
+  facet_grid(~L1, scales = "free") +
+  scale_fill_viridis(begin = 0.1, end = .9, direction = 1, discrete = TRUE, option = "D") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("Fig X.", subtitle = "Distribution of singular 'they' responses by L1 and Participant Gender across Image Gender")
+```
+
+```{r fig6, warning=FALSE, message=FALSE}
+data %>% 
+  group_by(`Image Gender`,L1) %>% summarise(total = n()) -> total.column
+
+data %>% 
+  group_by(L1,`Image Gender`,Subject) %>% summarise(count = n()) %>% 
+  full_join(total.column, by = c("L1","Image Gender")) %>% 
+  mutate(percent = count/total) %>% 
+  ggplot(aes(x=`Image Gender`, y=percent, fill=`Subject`)) +
+  geom_bar(stat="identity", position = position_dodge(preserve = "single")) +
+  theme_bw() +
+  facet_grid(.~L1, scales = "free") +
+  scale_fill_viridis(begin = 0.1, end = .9, direction = 1, discrete = TRUE, option = "D") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("Fig X.", subtitle = "Distribution of singular 'they' responses by L1 and Participant Gender across Image Gender")
+```
+# GOOD IMAGE:
+
+```{r fig7, warning=FALSE, message=FALSE}
+data %>% 
+  group_by(L1,`Image Gender`,Gender.Category.Coarse) %>% summarise(total = n()) -> total.column
+
+data %>% 
+  group_by(L1,`Image Gender`,Gender.Category.Coarse,Subject) %>% summarise(count = n()) %>% 
+  full_join(total.column, by = c("L1","Image Gender","Gender.Category.Coarse")) %>% 
+  mutate(percent = count/total,
+         `Participant Gender` = Gender.Category.Coarse %>% as.factor(),
+         `Participant Gender` = factor(`Participant Gender`, levels=(c("woman","man","other","nonbinary"))),
+         Subject = factor(Subject, levels=c("They", "She", "He"))) %>% 
+  ggplot(aes(x=`Image Gender`, y=percent, fill=`Subject`)) +
+  geom_bar(stat="identity", position = "stack") + #position_dodge(preserve = "single")
+  theme_bw() +
+  facet_grid(L1~`Participant Gender`) +#, scales = "free", space = "fixed") +
+  scale_fill_viridis(begin = 0.1, end = .9, direction = 1, discrete = TRUE, option = "D") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("Figure 4.", subtitle = "Distribution of responses by L1 and Gender across image type") +
+  xlab("Normed gender category of stimulus images (feminine, masculine, nonbinary/unknown)") #-> p3
+```
+
+## cowplot
+```{r cowplot}
+topRow <- plot_grid(p1,p2, rel_widths = c(1,2))
+botRow <- plot_grid(p3,NULL, rel_widths = c(4,1))
+plot_grid(topRow,botRow, rel_heights = c(.8,1),ncol=1)
+```
+
+# stats
+
+```{r, message=FALSE}
+data %>% 
+  group_by(L1, Gender.Category.Coarse,Subject,Picture) %>% 
+  summarise(n = n()) -> data.count;data.count
+
+data %>% 
+  group_by(L1, Gender.Category.Coarse,Subject,Picture,Participant.Private.ID) %>% 
+  summarise(n = n()) -> data.count.indiv;data.count.indiv
+
+data %>% 
+  mutate(Gender = case_when(Gender.Category.Coarse != "nonbinary"~ -.75, TRUE ~ .25),
+         Subject = case_when(Subject != "They" ~ -.6667, TRUE ~ .3333),
+         Picture = case_when(Picture != "nonbinary / other"~ -.6667, TRUE ~ .3333)) %>% 
+  group_by(L1, Gender, Subject, Picture) %>% 
+  summarise(n = n()) -> binary.data;binary.data
+```
+
+
+```{r}
+glm(n ~ Subject * L1 * Gender.Category.Coarse * Picture, data.count %>% 
+      mutate(Gender.Category.Coarse = case_when(Gender.Category.Coarse=="nonbinary"~"agend", TRUE ~ Gender.Category.Coarse),
+             Subject = case_when(Subject=="They"~"asubj", TRUE ~ Subject),
+             Picture = case_when(Picture=="masculine"~"apic", TRUE ~ Picture),
+             NULL), 
+    family="poisson") %>% summary()
+```
+
+
+
+```{r}
+glmer(n ~ Subject * L1 * Gender.Category.Coarse * Picture + (1|Participant.Private.ID), 
+      data = data.count.indiv %>% 
+             mutate(Gender.Category.Coarse = case_when(Gender.Category.Coarse=="nonbinary"~"agend", TRUE ~ Gender.Category.Coarse),
+                    Subject = case_when(Subject=="They"~"asubj", TRUE ~ Subject),
+                    Picture = case_when(Picture=="nonbinary/unknown"~"apic", TRUE ~ Picture),
+                    NULL), 
+    family="poisson") %>% summary()
+```
+
+```{r}
+glm(n ~ Subject * L1 * Gender * Picture, 
+    data = binary.data, 
+    family ="poisson") %>% summary()
+```
+
