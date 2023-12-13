@@ -617,8 +617,42 @@ names_Australia |>
 
 Write to file for ease of use elsewhere
 ```{r write_names_combined, eval=FALSE}
-write_csv(names_combined, "data/names_combined.csv")
+write_csv(names_combined, "data/large_files/names_combined.csv")
+
+#write_csv(names_Australia, "data/large_files/names_Australia.csv")
+#write_csv(names_Canada, "data/large_files/names_Canada.csv")
+#write_csv(names_EW, "data/large_files/names_EW.csv")
+#write_csv(names_Ireland, "data/large_files/names_Ireland.csv")
+#write_csv(names_NI, "data/large_files/names_NI.csv")
+#write_csv(names_NZ, "data/large_files/names_NZ.csv")
+#write_csv(names_Scotland, "data/large_files/names_Scotland.csv")
+#write_csv(names_USA, "data/large_files/names_USA.csv")
 ```
+
+## List of names
+
+In order to elicit ratings of the names in this dataset for research and norming purposes, I need to create a list of all the names without any repeats. I will format it for use in Gorilla (online survey tool).
+
+```{r}
+names_combined |> 
+  group_by(name) |> 
+  summarise(count = n(),
+            .groups = "drop") |> 
+  filter(count >= 100) |> 
+  mutate(freq_block = round(count, digits = -2)) -> names_for_rating
+
+names_for_rating |> group_by(freq_block) |> summarise(n = n())
+
+
+
+names_for_rating |> 
+  select(-count) |> 
+  mutate(display = "Rating") |> 
+  select(display, name, freq_block) -> Name_Rating_Spreadsheet
+
+#write_csv(Name_Rating_Spreadsheet, "data/large_files/Name_Rating_Spreadsheet.csv")
+```
+
 
 # Demonstration
 

@@ -1,0 +1,293 @@
+---
+title: "Pilot analysis"
+format: html
+---
+
+# Set up
+
+```{r setup}
+library(tidyverse); theme_set(theme_bw())
+library(readr)
+
+practice <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_task-smjw.csv")
+demog <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_questionnaire-i6tq.csv")
+raw_data <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_task-9t9c.csv")
+```
+
+
+# Raw data
+
+```{r}
+raw_data |> 
+  filter(!is.na(Response),!is.na(Display)) |> 
+  select(`Participant Private ID`,`Display`,
+         `Object Name`,`Spreadsheet: name`,
+         `Spreadsheet: freq_block`,`Response`) |> 
+  pivot_wider(names_from = "Object Name",
+              values_from = "Response") |> 
+  rename(participant = `Participant Private ID`,
+         task = Display,
+         name = `Spreadsheet: name`,
+         freq_block = `Spreadsheet: freq_block`,
+         masc = `Masc Slider`,
+         fem = `Fem Slider`,
+         neut = `Neut slider`,
+         comment = `Text Entry`) |> 
+  mutate(participant = as.numeric(as.factor(participant)),
+         freq_block = as.factor(freq_block),
+         masc = as.numeric(masc),
+         fem = as.numeric(fem),
+         neut = as.numeric(neut)) |> 
+  group_by(name, freq_block) |> summarise(n = n()) |> 
+  arrange(desc(n))
+```
+
+
+```{r warning=FALSE}
+raw_data |> 
+  filter(!is.na(Response),!is.na(Display)) |> 
+  select(`Participant Private ID`,`Display`,
+         `Object Name`,`Spreadsheet: name`,
+         `Spreadsheet: freq_block`,`Response`) |> 
+  pivot_wider(names_from = "Object Name",
+              values_from = "Response") |> 
+  rename(participant = `Participant Private ID`,
+         task = Display,
+         name = `Spreadsheet: name`,
+         freq_block = `Spreadsheet: freq_block`,
+         masc = `Masc Slider`,
+         fem = `Fem Slider`,
+         neut = `Neut slider`,
+         comment = `Text Entry`) |> 
+  mutate(participant = as.numeric(as.factor(participant)),
+         freq_block = as.factor(freq_block),
+         masc = as.numeric(masc),
+         fem = as.numeric(fem),
+         neut = as.numeric(neut)) |> 
+  filter(name %in% c("Alex","Andrea","Ashley","Charlie","Jamie","Lee","Morgan","Robin","Riley","Dale","Sam",
+                     "James","William","Edward")) |> 
+  #filter(name == "Mary") |> 
+  ggplot(aes(x = fem, 
+             y = masc)) +
+  geom_density2d_filled(contour_var = "ndensity") +
+  geom_point(#aes(color = neut),
+             color = "black",
+             shape = 4) +
+  #geom_point(shape = 4) +
+  #geom_density2d(color = "black", size = 2, alpha = .5) +
+  #geom_bin2d(na.rm = TRUE, binwidth = 5) +
+  #geom_hex(na.rm = TRUE, bins = 5) +
+  #scale_color_viridis_c(option = "cividis", begin = .1) +
+  #scale_fill_viridis_c(option = "turbo", begin = .1) +
+  scale_fill_viridis_d(option = "turbo", begin = .1) +
+  scale_x_continuous(limits = c(0,100)) +
+  scale_y_continuous(limits = c(0,100)) +
+  facet_wrap(~name, scales = "free") +
+  NULL
+```
+
+
+# CUNY2021 example sentence names
+
+```{r}
+hsp21Names <- c("Ben", "Carla"," Mary", "Jo", "John", "Lucy", "Pat", "Kate",
+                "Chen", "Abigail", "Emily", "Richie", "Adrian", "Daniel",
+                "Aaron", "Tanya", "Amy", "Sarah", "John", "Paul", "Iggy", "Sting",
+                "Paul", "Mihai", "Andrei", "Radu", "Irina", "Amanda", "John",
+                "George", "Lewis", "Mickey", "Daisy", "Donald", "Mary", "John", 
+                "Ana", "Liz", "Matt", "Will", "Matt", "Ana", "Rich", "Fred", "Katie", 
+                "John", "Amanda", "Petar", "Marija", "Connie", "John", "Andy",
+                "Paulo", "Camila", "Mary")
+```
+
+
+* Syntactic and semantic parallelism guides filler-gap processing in coordination; Stephanie Rich & Matt Wagers (UC Santa Cruz)
+    * Ben, Carla
+* The dual nature of subjecthood: Unifying subject islands and that-trace effects; Rebecca Tollan & Bilge Palaz (University of Delaware)
+    * Mary, Jo, John, Lucy, Pat, Kate
+* New neighbours make bad fences: Form-based semantic shifts in word learning; David A. Haslett & Zhenguang G. Cai (The Chinese University of Hong Kong)
+    * Chen
+* Anaphoric dependencies in the digital age: On the relation between emoji and text; Elsi Kaiser (University of Southern California) and Patrick Georg Grosz (University of Oslo)
+    * Abigail, Emily, Richie, Adrian, Daniel, Aaron, Tanya, Amy
+
+* Decomposing the focus effect: Evidence from reading; Morwenna Hoeks, Maziar Toosarvandani & Amanda Rysling (University of California Santa Cruz)
+    * Sarah
+* Acceptability of extraction out of adjuncts depends on discourse factors; Edward Gibson (MIT), Barbara Hemforth (CNRS, U. Paris), Elodie Winckel (Erlangen U), Anne Abeillé (U. Paris)
+    * John, Paul
+* The structural source of English Subject Islands; David Potter & Katy Carlson (Morehead State University)
+    * Iggy [Pop], Sting
+* *Semantic interference in dependency formation: NP types in cleft sentences; Myung Hye Yoo & Rebecca Tollan (University of Delaware)*
+* Do children predict grammatical gender of nouns?; Katja Haeuser, Yoana Vergilova & Jutta Kray (Saarland University)
+    * Paul
+* Choosing a Referring Expression: Intra-sentential Ambiguity Avoidance in Romanian; Rodica Ivan, Brian Dillon, & Kyle Johnson (University of Massachusetts, Amherst)
+    * Mihai, Andrei, Radu, Irina
+* Implicit Causality Can Affect Pronoun Use in Fragment Completion Tasks; Yining Ye, Kathryn C. Weatherford & Jennifer E. Arnold (UNC-Chapel Hill)
+    * Amanda, John
+* Comprehension meets production: null/overt subject pronouns in Italian and Spanish; Carla Contemori (University of Texas at El Paso) & Elisa Di Domenico (Universitá per Stranieri di Perugia)
+    * George, Lewis, Mickey, Daisy, Donald, Mary, John
+* Adaptation to discourse patterns depends on relative frequency of competing structures; Valerie J. Langlois & Jennifer E. Arnold (University of North Carolina – Chapel Hill)
+    * Ana, Liz, Matt
+* Are both syntactically and semantically-based pronoun dependencies stored in memory?; Jennifer E. Arnold, Avery Wall, & Taylor Steele (UNC Chapel Hill)
+    * Will, Matt, Ana
+* Processing referring expressions: Accessibility is not predictability; Weijie Xu, Ming Xiang (The University of Chicago)
+    * Rich
+* EVIDENCE FOR EARLY APPLICATION OF BINDING THEORY AND LATE INTRUSION EFFECTS; Arild Hestvik & Myung Hye Yoo (University of Delaware)
+    * Fred, Katie
+* Predicting binding domains: Evidence from fronted auxiliaries and wh-predicates; Keir Moulton (U. of Toronto), Cassandra Chapman (U. of Toronto), and Nayoun Kim (Sungkyunkwan U.)
+    * John, Amanda
+* Neural correlates of expectation violations and discourse updating: The case of Bulgarian object agreement; Paul Compensis, Petra B. Schumacher (University of Cologne)
+    * Petar, Marija
+* Feature Reactivation in Minimalist Parsing; Aniello de Santo (University of Utah)
+    * Connie
+* The effect of representational complexity on working memory processes; Chi Dat (Daniel) Lam and Ming Xiang (University of Chicago)
+    * John, Andy
+
+(p191)
+
+* Prosody and eye movements on attachment in Brazilian Portuguese; Aline Fonseca (Federal University of Juiz de Fora), Andressa da Silva (Federal University of Juiz de Fora), Marcus Maia (Federal University of Rio de Janeiro)
+    * Paulo, Camila
+* The role of language context in the acquisition of novel words; Anna Alberski, Kathryn Schuler (University of Pennsylvania)
+    * Mary
+
+```{r warning=FALSE}
+raw_data |> 
+  filter(!is.na(Response),!is.na(Display)) |> 
+  select(`Participant Private ID`,`Display`,
+         `Object Name`,`Spreadsheet: name`,
+         `Spreadsheet: freq_block`,`Response`) |> 
+  pivot_wider(names_from = "Object Name",
+              values_from = "Response") |> 
+  rename(participant = `Participant Private ID`,
+         task = Display,
+         name = `Spreadsheet: name`,
+         freq_block = `Spreadsheet: freq_block`,
+         masc = `Masc Slider`,
+         fem = `Fem Slider`,
+         neut = `Neut slider`,
+         comment = `Text Entry`) |> 
+  mutate(participant = as.numeric(as.factor(participant)),
+         freq_block = as.factor(freq_block),
+         masc = as.numeric(masc),
+         fem = as.numeric(fem),
+         neut = as.numeric(neut)) |> 
+  filter(name %in% hsp21Names) |> 
+  ggplot(aes(x = fem, 
+             y = masc)) +
+  geom_density2d_filled(contour_var = "ndensity") +
+  geom_point(#aes(color = neut),
+             color = "black",
+             shape = 4) +
+  scale_fill_viridis_d(option = "turbo", begin = .1) +
+  scale_x_continuous(limits = c(0,100)) +
+  scale_y_continuous(limits = c(0,100)) +
+  facet_wrap(~name, scales = "free") +
+  NULL
+```
+
+```{r}
+raw_data |> 
+  filter(!is.na(Response),!is.na(Display)) |> 
+  select(`Participant Private ID`,`Display`,
+         `Object Name`,`Spreadsheet: name`,
+         `Spreadsheet: freq_block`,`Response`) |> 
+  pivot_wider(names_from = "Object Name",
+              values_from = "Response") |> 
+  rename(participant = `Participant Private ID`,
+         task = Display,
+         name = `Spreadsheet: name`,
+         freq_block = `Spreadsheet: freq_block`,
+         masc = `Masc Slider`,
+         fem = `Fem Slider`,
+         neut = `Neut slider`,
+         comment = `Text Entry`) |> 
+  mutate(participant = as.numeric(as.factor(participant)),
+         freq_block = as.factor(freq_block),
+         masc = as.numeric(masc),
+         fem = as.numeric(fem),
+         neut = as.numeric(neut)) |> 
+  filter(name %in% hsp21Names) |> 
+  group_by(name) |> 
+  summarise(n = n(),
+            masc = mean(masc),
+            fem = mean(fem),
+            neut = mean(neut)) |> 
+  arrange(desc(n),name)
+```
+
+
+```{r}
+raw_data |> 
+  filter(!is.na(Response),!is.na(Display)) |> 
+  select(`Participant Private ID`,`Display`,
+         `Object Name`,`Spreadsheet: name`,
+         `Spreadsheet: freq_block`,`Response`) |> 
+  pivot_wider(names_from = "Object Name",
+              values_from = "Response") |> 
+  rename(participant = `Participant Private ID`,
+         task = Display,
+         name = `Spreadsheet: name`,
+         freq_block = `Spreadsheet: freq_block`,
+         masc = `Masc Slider`,
+         fem = `Fem Slider`,
+         neut = `Neut slider`,
+         comment = `Text Entry`) |> 
+  mutate(participant = as.numeric(as.factor(participant)),
+         freq_block = as.factor(freq_block),
+         masc = as.numeric(masc),
+         fem = as.numeric(fem),
+         neut = as.numeric(neut)) |> 
+  filter(name == "Amanda",
+         participant > 20) |> 
+  ggplot(aes(x = fem, 
+             y = masc)) +
+  geom_density2d_filled(contour_var = "ndensity") +
+  geom_point(#aes(color = neut),
+             color = "black",
+             shape = 4) +
+  scale_fill_viridis_d(option = "turbo", begin = .1) +
+  scale_x_continuous(limits = c(0,100)) +
+  scale_y_continuous(limits = c(0,100)) +
+  facet_wrap(~name, scales = "free") +
+  NULL
+```
+
+```{r, warning=FALSE}
+raw_data |> 
+  filter(!is.na(Response),!is.na(Display)) |> 
+  select(`Participant Private ID`,`Display`,
+         `Object Name`,`Spreadsheet: name`,
+         `Spreadsheet: freq_block`,`Response`) |> 
+  pivot_wider(names_from = "Object Name",
+              values_from = "Response") |> 
+  rename(participant = `Participant Private ID`,
+         task = Display,
+         name = `Spreadsheet: name`,
+         freq_block = `Spreadsheet: freq_block`,
+         masc = `Masc Slider`,
+         fem = `Fem Slider`,
+         neut = `Neut slider`,
+         comment = `Text Entry`) |> 
+  mutate(participant = as.numeric(as.factor(participant)),
+         freq_block = as.factor(freq_block),
+         masc = as.numeric(masc),
+         fem = as.numeric(fem),
+         neut = as.numeric(neut)) |> 
+  filter(name %in% hsp21Names) |> 
+  pivot_longer(cols = c("masc","fem","neut"),
+               names_to = "gender",
+               values_to = "rating") |> 
+  ggplot(aes(x = rating)) +
+  geom_histogram(aes(fill = gender),
+                 alpha = .75,
+                 position = "identity",
+                 binwidth = 1) +
+  geom_density(aes(y = ..count..,
+                   color = gender)) +
+  scale_fill_manual(values = c("salmon","cadetblue2","gray")) +
+  scale_color_manual(values = c("salmon3","cadetblue4","gray30")) +
+  #scale_fill_viridis_d(option = "turbo", begin = .1) +
+  scale_x_continuous(limits = c(-1,101)) +
+  facet_wrap(~name, scales = "free") +
+  NULL
+```
+

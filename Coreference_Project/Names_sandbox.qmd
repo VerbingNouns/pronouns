@@ -13,9 +13,8 @@ library(tidyverse); theme_set(theme_bw())
 library(broom)
 library(flextable)
 
-names_combined <- read_csv("data/names_combined.csv", show_col_types = FALSE)
+names_combined <- read_csv("data/large_files/names_combined.csv", show_col_types = FALSE)
 ```
-
 
 ## Long-standing names
 
