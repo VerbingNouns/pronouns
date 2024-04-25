@@ -16,6 +16,122 @@ library(flextable)
 names_combined <- read_csv("data/large_files/names_combined.csv", show_col_types = FALSE)
 ```
 
+# Better way to create list for rating
+
+```{r}
+# dealing with frequency over time is HARD
+names_combined |> 
+  group_by(region, name, asab) |> 
+  summarise(total.n = sum(number),
+            .groups = "keep") |> 
+  ungroup(name) |> #filter(region == "Australia", is.na(total.n))
+  summarise(min = min(total.n),
+            max = max(total.n),
+            mean = mean(total.n),
+            median = median(total.n),
+            sd = sd(total.n),
+            se = sd(total.n)/sqrt(n()),
+            .groups = "drop")
+
+
+names_combined |> 
+  group_by(region, name, asab) |> 
+  summarise(total.n = sum(number),
+            .groups = "drop") |> 
+  ggplot(aes(x = total.n,
+             fill = asab)) +
+  theme_bw() +
+  #geom_density(position = "identity", alpha = .5) +
+  geom_histogram(position = "identity", alpha = .5, bins = 50) +
+  scale_x_log10() +
+  #scale_y_log10() +
+  scale_fill_viridis_d(option = "turbo", begin = 0.95, end = 0.1) +
+  facet_wrap(~region, scales = "free_y")
+```
+
+```{r}
+names_combined |> 
+  group_by(name, region) |> 
+  summarise(attestations = sum(number),
+            .groups = "drop") |> 
+  filter(attestations > 1,
+         #name != "Unknown",
+         #name != "Unkown",
+         name != "Baby") |> 
+  ggplot(aes(x = attestations,
+             fill = region)) +
+  theme_bw() +
+  geom_histogram(binwidth = 50) +
+  scale_y_log10() +
+  facet_wrap(~region, scales = "free")
+  
+  
+  
+  group_by(name) |> 
+  summarise(total = sum(attestations),
+            regions = n()) |> 
+  #filter(case_when(regions == 1 ~ total > 10,
+  #                 regions > 1 ~ total > 50)) |> 
+  group_by(regions) |> 
+  summarise(#total = total,
+            min = min(total),
+            max = max(total),
+            mean = mean(total),
+            median = median(total),
+            sd = sd(total),
+            se = sd(total)/sqrt(n()),
+            .groups = "drop")
+
+names_combined |> filter(name == "Rory", region == "Scotland")
+```
+
+
+
+```{r}
+names_combined |> 
+  filter(#number >= 3, # anonymity for Scotland and Australia
+         #name != "Baby",
+         #name != "Unknown",
+         #name != "Unkown",
+         #name != "Infant",
+         #name != "Unnamed",
+         #name != "Notnamed",
+         name == "TRUE",
+         #name != "",
+         #name != "",
+         #name != ""
+         ) |> 
+  group_by(region, name, asab) |> 
+  summarise(total.n = sum(number),
+            .groups = "keep") |> # total number of people per ASAB per name in each region (across years)
+  ungroup(name) |> 
+  mutate(rank = rank(-total.n, ties.method = "random")) |> # rank names over ALL data
+  summarise(min = min(total.n),
+            max = max(total.n),
+            mean = mean(total.n),
+            median = median(total.n),
+            .groups = "drop") |> 
+  select(region, asab, median) |> 
+  right_join(names_combined, by = join_by(region, asab)) |> filter(name == "Aadya")
+  filter(#number>=10,
+         number>median) |> 
+  group_by(region, asab, name)
+```
+
+
+```{r}
+# what am i even looking at!!! 
+names_combined |> 
+  ggplot(aes(x = number,
+             fill = region)) +
+  theme_bw() +
+  geom_histogram(position = "identity", binwidth = 1) +
+  #scale_x_log10() +
+  scale_y_log10() +
+  scale_fill_viridis_d(option = "turbo", begin = 0.95, end = 0.1) +
+  facet_wrap(~region, scales = "free_y")
+```
+
 ## Long-standing names
 
 Most long-standing popularity
@@ -384,5 +500,11 @@ names_combined |>
   coord_equal(ratio = 1) +
   facet_wrap(~name) +
   NULL
+```
+
+# Playing around
+```{r}
+names_combined |> 
+  filter(name == "Blue")
 ```
 

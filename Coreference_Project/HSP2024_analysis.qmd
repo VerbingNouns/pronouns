@@ -1,293 +1,1296 @@
 ---
 title: "Pilot analysis"
-format: html
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-expand: true
+    df-print: paged
 ---
 
 # Set up
 
 ```{r setup}
+#| echo: false
+#| results: hide
+#| warning: false
+
 library(tidyverse); theme_set(theme_bw())
 library(readr)
+library(flextable)
+library(lme4)
 
-practice <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_task-smjw.csv")
-demog <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_questionnaire-i6tq.csv")
-raw_data <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_task-9t9c.csv")
+#practice <- read_csv("~/Documents/Research/Coreference/Name #Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_task-smjw.csv")
+#demog <- read_csv("~/Documents/Research/Coreference/Name #Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_questionnaire-i6tq.csv")
+#raw_data <- read_csv("~/Documents/Research/Coreference/Name #Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_task-9t9c.csv")
+
+names_combined <- read_csv("data/large_files/names_combined.csv", show_col_types = FALSE)
+
+practiceV3 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v3/data_exp_150132-v3_task-smjw.csv",
+                       show_col_types = FALSE)
+demogV3 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v3/data_exp_150132-v3_questionnaire-i6tq.csv",
+                       show_col_types = FALSE)
+raw_dataV3 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v3/data_exp_150132-v3_task-9t9c.csv",
+                       show_col_types = FALSE)
+
+practiceV4 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v4/data_exp_150132-v4_task-smjw.csv",
+                       show_col_types = FALSE)
+demogV4 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v4/data_exp_150132-v4_questionnaire-i6tq.csv",
+                       show_col_types = FALSE)
+raw_dataV4 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v4/data_exp_150132-v4_task-9t9c.csv",
+                       show_col_types = FALSE)
+
+practiceV5 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v5/data_exp_150132-v5_task-smjw.csv",
+                       show_col_types = FALSE)
+demogV5 <-    read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v5/data_exp_150132-v5_questionnaire-i6tq.csv",
+                       show_col_types = FALSE)
+raw_dataV5 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v5/data_exp_150132-v5_task-9t9c.csv",
+                       show_col_types = FALSE)
+```
+
+```{r}
+practice_data_all <- practiceV3 |> mutate(version = 3) |> 
+  rbind(practiceV4 |> mutate(version = 4)) |> 
+  rbind(practiceV5 |> mutate(version = 5))
+
+demographics_all <- demogV3 |> mutate(version = 3) |> 
+  rbind(demogV4 |> mutate(version = 4)) |> 
+  rbind(demogV5 |> mutate(version = 5))
+
+raw_data_all <- raw_dataV3 |> mutate(version = 3) |> 
+  rbind(raw_dataV4 |> mutate(version = 4)) |> 
+  rbind(raw_dataV5 |> mutate(version = 5))
+```
+
+Clean up.
+
+```{r}
+rm(practiceV3, practiceV4, practiceV5,
+   demogV3, demogV4, demogV5,
+   raw_dataV3, raw_dataV4, raw_dataV5)
+```
+
+
+Combine practice, rating and demographic data
+
+```{r}
+practice_data_all |> 
+  filter(!is.na(Display),
+         `Response Type` == "response") |> 
+  select(`Participant Private ID`, `Participant Status`, 
+         version, #`Task Version`, 
+         `Spreadsheet: display`, `Spreadsheet: name`,
+         `Object Name`, Response) |> 
+  mutate(freq_block = NA) |> 
+  pivot_wider(names_from = "Object Name",
+              values_from = "Response") |> 
+  rename(participant = `Participant Private ID`,
+         status = `Participant Status`,
+         #practice.version = `Task Version`,
+         task = `Spreadsheet: display`,
+         name = `Spreadsheet: name`,
+         masc = `Masc Slider`,
+         fem = `Fem Slider`,
+         neut = `Neut slider`,
+         comment = `Text Entry`) |> 
+  mutate(#participant = as.numeric(as.factor(participant)),
+         freq_block = as.factor(freq_block),
+         masc = as.numeric(masc),
+         fem = as.numeric(fem),
+         neut = as.numeric(neut)) -> practice_clean
+```
+
+```{r}
+demographics_all |> 
+  filter(Key == "value") |> 
+  select(`Participant Private ID`, `Participant Status`, 
+         version, #`Task Version`, 
+         #Question,
+         `Object Name`, Response) |> 
+  pivot_wider(names_from = `Object Name`,
+              values_from = Response) |> 
+  rename(participant = `Participant Private ID`,
+         status = `Participant Status`,
+         #practice.version = `Task Version`,
+         #question = Question,
+         gender.free = `Gender free text`,
+         gender.cat = `Gender Dropdown`,
+         asb = `ASB Dropdown`,
+         familiarity = `Familiarity Dropdown`,
+         location.childhood = Childhood,
+         location.adulthood = Adulthood,
+         ethnicity = `Ethnicity-comment`,
+         location.longest = `Lived longest`,
+         location.influence = `Biggest influence`,
+         birthyear = `Your age`,
+         parent1 = `Parent 1`,
+         parent2 = `Parent 2`,
+         gpar1 = `Grandparent 1`,
+         gpar2 = `Grandparent 2`,
+         gpar3 = `Grandparent 3`,
+         gpar4 = `Grandparent 4`,
+         child1 = `Oldest Child`,
+         child2 = `Youngest Child`,
+         gchild1 = `Oldest Grandchild`,
+         gchild2 = `Youngest Grandchild`,
+         exp.comment = `Comment Box`) |> 
+  mutate(birthyear = as.numeric(birthyear),
+         parent1   = as.numeric(parent1),
+         parent2   = as.numeric(parent2),
+         gpar1     = as.numeric(gpar1  ),
+         gpar2     = as.numeric(gpar2  ),
+         gpar3     = as.numeric(gpar3  ),
+         gpar4     = as.numeric(gpar4  ),
+         child1    = as.numeric(child1 ),
+         child2    = as.numeric(child2 ),
+         gchild1   = as.numeric(gchild1),
+         gchild2   = as.numeric(gchild2)) -> demog_clean
+```
+
+```{r}
+raw_data_all |> 
+  filter(!is.na(Response),!is.na(Display)) |> 
+  select(`Participant Private ID`, `Participant Status`, 
+         version, #`Task Version`, 
+         `Spreadsheet: display`, `Spreadsheet: name`, `Spreadsheet: freq_block`,
+         `Object Name`,`Response`) |> 
+  pivot_wider(names_from = "Object Name",
+              values_from = "Response") |> 
+  rename(participant = `Participant Private ID`,
+         status = `Participant Status`,
+         task = `Spreadsheet: display`,
+         name = `Spreadsheet: name`,
+         freq_block = `Spreadsheet: freq_block`,
+         masc = `Masc Slider`,
+         fem = `Fem Slider`,
+         neut = `Neut slider`,
+         comment = `Text Entry`) |> 
+  mutate(#participant = as.numeric(as.factor(participant)),
+         freq_block = as.factor(freq_block),
+         masc = as.numeric(masc),
+         fem = as.numeric(fem),
+         neut = as.numeric(neut)) -> ratings_clean
+```
+
+all in one file:
+
+```{r}
+practice_clean |> 
+  rbind(ratings_clean) |> 
+  left_join(demog_clean, 
+            by = join_by(participant, status, version)) -> rating_data
+```
+
+
+How many ratings for each name?
+
+```{r}
+rating_data |> 
+  group_by(name, freq_block) |> summarise(n = n(), .groups = "drop") |> 
+  arrange(desc(n))
+```
+
+
+# Govt Name Corpus info
+
+Create a breakdown of the absolute value of the log of the ratio of ASABs for the population data across all years and regions. (This can be distinguished in more detail in other ways.)
+
+```{r}
+names_combined |> 
+    # not useful right now
+  select(-c(rank, proportion)) |> 
+    # remove default baby names
+  filter(!name %in% c("Baby","Infant","Female","Notnamed","Stillborn","Unborn","Unnamed","Unknown","Unkown")) |> 
+  pivot_wider(names_from = asab,
+              values_from = number,
+              values_fill = NA) |> 
+  rename(afab = `F`, amab = M) |> 
+  group_by(name) |> 
+  summarise(log.ratio = (sum(afab, na.rm = TRUE)/sum(amab, na.rm = TRUE)) |> log() |> abs(),
+            regions = n_distinct(region),
+            years = n_distinct(year),
+            total_afab = sum(afab, na.rm = TRUE),
+            total_amab = sum(amab, na.rm = TRUE),
+            total_people = sum(afab, na.rm = TRUE)+sum(amab, na.rm = TRUE),
+            .groups = "drop") |> #view() #
+  mutate(log.ratio = case_when(log.ratio > 1000 ~ NA,
+                               .default = log.ratio)) -> combined.breakdown; combined.breakdown
+```
+
+
+In the combined name corpus, there are `r names_combined |> pull(name) |> length() |> format(big.mark = ",")` entries, with `r names_combined |> filter(asab == "F") |> pull(name) |> length() |> format(big.mark = ",")` of them registered for babies assigned female at birth (AFAB) and `r names_combined |> filter(asab == "M") |> pull(name) |> length() |> format(big.mark = ",")` registered for babies assigned male at birth (AMAB). This means that `r ((names_combined |> filter(asab == "F") |> pull(name) |> length()) / (names_combined |> pull(name) |> length())) |> scales::percent(accuracy = 0.01)` of the entries in this database are for names registered to AFAB babies. This results in `r names_combined |> pull(name) |> unique() |> length() |> format(big.mark = ",")` unique names spread over `r names_combined |> pull(region) |> unique() |> length()` regions across all years (which are detailed below).
+
+```{r}
+#| echo: false
+# number of years per region
+names_combined |> group_by(region) |> 
+  summarise(`Earliest year` = min(year),
+            `Latest year` = max(year),
+            `Total range of years` = max(year)-min(year) + 1, # inclusive years
+            .groups = "drop") |> 
+  arrange(-`Total range of years`) |> 
+  flextable() |> 
+  width(width = 6) |> 
+  colformat_double(big.mark = "", digits = 0)
+```
+
+
+How many unisex names? (unique)
+How many of the names in the database are attested for both AFAB and AMAB babies?
+How many of the names in the rating set are attested for both AFAB and AMAB babies?
+
+```{r}
+#| echo: false
+names_combined |> 
+  group_by(name,asab) |> 
+  summarise(n = n(), .groups = "drop") |> 
+  pivot_wider(names_from = asab,
+              values_from = n) |> 
+  rename(fem = `F`, msc = `M`) -> name_counts
+```
+
+In the database, there are `r name_counts |> filter(!is.na(fem),!is.na(msc)) |> pull(name) |> length() |> format(big.mark = ",")` names that are attested at least once for both AMAB and AFAB babies across all years. Of these names, `r name_counts |> filter(!is.na(fem),!is.na(msc), name %in% unique(rating_data$name)) |> pull(name) |> length() |> format(big.mark = ",")` have been rated for gender typicality at least once.
+
+In the database, there are `r name_counts |> filter(!is.na(fem),is.na(msc)) |> pull(name) |> length() |> format(big.mark = ",")` names that are attested at least once for AFAB babies across all years, but never for AMAB babies. Of these names, `r name_counts |> filter(!is.na(fem),is.na(msc), name %in% unique(rating_data$name)) |> pull(name) |> length() |> format(big.mark = ",")` have been rated for gender typicality at least once.
+
+In the database, there are `r name_counts |> filter(is.na(fem),!is.na(msc)) |> pull(name) |> length() |> format(big.mark = ",")` names that are attested at least once for AMAB babies across all years, but never for AFAB babies. Of these names, `r name_counts |> filter(is.na(fem),!is.na(msc), name %in% unique(rating_data$name)) |> pull(name) |> length() |> format(big.mark = ",")` have been rated for gender typicality at least once.
+
+A separate question is whether a name is considered unisex overall or whether it should be determined on a yearly and/or regional basis.
+
+## breakdowns
+
+```{r}
+names_combined |> 
+    # not useful right now
+  select(-c(rank, proportion)) |> 
+    # remove default baby names
+  filter(!name %in% c("Baby","Infant","Female","Notnamed","Stillborn","Unborn","Unnamed","Unknown","Unkown")) |> 
+  pivot_wider(names_from = asab,
+              values_from = number,
+              values_fill = 0) |> 
+  rename(afab = `F`, amab = M) |> 
+  mutate(annual.regional.log.ratio = case_when(afab > 0 & amab > 0 ~ abs(log(afab/amab)),
+                                               .default = NA)) -> annual.regional.breakdown
+
+names_combined |> 
+    # not useful right now
+  select(-c(rank, proportion)) |> 
+    # remove default baby names
+  filter(!name %in% c("Baby","Infant","Female","Notnamed","Stillborn","Unborn","Unnamed","Unknown","Unkown")) |> 
+  pivot_wider(names_from = asab,
+              values_from = number,
+              values_fill = NA) |> 
+  rename(afab = `F`, amab = M) |> 
+  group_by(name,year) |> 
+  summarise(annual.log.ratio = (sum(afab, na.rm = TRUE)/sum(amab, na.rm = TRUE)) |> log() |> abs(),
+            regions = n_distinct(region),
+            total_afab = sum(afab, na.rm = TRUE),
+            total_amab = sum(amab, na.rm = TRUE),
+            total_people = sum(afab, na.rm = TRUE)+sum(amab, na.rm = TRUE),
+            .groups = "drop") |> #view() #
+  mutate(annual.log.ratio = case_when(annual.log.ratio > 1000 ~ NA,
+                                      .default = annual.log.ratio)) -> annual.breakdown
+
+names_combined |> 
+    # not useful right now
+  select(-c(rank, proportion)) |> 
+    # remove default baby names
+  filter(!name %in% c("Baby","Infant","Female","Notnamed","Stillborn","Unborn","Unnamed","Unknown","Unkown")) |> 
+  pivot_wider(names_from = asab,
+              values_from = number,
+              values_fill = NA) |> 
+  rename(afab = `F`, amab = M) |> 
+  group_by(name,region) |> 
+  summarise(regional.log.ratio = (sum(afab, na.rm = TRUE)/sum(amab, na.rm = TRUE)) |> log() |> abs(),
+            years = n_distinct(year),
+            total_afab = sum(afab, na.rm = TRUE),
+            total_amab = sum(amab, na.rm = TRUE),
+            total_people = sum(afab, na.rm = TRUE)+sum(amab, na.rm = TRUE),
+            .groups = "drop") |> #view() #
+  mutate(regional.log.ratio = case_when(regional.log.ratio > 1000 ~ NA,
+                                        .default = regional.log.ratio)) -> regional.breakdown
+
+names_combined |> 
+    # not useful right now
+  select(-c(rank, proportion)) |> 
+    # remove default baby names
+  filter(!name %in% c("Baby","Infant","Female","Notnamed","Stillborn","Unborn","Unnamed","Unknown","Unkown")) |> 
+  pivot_wider(names_from = asab,
+              values_from = number,
+              values_fill = NA) |> 
+  rename(afab = `F`, amab = M) |> 
+  group_by(name) |> 
+  summarise(log.ratio = (sum(afab, na.rm = TRUE)/sum(amab, na.rm = TRUE)) |> log() |> abs(),
+            regions = n_distinct(region),
+            years = n_distinct(year),
+            total_afab = sum(afab, na.rm = TRUE),
+            total_amab = sum(amab, na.rm = TRUE),
+            total_people = sum(afab, na.rm = TRUE)+sum(amab, na.rm = TRUE),
+            .groups = "drop") |> #view() #
+  mutate(log.ratio = case_when(log.ratio > 1000 ~ NA,
+                               .default = log.ratio)) -> combined.breakdown
 ```
 
 
 # Raw data
 
+How many ratings for each name in the three different categories, as defined above?
+
 ```{r}
-raw_data |> 
-  filter(!is.na(Response),!is.na(Display)) |> 
-  select(`Participant Private ID`,`Display`,
-         `Object Name`,`Spreadsheet: name`,
-         `Spreadsheet: freq_block`,`Response`) |> 
-  pivot_wider(names_from = "Object Name",
-              values_from = "Response") |> 
-  rename(participant = `Participant Private ID`,
-         task = Display,
-         name = `Spreadsheet: name`,
-         freq_block = `Spreadsheet: freq_block`,
-         masc = `Masc Slider`,
-         fem = `Fem Slider`,
-         neut = `Neut slider`,
-         comment = `Text Entry`) |> 
-  mutate(participant = as.numeric(as.factor(participant)),
-         freq_block = as.factor(freq_block),
-         masc = as.numeric(masc),
-         fem = as.numeric(fem),
-         neut = as.numeric(neut)) |> 
-  group_by(name, freq_block) |> summarise(n = n()) |> 
-  arrange(desc(n))
+rating_data |> 
+  filter(name %in% (name_counts |> filter(!is.na(fem),!is.na(msc)) |> pull(name))) |> 
+  group_by(name, freq_block) |> summarise(n = n(), .groups = "drop") |> 
+  arrange(-n)
+
+rating_data |> 
+  filter(name %in% (name_counts |> filter(!is.na(fem),is.na(msc)) |> pull(name))) |> 
+  group_by(name, freq_block) |> summarise(n = n(), .groups = "drop") |> 
+  arrange(-n)
+
+rating_data |> 
+  filter(name %in% (name_counts |> filter(is.na(fem),!is.na(msc)) |> pull(name))) |> 
+  group_by(name, freq_block) |> summarise(n = n(), .groups = "drop") |> 
+  arrange(-n)
 ```
 
+> TO DO: in next iteration, include frequency data and/or log.ratio in this analysis
 
-```{r warning=FALSE}
-raw_data |> 
-  filter(!is.na(Response),!is.na(Display)) |> 
-  select(`Participant Private ID`,`Display`,
-         `Object Name`,`Spreadsheet: name`,
-         `Spreadsheet: freq_block`,`Response`) |> 
-  pivot_wider(names_from = "Object Name",
-              values_from = "Response") |> 
-  rename(participant = `Participant Private ID`,
-         task = Display,
-         name = `Spreadsheet: name`,
-         freq_block = `Spreadsheet: freq_block`,
-         masc = `Masc Slider`,
-         fem = `Fem Slider`,
-         neut = `Neut slider`,
-         comment = `Text Entry`) |> 
-  mutate(participant = as.numeric(as.factor(participant)),
-         freq_block = as.factor(freq_block),
-         masc = as.numeric(masc),
-         fem = as.numeric(fem),
-         neut = as.numeric(neut)) |> 
-  filter(name %in% c("Alex","Andrea","Ashley","Charlie","Jamie","Lee","Morgan","Robin","Riley","Dale","Sam",
-                     "James","William","Edward")) |> 
-  #filter(name == "Mary") |> 
+
+```{r}
+#| warning: false
+##| fig-width: 12
+##| fig-height: 6.5
+
+filter_name <-  #c("Charlie")
+                c("Alex","Andrea","Ashley","Charlie","Jamie",
+                  "Lee","Morgan","Robin","Riley","Dale","Sam",
+                  "James","William","Edward",# original stopped here
+                  #"Godzilla",
+                  "Mary","Shannon","Julia","John","Elizabeth",
+                  "Laura","Charley","Jordan",
+                  "Cameron","Gabriel","Jean","Jessie","Nicola","Terry"); rating_data |> 
+  filter(name %in% filter_name) |> 
   ggplot(aes(x = fem, 
              y = masc)) +
   geom_density2d_filled(contour_var = "ndensity") +
   geom_point(#aes(color = neut),
              color = "black",
-             shape = 4) +
-  #geom_point(shape = 4) +
-  #geom_density2d(color = "black", size = 2, alpha = .5) +
-  #geom_bin2d(na.rm = TRUE, binwidth = 5) +
-  #geom_hex(na.rm = TRUE, bins = 5) +
-  #scale_color_viridis_c(option = "cividis", begin = .1) +
-  #scale_fill_viridis_c(option = "turbo", begin = .1) +
+             shape = 4,
+             alpha = .5) +
+  
+#  # NOT GOOD YET BECAUSE WHITE DOT CANT BE IN TOP RIGHT CORNER ... YET
+#  geom_point(#inherit.aes = FALSE,
+#             data = combined.breakdown |> 
+#               filter(name %in% filter_name) |> 
+#               mutate(max.asab = case_when(total_afab > total_amab ~ total_afab,
+#                                           .default = total_amab),
+#                      fem  = (total_afab/total_people)*100,
+#                      masc = (total_amab/total_people)*100),
+#             shape = 21, fill = "gray80", color = "white", size = 1, alpha = .9) +
+#  # USE PROPORTION OF LARGER OF TWO ASAB COUNTS
+#  geom_point(data = combined.breakdown |> 
+#               filter(name %in% filter_name) |> 
+#               mutate(max.asab = case_when(total_afab > total_amab ~ total_afab,
+#                                           .default = total_amab),
+#                      fem  = (total_afab/max.asab)*100,
+#                      masc = (total_amab/max.asab)*100),
+#             shape = 21, fill = "gray80", color = "white", size = 1, alpha = .9) +
+#  # COMBINE THE TWO STRATEGIES
+#  geom_point(data = combined.breakdown |> 
+#               filter(name %in% filter_name) |> 
+#               mutate(max.asab = case_when(total_afab > total_amab ~ total_afab,
+#                                           .default = total_amab),
+#                      fem  = (((total_afab/max.asab)+(total_afab/total_people))/2)*100,
+#                      masc = (((total_amab/max.asab)+(total_amab/total_people))/2)*100),
+#             shape = 21, fill = "white", color = "gray80", size = 3, alpha = .9) +
+#  
+#  # REGIONAL POINTS 
+#  geom_point(data = regional.breakdown |> 
+#               filter(name %in% filter_name) |> 
+#               mutate(max.asab = case_when(total_afab>total_amab~total_afab,
+#                                           .default = total_amab),
+#                      max.f.prop = total_afab/max.asab,
+#                      total.f.prop = total_afab/total_people,
+#                      max.m.prop = total_amab/max.asab,
+#                      total.m.prop = total_amab/total_people,
+#                      fem  = ((max.f.prop+total.f.prop)/2)*100,
+#                      masc = ((max.m.prop+total.m.prop)/2)*100),
+#             shape = 23, fill = "violet", color = "white", size = 2, alpha = 1, nudge_x = 5) +
+#  ggrepel::geom_text_repel(data = regional.breakdown |> 
+#                             filter(name %in% filter_name) |> 
+#                             mutate(max.asab = case_when(total_afab>total_amab~total_afab,
+#                                                         .default = total_amab),
+#                                    max.f.prop = total_afab/max.asab,
+#                                    total.f.prop = total_afab/total_people,
+#                                    max.m.prop = total_amab/max.asab,
+#                                    total.m.prop = total_amab/total_people,
+#                                    fem  = ((max.f.prop+total.f.prop)/2)*100,
+#                                    masc = ((max.m.prop+total.m.prop)/2)*100),
+#                           aes(label = region),
+#                           shape = 4, fill = "white", color = "black", size = 2, alpha = 1, #nudge_x = 5,
+#                           max.overlaps = 10) +
+  
   scale_fill_viridis_d(option = "turbo", begin = .1) +
-  scale_x_continuous(limits = c(0,100)) +
-  scale_y_continuous(limits = c(0,100)) +
-  facet_wrap(~name, scales = "free") +
+  scale_x_continuous(limits = c(0,100),labels = scales::percent_format(scale = 1)) +
+  scale_y_continuous(limits = c(0,100),labels = scales::percent_format(scale = 1)) +
+  facet_wrap(~name, ncol = 7) + 
+  theme(legend.position = "none") +
+  coord_equal() +
   NULL
 ```
 
-
-# CUNY2021 example sentence names
+## combined visuals
 
 ```{r}
-hsp21Names <- c("Ben", "Carla"," Mary", "Jo", "John", "Lucy", "Pat", "Kate",
-                "Chen", "Abigail", "Emily", "Richie", "Adrian", "Daniel",
-                "Aaron", "Tanya", "Amy", "Sarah", "John", "Paul", "Iggy", "Sting",
-                "Paul", "Mihai", "Andrei", "Radu", "Irina", "Amanda", "John",
-                "George", "Lewis", "Mickey", "Daisy", "Donald", "Mary", "John", 
-                "Ana", "Liz", "Matt", "Will", "Matt", "Ana", "Rich", "Fred", "Katie", 
-                "John", "Amanda", "Petar", "Marija", "Connie", "John", "Andy",
-                "Paulo", "Camila", "Mary")
-```
-
-
-* Syntactic and semantic parallelism guides filler-gap processing in coordination; Stephanie Rich & Matt Wagers (UC Santa Cruz)
-    * Ben, Carla
-* The dual nature of subjecthood: Unifying subject islands and that-trace effects; Rebecca Tollan & Bilge Palaz (University of Delaware)
-    * Mary, Jo, John, Lucy, Pat, Kate
-* New neighbours make bad fences: Form-based semantic shifts in word learning; David A. Haslett & Zhenguang G. Cai (The Chinese University of Hong Kong)
-    * Chen
-* Anaphoric dependencies in the digital age: On the relation between emoji and text; Elsi Kaiser (University of Southern California) and Patrick Georg Grosz (University of Oslo)
-    * Abigail, Emily, Richie, Adrian, Daniel, Aaron, Tanya, Amy
-
-* Decomposing the focus effect: Evidence from reading; Morwenna Hoeks, Maziar Toosarvandani & Amanda Rysling (University of California Santa Cruz)
-    * Sarah
-* Acceptability of extraction out of adjuncts depends on discourse factors; Edward Gibson (MIT), Barbara Hemforth (CNRS, U. Paris), Elodie Winckel (Erlangen U), Anne Abeillé (U. Paris)
-    * John, Paul
-* The structural source of English Subject Islands; David Potter & Katy Carlson (Morehead State University)
-    * Iggy [Pop], Sting
-* *Semantic interference in dependency formation: NP types in cleft sentences; Myung Hye Yoo & Rebecca Tollan (University of Delaware)*
-* Do children predict grammatical gender of nouns?; Katja Haeuser, Yoana Vergilova & Jutta Kray (Saarland University)
-    * Paul
-* Choosing a Referring Expression: Intra-sentential Ambiguity Avoidance in Romanian; Rodica Ivan, Brian Dillon, & Kyle Johnson (University of Massachusetts, Amherst)
-    * Mihai, Andrei, Radu, Irina
-* Implicit Causality Can Affect Pronoun Use in Fragment Completion Tasks; Yining Ye, Kathryn C. Weatherford & Jennifer E. Arnold (UNC-Chapel Hill)
-    * Amanda, John
-* Comprehension meets production: null/overt subject pronouns in Italian and Spanish; Carla Contemori (University of Texas at El Paso) & Elisa Di Domenico (Universitá per Stranieri di Perugia)
-    * George, Lewis, Mickey, Daisy, Donald, Mary, John
-* Adaptation to discourse patterns depends on relative frequency of competing structures; Valerie J. Langlois & Jennifer E. Arnold (University of North Carolina – Chapel Hill)
-    * Ana, Liz, Matt
-* Are both syntactically and semantically-based pronoun dependencies stored in memory?; Jennifer E. Arnold, Avery Wall, & Taylor Steele (UNC Chapel Hill)
-    * Will, Matt, Ana
-* Processing referring expressions: Accessibility is not predictability; Weijie Xu, Ming Xiang (The University of Chicago)
-    * Rich
-* EVIDENCE FOR EARLY APPLICATION OF BINDING THEORY AND LATE INTRUSION EFFECTS; Arild Hestvik & Myung Hye Yoo (University of Delaware)
-    * Fred, Katie
-* Predicting binding domains: Evidence from fronted auxiliaries and wh-predicates; Keir Moulton (U. of Toronto), Cassandra Chapman (U. of Toronto), and Nayoun Kim (Sungkyunkwan U.)
-    * John, Amanda
-* Neural correlates of expectation violations and discourse updating: The case of Bulgarian object agreement; Paul Compensis, Petra B. Schumacher (University of Cologne)
-    * Petar, Marija
-* Feature Reactivation in Minimalist Parsing; Aniello de Santo (University of Utah)
-    * Connie
-* The effect of representational complexity on working memory processes; Chi Dat (Daniel) Lam and Ming Xiang (University of Chicago)
-    * John, Andy
-
-(p191)
-
-* Prosody and eye movements on attachment in Brazilian Portuguese; Aline Fonseca (Federal University of Juiz de Fora), Andressa da Silva (Federal University of Juiz de Fora), Marcus Maia (Federal University of Rio de Janeiro)
-    * Paulo, Camila
-* The role of language context in the acquisition of novel words; Anna Alberski, Kathryn Schuler (University of Pennsylvania)
-    * Mary
-
-```{r warning=FALSE}
-raw_data |> 
-  filter(!is.na(Response),!is.na(Display)) |> 
-  select(`Participant Private ID`,`Display`,
-         `Object Name`,`Spreadsheet: name`,
-         `Spreadsheet: freq_block`,`Response`) |> 
-  pivot_wider(names_from = "Object Name",
-              values_from = "Response") |> 
-  rename(participant = `Participant Private ID`,
-         task = Display,
-         name = `Spreadsheet: name`,
-         freq_block = `Spreadsheet: freq_block`,
-         masc = `Masc Slider`,
-         fem = `Fem Slider`,
-         neut = `Neut slider`,
-         comment = `Text Entry`) |> 
-  mutate(participant = as.numeric(as.factor(participant)),
-         freq_block = as.factor(freq_block),
-         masc = as.numeric(masc),
-         fem = as.numeric(fem),
-         neut = as.numeric(neut)) |> 
-  filter(name %in% hsp21Names) |> 
-  ggplot(aes(x = fem, 
-             y = masc)) +
-  geom_density2d_filled(contour_var = "ndensity") +
-  geom_point(#aes(color = neut),
+#| warning: false
+filter_name <- c("Morgan"); annual.regional.breakdown |> 
+  filter(name %in% filter_name) |>  # NEED TO DEFINE FILTERED NAMES atio) |> 
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         log10.afab = log10(afab),
+         log10.amab = log10(amab),
+         logprop.afab = log10.afab/log10(yr.max),
+         logprop.amab = log10.amab/log10(yr.max)) |> 
+  ungroup() |> 
+  ggplot(aes(x = logprop.afab,
+             y = logprop.amab)) +
+  theme_bw() +
+  
+  
+  geom_density2d_filled(data = rating_data |> filter(name %in% filter_name),
+                        aes(x = fem/100,
+                            y = masc/100),
+                        contour_var = "ndensity") +
+  geom_point(data = rating_data |> filter(name %in% filter_name),
+                        aes(x = fem/100,
+                            y = masc/100),
              color = "black",
-             shape = 4) +
-  scale_fill_viridis_d(option = "turbo", begin = .1) +
-  scale_x_continuous(limits = c(0,100)) +
-  scale_y_continuous(limits = c(0,100)) +
-  facet_wrap(~name, scales = "free") +
+             shape = 4,
+             alpha = .5) +
+  
+  
+  geom_point(aes(color = region), 
+             color = "red",
+             alpha = .75, 
+             size = 2, 
+             shape = 16) +
+  geom_density2d(color = "red", bins = 75) +
+  geom_path(aes(group = region, color = region),
+            color = "red4",
+            size = 0.5,
+            alpha = 0.5) +
+  #ggrepel::geom_text_repel(aes(label = year),
+  #                         size = 2,
+  #                         color = "red",
+  #                         max.overlaps = 20) +
+  
+  
+  geom_abline(slope = 1, intercept = 0) +
+  facet_wrap(~ name) +
+  #scale_color_viridis_d(option = "turbo", begin = .9, end = .1) +
+  #scale_fill_viridis_b(option = "")
+  scale_fill_grey() +
+  scale_x_continuous(labels = scales::percent_format(), limits = c(0,1))+
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0,1)) +
+  facet_wrap(~region) +
+  theme(legend.position = "none")
+```
+
+
+```{r}
+#| warning: false
+filter_name <- c("James","Gabriel","Morgan",
+                 "Charlie","Riley","Nicola",
+                 "Leslie","Ashley","Elizabeth"); annual.regional.breakdown |> 
+  filter(name %in% filter_name) |>  # NEED TO DEFINE FILTERED NAMES ratio) |> 
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         log10.afab = log10(afab),
+         log10.amab = log10(amab),
+         logprop.afab = log10.afab/log10(yr.max),
+         logprop.amab = log10.amab/log10(yr.max)) |> 
+  ungroup() |> 
+  ggplot(aes(x = logprop.afab,
+             y = logprop.amab)) +
+  theme_bw() +
+  
+  
+  geom_density2d_filled(data = rating_data |> filter(name %in% filter_name),
+                        aes(x = fem/100,
+                            y = masc/100),
+                        contour_var = "ndensity") +
+  #geom_point(data = rating_data |> filter(name %in% filter_name),
+  #                      aes(x = fem/100,
+  #                          y = masc/100),
+  #           color = "black",
+  #           shape = 4,
+  #           alpha = .5) +
+  
+  scale_fill_viridis_d(option = "turbo", end = .9, begin = .1) +
+  
+  ggnewscale::new_scale_fill() +
+  
+  #geom_point(aes(color = region), 
+  #           color = "red",
+  #           alpha = .75, 
+  #           size = 2, 
+  #           shape = 16) +
+  #geom_density2d(color = "red", bins = 75) +
+  geom_density2d_filled(contour_var = "ndensity", aes(alpha = after_stat(level))) +
+  #geom_path(aes(group = region, color = region),
+  #          color = "red4",
+  #          size = 0.5,
+  #          alpha = 0.5) +
+  #ggrepel::geom_text_repel(aes(label = year),
+  #                         size = 2,
+  #                         color = "red",
+  #                         max.overlaps = 20) +
+  
+  
+  #geom_abline(slope = 1, intercept = 0) +
+  #scale_fill_viridis_d(option = "mako", begin = .1, end = .9) +
+  scale_fill_grey(start = 0, end = .7) +
+  scale_alpha_discrete(range = c(.5,0)) +
+  scale_x_continuous(labels = scales::percent_format(), limits = c(0,1))+
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0,1)) +
+  theme(legend.position = "none") +
+  #facet_wrap(~region) +
+  facet_wrap(~ factor(name, levels = c("James","Gabriel","Leslie",
+                                       "Charlie","Riley","Nicola",
+                                       "Morgan","Ashley","Elizabeth"))) +
+  NULL
+```
+
+### check out all most-rated names
+
+```{r}
+#| warning: false
+
+filter_name <- rating_data |> 
+  group_by(name, freq_block) |> summarise(n = n(), .groups = "drop") |> 
+  filter(n > 10) |> pull(name); annual.regional.breakdown |> 
+
+  filter(name %in% filter_name) |>
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         log10.afab = log10(afab),
+         log10.amab = log10(amab),
+         logprop.afab = log10.afab/log10(yr.max),
+         logprop.amab = log10.amab/log10(yr.max)) |> 
+  ungroup() |> 
+  ggplot(aes(x = logprop.afab,
+             y = logprop.amab)) +
+  theme_bw() +
+  
+  
+  geom_density2d_filled(data = rating_data |> filter(name %in% filter_name),
+                        aes(x = fem/100,
+                            y = masc/100),
+                        contour_var = "ndensity") +
+  scale_fill_viridis_d(option = "turbo", end = .9, begin = .1) +
+  
+  ggnewscale::new_scale_fill() +
+  
+  geom_density2d_filled(contour_var = "ndensity", aes(alpha = after_stat(level))) +
+
+  geom_abline(slope = 1, intercept = 0, color = "white") +
+  
+  scale_fill_grey(start = 0, end = .7) +
+  scale_alpha_discrete(range = c(.5,0)) +
+  scale_x_continuous(labels = scales::percent_format(), limits = c(0,1))+
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0,1)) +
+  theme(legend.position = "none") +
+  facet_wrap(~name) +
+  NULL
+```
+
+
+
+```{r}
+filter_name <- c("Alex","Andrea","Ashley","Charlie","Jamie",
+                  "Lee","Morgan","Robin","Riley","Dale","Sam",
+                  "James","William","Edward",# original stopped here
+                  #"Godzilla",
+                  "Mary","Shannon","Julia","John","Elizabeth",
+                  "Laura","Charley","Jordan",
+                  "Cameron","Gabriel","Jean","Jessie","Nicola","Terry"); 
+filter_name <- c("Charlie","Charley"); annual.regional.breakdown |> 
+  filter(name %in% filter_name) |>  # NEED TO DEFINE FILTERED NAMES atio) |> 
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         angle = atan2(y = amab/yr.max, x = afab/yr.max),
+         hemi = angle/pi,
+         degrees = hemi*180,
+         plot.degrees = round(degrees, digits = 0)-45) |> 
+  ungroup() |> 
+  #filter(degrees>0 & degrees<90) |> 
+  ggplot(aes(x = plot.degrees, fill = plot.degrees, group = plot.degrees)) +
+  #geom_histogram(binwidth = 1) +
+  geom_bar()+
+  scale_x_continuous(breaks = seq(from = -45, to = 45, by = 5)) +
+  scale_fill_gradient2(low = "green3", high = "orangered", mid = "gold", na.value = "black") +
+  scale_y_log10() +
+  #facet_wrap(~name) +
+  facet_grid(region~name, scales = "free_y") +
+  NULL
+```
+
+(could I turn this into a gauge needle visualization?)
+
+### other demog dimensions?
+
+```{r}
+#| warning: false
+filter_name <- "Morgan"; annual.regional.breakdown |> 
+
+  filter(name %in% filter_name) |>
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         log10.afab = log10(afab),
+         log10.amab = log10(amab),
+         logprop.afab = log10.afab/log10(yr.max),
+         logprop.amab = log10.amab/log10(yr.max),
+         decade = round(year, digits = -1)) |> 
+  ungroup() |> 
+  filter(decade >= 1940) |> 
+  ggplot(aes(x = logprop.afab,
+             y = logprop.amab)) +
+  theme_bw() +
+  
+  
+  geom_density2d_filled(data = rating_data |> 
+                          filter(name %in% filter_name) |> 
+                          mutate(decade = round(birthyear, digits = -1)) |> 
+                          filter(decade >= 1940),
+                        aes(x = fem/100,
+                            y = masc/100),
+                        contour_var = "ndensity") +
+  scale_fill_viridis_d(option = "turbo", end = .9, begin = .1) +
+  
+  ggnewscale::new_scale_fill() +
+  
+  geom_density2d_filled(contour_var = "ndensity", aes(alpha = after_stat(level))) +
+
+  geom_abline(slope = 1, intercept = 0, color = "white") +
+  
+  scale_fill_grey(start = 0, end = .7) +
+  scale_alpha_discrete(range = c(.5,0)) +
+  scale_x_continuous(labels = scales::percent_format(), limits = c(0,1))+
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0,1)) +
+  theme(legend.position = "none") +
+  facet_grid(decade~region) +
+  coord_equal() +
+  #gganimate::transition_time(decade) +
+  
+  NULL
+```
+
+### by decade
+
+```{r}
+rating_data |> 
+  filter(name == "Morgan") |>
+  mutate(location.influence = case_when(location.influence == "__other" ~ location.longest,
+                                        .default = location.influence),
+         location = case_when(location.influence %in% c("Canada",
+                                                        "United States of America") ~ "North America",
+                              location.influence %in% c("UK - England and Wales",
+                                                        "Ireland",
+                                                        "UK - Scotland",
+                                                        "Australia",
+                                                        "New Zealand") ~ "Islands")) |> 
+  #group_by(location) |> summarise(n = n())
+  ggplot(aes(x = birthyear, fill = location)) + 
+  geom_histogram(binwidth = 10) + 
+  facet_wrap(~location)
+```
+
+```{r}
+annual.regional.breakdown |> 
+  filter(name == "Morgan",
+         year >= 1945,
+         region != c("Northern Ireland")) |> #group_by(region) |> summarise(n = n())
+  mutate(region = case_when(region %in% c("Canada",
+                                          "USA") ~ "North America",
+                            region %in% c("England and Wales",
+                                          "Ireland",
+                                          "Scotland",
+                                          "Australia",
+                                          "New Zealand") ~ "Islands")) |> 
+  #group_by(region) |> summarise(n = n())
+  ggplot(aes(x = year, fill = region)) + 
+  geom_histogram(binwidth = 10) + 
+  facet_wrap(~region)
+```
+
+```{r}
+#| warning: false
+filter_name <- "Morgan"; annual.regional.breakdown |> 
+  filter(name %in% filter_name,
+         region != c("Northern Ireland")) |> #group_by(region) |> summarise(n = n())
+  mutate(region = case_when(region %in% c("Canada",
+                                          "USA") ~ "North America",
+                            region %in% c("England and Wales",
+                                          "Ireland",
+                                          "Scotland") ~ "Europe",
+                            region %in% c("Australia",
+                                          "New Zealand") ~ "Oceania")) |> 
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         log10.afab = log10(afab),
+         log10.amab = log10(amab),
+         logprop.afab = log10.afab/log10(yr.max),
+         logprop.amab = log10.amab/log10(yr.max),
+         decade = round(year, digits = -1)) |> 
+  ungroup() |> 
+  filter(decade >= 1950) |> 
+  ggplot(aes(x = logprop.afab,
+             y = logprop.amab)) +
+  theme_bw() +
+  
+  
+  geom_density2d_filled(data = rating_data |> 
+                          filter(name %in% filter_name) |>
+                          mutate(decade = round(birthyear+15, digits = -1),
+                                 location.influence = case_when(location.influence == "__other" ~ location.longest,
+                                                                .default = location.influence),
+                                 region = case_when(location.influence %in% c("Canada","United States of America") ~ "North America",
+                                                    location.influence %in% c("UK - England and Wales","Ireland","UK - Scotland") ~ "Europe",
+                                                    location.influence %in% c("Australia","New Zealand") ~ "Oceania")) |> 
+                          filter(decade >= 1950),
+                        aes(x = fem/100,
+                            y = masc/100),
+                        contour_var = "ndensity") +
+  scale_fill_viridis_d(option = "turbo", end = .9, begin = .1) +
+  
+  ggnewscale::new_scale_fill() +
+  
+  geom_density2d_filled(contour_var = "ndensity", aes(alpha = after_stat(level))) +
+
+  geom_abline(slope = 1, intercept = 0, color = "white", linewidth = .5, alpha = .5) +
+  
+  scale_fill_grey(start = 0, end = .7) +
+  scale_alpha_discrete(range = c(.5,0)) +
+  scale_x_continuous(labels = scales::percent_format(), limits = c(0,1))+
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0,1)) +
+  theme(legend.position = "none") +
+  facet_grid(region~decade) +
+  coord_equal() +
+  #gganimate::transition_time(decade) +
+  
+  xlab("afab/typicality") +
+  ylab("amab/typicality") +
+  ggtitle(paste0("Population influence on ratings for the name ",filter_name," over decades and regions"),
+          subtitle = "Grayscale = population; Color = ratings; Age of influence = birthyear + 15") +
   NULL
 ```
 
 ```{r}
-raw_data |> 
-  filter(!is.na(Response),!is.na(Display)) |> 
-  select(`Participant Private ID`,`Display`,
-         `Object Name`,`Spreadsheet: name`,
-         `Spreadsheet: freq_block`,`Response`) |> 
-  pivot_wider(names_from = "Object Name",
-              values_from = "Response") |> 
-  rename(participant = `Participant Private ID`,
-         task = Display,
-         name = `Spreadsheet: name`,
-         freq_block = `Spreadsheet: freq_block`,
-         masc = `Masc Slider`,
-         fem = `Fem Slider`,
-         neut = `Neut slider`,
-         comment = `Text Entry`) |> 
-  mutate(participant = as.numeric(as.factor(participant)),
-         freq_block = as.factor(freq_block),
-         masc = as.numeric(masc),
-         fem = as.numeric(fem),
-         neut = as.numeric(neut)) |> 
-  filter(name %in% hsp21Names) |> 
-  group_by(name) |> 
-  summarise(n = n(),
-            masc = mean(masc),
-            fem = mean(fem),
-            neut = mean(neut)) |> 
-  arrange(desc(n),name)
-```
-
-
-```{r}
-raw_data |> 
-  filter(!is.na(Response),!is.na(Display)) |> 
-  select(`Participant Private ID`,`Display`,
-         `Object Name`,`Spreadsheet: name`,
-         `Spreadsheet: freq_block`,`Response`) |> 
-  pivot_wider(names_from = "Object Name",
-              values_from = "Response") |> 
-  rename(participant = `Participant Private ID`,
-         task = Display,
-         name = `Spreadsheet: name`,
-         freq_block = `Spreadsheet: freq_block`,
-         masc = `Masc Slider`,
-         fem = `Fem Slider`,
-         neut = `Neut slider`,
-         comment = `Text Entry`) |> 
-  mutate(participant = as.numeric(as.factor(participant)),
-         freq_block = as.factor(freq_block),
-         masc = as.numeric(masc),
-         fem = as.numeric(fem),
-         neut = as.numeric(neut)) |> 
-  filter(name == "Amanda",
-         participant > 20) |> 
-  ggplot(aes(x = fem, 
-             y = masc)) +
-  geom_density2d_filled(contour_var = "ndensity") +
-  geom_point(#aes(color = neut),
+#| warning: false
+rating_data |>
+  mutate(decade = round(birthyear, digits = -1),
+         location.influence = case_when(location.influence == "__other" ~ location.longest,
+                                        .default = location.influence),
+         region = case_when(location.influence %in% c("Canada",
+                                                      "United States of America") ~ "North America",
+                            location.influence %in% c("UK - England and Wales",
+                                                      "Northern Ireland",
+                                                      "Ireland",
+                                                      "UK - Scotland") ~ "Europe",
+                            location.influence %in% c("Australia",
+                                                      "New Zealand") ~ "Oceania")) |> 
+  group_by(name, region) |> summarise(n = n(), .groups = "drop") |> 
+  arrange(-n) |> 
+  pivot_wider(names_from = region,
+              values_from = n) |> 
+  arrange(desc(Oceania)) |> filter(Oceania >= 3) |> pull(name) -> filter_name; annual.regional.breakdown |> 
+  filter(name %in% filter_name,
+         name != "Godzilla",
+         region != c("Northern Ireland")) |> #group_by(region) |> summarise(n = n())
+  mutate(region = case_when(region %in% c("Canada",
+                                          "USA") ~ "North\nAmerica",
+                            region %in% c("England and Wales",
+                                          "Ireland",
+                                          "Scotland") ~ "Europe",
+                            region %in% c("Australia",
+                                          "New Zealand") ~ "Oceania")) |> 
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         log10.afab = log10(afab),
+         log10.amab = log10(amab),
+         logprop.afab = log10.afab/log10(yr.max),
+         logprop.amab = log10.amab/log10(yr.max),
+         decade = round(year, digits = -1)) |> 
+  ungroup() |> 
+  filter(decade >= 1950) |> 
+  ggplot(aes(x = logprop.afab,
+             y = logprop.amab)) +
+  theme_bw() +
+  
+  
+  geom_density2d_filled(data = rating_data |> 
+                          filter(name %in% filter_name,
+                                 name != "Godzilla") |>
+                          mutate(decade = round(birthyear, digits = -1),
+                                 location.influence = case_when(location.influence == "__other" ~ location.longest,
+                                                                .default = location.influence),
+                                 region = case_when(location.influence %in% c("Canada","United States of America") ~ "North\nAmerica",
+                                                    location.influence %in% c("UK - England and Wales","Ireland","UK - Scotland") ~ "Europe",
+                                                    location.influence %in% c("Australia","New Zealand") ~ "Oceania")) |> 
+                          filter(decade >= 1950),
+                        aes(x = fem/100,
+                            y = masc/100),
+                        contour_var = "ndensity") +
+  geom_point(data = rating_data |> 
+                          filter(name %in% filter_name,
+                                 name != "Godzilla") |>
+                          mutate(decade = round(birthyear, digits = -1),
+                                 location.influence = case_when(location.influence == "__other" ~ location.longest,
+                                                                .default = location.influence),
+                                 region = case_when(location.influence %in% c("Canada","United States of America") ~ "North\nAmerica",
+                                                    location.influence %in% c("UK - England and Wales","Ireland","UK - Scotland") ~ "Europe",
+                                                    location.influence %in% c("Australia","New Zealand") ~ "Oceania")) |> 
+                          filter(decade >= 1950),
+                        aes(x = fem/100,
+                            y = masc/100),
              color = "black",
-             shape = 4) +
-  scale_fill_viridis_d(option = "turbo", begin = .1) +
-  scale_x_continuous(limits = c(0,100)) +
-  scale_y_continuous(limits = c(0,100)) +
-  facet_wrap(~name, scales = "free") +
+             shape = 4,
+             size = 1,
+             alpha = .5) +
+  scale_fill_viridis_d(option = "turbo", end = .9, begin = .1) +
+  
+  ggnewscale::new_scale_fill() +
+  
+  geom_density2d_filled(contour_var = "ndensity", aes(alpha = after_stat(level))) +
+
+  geom_abline(slope = 1, intercept = 0, color = "white", linewidth = .5, alpha = .5) +
+  
+  scale_fill_grey(start = 0, end = .7) +
+  scale_alpha_discrete(range = c(.5,0)) +
+  scale_x_continuous(labels = scales::percent_format(), limits = c(0,1))+
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0,1)) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  facet_grid(decade~name*region) +
+  coord_equal() +
+  #gganimate::transition_time(decade) +
+  
+  xlab("afab/typicality") +
+  ylab("amab/typicality") +
+  ggtitle(paste0("Population influence on ratings for the name ",filter_name," over decades and regions"),
+          subtitle = "Grayscale = population; Color = ratings; Age of influence = birthyear") +
   NULL
 ```
 
-```{r, warning=FALSE}
-raw_data |> 
-  filter(!is.na(Response),!is.na(Display)) |> 
-  select(`Participant Private ID`,`Display`,
-         `Object Name`,`Spreadsheet: name`,
-         `Spreadsheet: freq_block`,`Response`) |> 
-  pivot_wider(names_from = "Object Name",
-              values_from = "Response") |> 
-  rename(participant = `Participant Private ID`,
-         task = Display,
-         name = `Spreadsheet: name`,
-         freq_block = `Spreadsheet: freq_block`,
-         masc = `Masc Slider`,
-         fem = `Fem Slider`,
-         neut = `Neut slider`,
-         comment = `Text Entry`) |> 
-  mutate(participant = as.numeric(as.factor(participant)),
-         freq_block = as.factor(freq_block),
-         masc = as.numeric(masc),
-         fem = as.numeric(fem),
-         neut = as.numeric(neut)) |> 
-  filter(name %in% hsp21Names) |> 
-  pivot_longer(cols = c("masc","fem","neut"),
-               names_to = "gender",
-               values_to = "rating") |> 
-  ggplot(aes(x = rating)) +
-  geom_histogram(aes(fill = gender),
-                 alpha = .75,
-                 position = "identity",
-                 binwidth = 1) +
-  geom_density(aes(y = ..count..,
-                   color = gender)) +
-  scale_fill_manual(values = c("salmon","cadetblue2","gray")) +
-  scale_color_manual(values = c("salmon3","cadetblue4","gray30")) +
-  #scale_fill_viridis_d(option = "turbo", begin = .1) +
-  scale_x_continuous(limits = c(-1,101)) +
-  facet_wrap(~name, scales = "free") +
+```{r}
+rating_data |>
+  mutate(decade = round(birthyear, digits = -1),
+         location.influence = case_when(location.influence == "__other" ~ location.longest,
+                                        .default = location.influence),
+         region = case_when(location.influence %in% c("Canada",
+                                                      "United States of America") ~ "North America",
+                            location.influence %in% c("UK - England and Wales",
+                                                      "Northern Ireland",
+                                                      "Ireland",
+                                                      "UK - Scotland") ~ "Europe",
+                            location.influence %in% c("Australia",
+                                                      "New Zealand") ~ "Oceania")) |> 
+  group_by(name, region) |> summarise(n = n(), .groups = "drop") |> 
+  arrange(-n) |> 
+  pivot_wider(names_from = region,
+              values_from = n) |> 
+  arrange(desc(Europe)) |> 
+  filter(Europe >= 5, Oceania >=3 ) |> pull(name) -> top_rate_eu
+```
+
+#### by decade for population only
+
+```{r}
+#| warning: false
+names_combined |> 
+  mutate(region = case_when(region %in% c("Canada",
+                                          "USA") ~ "North\nAmerica",
+                            region %in% c("England and Wales",
+                                          "Northern Ireland",
+                                          "Ireland",
+                                          "Scotland") ~ "Europe",
+                            region %in% c("Australia",
+                                          "New Zealand") ~ "Oceania")) |> 
+  group_by(name, region) |> 
+  summarise(sum = sum(number),
+            .groups = "drop") |> 
+  group_by(region) |> 
+  mutate(rank = rank(-sum, ties.method = "first")) |> 
+  arrange(rank) |> 
+  filter(rank <= 100) |> pull(name) -> top_pop
+```
+
+
+```{r}
+#| warning: false
+#intersect(top_pop, top_rate_eu)
+set.seed(231);top_rate_eu -> filter_name; annual.regional.breakdown |> 
+  filter(name %in% filter_name,
+         name != "Godzilla",
+         region != c("Northern Ireland")) |> #group_by(region) |> summarise(n = n())
+  mutate(region = case_when(region %in% c("Canada",
+                                          "USA") ~ "North\nAmerica",
+                            region %in% c("England and Wales",
+                                          "Ireland",
+                                          "Scotland") ~ "Europe",
+                            region %in% c("Australia",
+                                          "New Zealand") ~ "Oceania")) |> 
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         #log10.afab = case_when(afab > 0 ~ log10(afab), .default = abs(rnorm(1,sd=0.001))),
+         #log10.amab = case_when(amab > 0 ~ log10(amab), .default = abs(rnorm(1,sd=0.001))),
+         log10.afab = log10(afab),
+         log10.amab = log10(amab),
+         logprop.afab = log10.afab/log10(yr.max),
+         logprop.amab = log10.amab/log10(yr.max),
+         decade = round(year, digits = -1)) |>
+  ungroup() |> 
+  filter(decade >= 1960) |> #filter(name == "Andrea") |> #summary()
+  ggplot(aes(x = logprop.afab,
+             y = logprop.amab)) +
+  theme_bw() +
+  
+  geom_density2d_filled(data = rating_data |> 
+                          filter(name %in% filter_name,
+                                 name != "Godzilla") |>
+                          mutate(decade = round(birthyear, digits = -1),
+                                 location.influence = case_when(location.influence == "__other" ~ location.longest,
+                                                                .default = location.influence),
+                                 region = case_when(location.influence %in% c("Canada","United States of America") ~ "North\nAmerica",
+                                                    location.influence %in% c("UK - England and Wales","Ireland","UK - Scotland") ~ "Europe",
+                                                    location.influence %in% c("Australia","New Zealand") ~ "Oceania")) |> 
+                          filter(decade >= 1960),
+                        aes(x = fem/100,
+                            y = masc/100),
+                        contour_var = "ndensity") +
+  geom_point(data = rating_data |> 
+                          filter(name %in% filter_name,
+                                 name != "Godzilla") |>
+                          mutate(decade = round(birthyear, digits = -1),
+                                 location.influence = case_when(location.influence == "__other" ~ location.longest,
+                                                                .default = location.influence),
+                                 region = case_when(location.influence %in% c("Canada","United States of America") ~ "North\nAmerica",
+                                                    location.influence %in% c("UK - England and Wales","Ireland","UK - Scotland") ~ "Europe",
+                                                    location.influence %in% c("Australia","New Zealand") ~ "Oceania")) |> 
+                          filter(decade >= 1960),
+                        aes(x = fem/100,
+                            y = masc/100),
+             color = "black",
+             shape = 4,
+             size = 1,
+             alpha = .5) +
+  scale_fill_viridis_d(option = "turbo", end = .9, begin = .1) +
+  
+  ggnewscale::new_scale_fill() +
+  
+  #geom_density2d() +
+  #geom_point(alpha = .5, shape = 3, color = "violet") +
+  geom_density2d_filled(aes(alpha = after_stat(level)),
+                        contour_var = "ndensity", bins = 50) +
+
+  geom_abline(slope = 1, intercept = 0, color = "white", linewidth = .5, alpha = .5) +
+  
+  scale_fill_grey(start = 0, end = .7) +
+  scale_alpha_discrete(range = c(.5,0)) +
+  scale_x_continuous(labels = scales::percent_format(), limits = c(0,1))+
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0,1)) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  facet_grid(name*region~decade) +
+  coord_equal() +
+  #gganimate::transition_time(decade) +
+  
+  xlab("afab/typicality") +
+  ylab("amab/typicality") +
+  ggtitle(paste0("Population influence on ratings for the name ",filter_name," over decades and regions"),
+          subtitle = "Grayscale = population; Color = ratings; Age of influence = birthyear") +
   NULL
 ```
+
+- Select a name or set of names. 
+- Then, take the annual regional summary and filter to create a subset of population data.
+- Group the regions into three groups (North America, Europe, and Oceania), since these three groups have broadly similar influences and could therefore have similar trends and cultural exchanges.
+- Next, for each name in each region, calculate the total number of years of data.
+- Take the log-base-10 of the number of attestations for each name for each ASAB.
+- Divide the log attestations by the number of years to calculate the average number of log-attestation per log-year (this is weird, right? is there a better way to do this?)
+- Finally create a decade column for binning years.
+- Since rating data only comes from people who were born in certain years, filter the data to focus on the years we have rating data birthdates from.
+
+- For the rating data, filter to exclude irrelevant names, and create a decade column based on birth years.
+- Then, recode a location column that corresponds to which region participants are most aligned with.
+
+- Plot the data with two overlaid 2D density plots.
+
+#### location cute plot
+
+```{r}
+#| warning: false
+
+# intersect(top_pop, top_rate_eu)
+set.seed(231); c("Andrea","Ashley","James","Alex","Morgan","Laura","William","Charlie","Robin") -> filter_name; annual.regional.breakdown |> 
+  filter(name %in% filter_name,
+         name != "Godzilla",
+         region != c("Northern Ireland")) |> #group_by(region) |> summarise(n = n())
+  mutate(region = case_when(region %in% c("Canada",
+                                          "USA") ~ "North\nAmerica",
+                            region %in% c("England and Wales",
+                                          "Ireland",
+                                          "Scotland") ~ "Europe",
+                            region %in% c("Australia",
+                                          "New Zealand") ~ "Oceania")) |> 
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         #log10.afab = case_when(afab > 0 ~ log10(afab), .default = abs(rnorm(1,sd=0.001))),
+         #log10.amab = case_when(amab > 0 ~ log10(amab), .default = abs(rnorm(1,sd=0.001))),
+         log10.afab = log10(afab),
+         log10.amab = log10(amab),
+         logprop.afab = log10.afab/log10(yr.max),
+         logprop.amab = log10.amab/log10(yr.max),
+         decade = round(year, digits = -1)) |>
+  ungroup() |> 
+  filter(decade >= 1950) |> #filter(name == "William", region == "Oceania") ##|> #summary()
+  ggplot(aes(x = logprop.afab,
+             y = logprop.amab)) +
+  theme_bw() +
+  
+#  geom_point(alpha = 1, shape = ".", color = "black") +
+  
+  geom_density2d_filled(data = rating_data |> 
+                          filter(name %in% filter_name,
+                                 name != "Godzilla") |>
+                          mutate(decade = round(birthyear, digits = -1),
+                                 location.influence = case_when(
+                                   location.influence == "__other" ~ location.longest,
+                                   .default = location.influence),
+                                 region = case_when(
+                                   location.influence %in% c("Canada",
+                                                             "United States of America") ~
+                                     "North\nAmerica",
+                                   location.influence %in% c(
+                                     "UK - England and Wales",
+                                     "Ireland",
+                                     "UK - Scotland") ~ "Europe",
+                                   location.influence %in% c("Australia",
+                                                             "New Zealand") ~ "Oceania")) |> 
+                          filter(decade >= 1950),
+                        aes(x = fem/100,
+                            y = masc/100),
+                        contour_var = "ndensity",
+                        bins = 15) +
+#   geom_point(data = rating_data |> 
+#                    filter(name %in% filter_name,
+#                           name != "Godzilla") |>
+#                    mutate(decade = round(birthyear, digits = -1),
+#                           location.influence = case_when(
+#                             location.influence == "__other" ~ location.longest,
+#                             .default = location.influence),
+#                           region = case_when(
+#                             location.influence %in% c("Canada",
+#                                                       "United States of America") ~
+#                               "North\nAmerica",
+#                             location.influence %in% c("UK - England and Wales",
+#                                                       "Ireland","UK - Scotland") ~ 
+#                               "Europe",
+#                             location.influence %in% c("Australia",
+#                                                       "New Zealand") ~ "Oceania")) |> 
+#               filter(decade >= 1950),
+#             aes(x = fem/100,
+#                 y = masc/100),
+#             color = "black",
+#             shape = 4,
+#             size = 1,
+#             alpha = .5) +
+
+  scale_fill_viridis_d(option = "turbo", end = .9, begin = .1) +
+  
+  ggnewscale::new_scale_fill() +
+  
+  #geom_density2d() +
+  #
+  geom_density2d_filled(aes(alpha = after_stat(level)),
+                        contour_var = "ndensity", bins = 50) +
+
+  geom_abline(slope = 1, intercept = 0, color = "white", linewidth = .5, alpha = .5) +
+  
+  scale_fill_grey(start = 0, end = .7) +
+  scale_alpha_discrete(range = c(.6,0)) +
+  scale_x_continuous(labels = scales::percent_format(), limits = c(0,1))+
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0,1)) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  facet_grid(region~name) +
+  coord_equal() +
+  #gganimate::transition_time(decade) +
+  
+  xlab("afab/typicality") +
+  ylab("amab/typicality") +
+  ggtitle(paste0("Population influence on ratings for a set of sample names across regions"),
+          subtitle = "Grayscale = population; Color = ratings; Age of influence = birthyear") +
+  NULL
+```
+
+#### longitude plot??
+
+```{r}
+c("Andrea","Ashley","James","Alex","Morgan","Laura","William","Charlie","Robin") ->filter_name; annual.regional.breakdown |> 
+  filter(name %in% filter_name) |> 
+  mutate(decade = round(year, digits = -1)) |> 
+  group_by(name, region, decade) |> 
+  summarise(afab = sum(afab),
+            amab = sum(amab),
+            n = n(),
+            .groups = "drop")
+```
+
+```{r}
+#| warning: false
+
+# intersect(top_pop, top_rate_eu)
+set.seed(231); c("Andrea","Ashley","James","Alex","Morgan","Laura","William","Charlie","Robin") -> filter_name; annual.regional.breakdown |> 
+  filter(name %in% filter_name,
+         name != "Godzilla",
+         region != c("Northern Ireland")) |> #group_by(region) |> summarise(n = n())
+  mutate(region = case_when(region %in% c("Canada",
+                                          "USA") ~ "North\nAmerica",
+                            region %in% c("England and Wales",
+                                          "Ireland",
+                                          "Scotland") ~ "Europe",
+                            region %in% c("Australia",
+                                          "New Zealand") ~ "Oceania")) |> 
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         #log10.afab = case_when(afab > 0 ~ log10(afab), .default = abs(rnorm(1,sd=0.001))),
+         #log10.amab = case_when(amab > 0 ~ log10(amab), .default = abs(rnorm(1,sd=0.001))),
+         log10.afab = log10(afab),
+         log10.amab = log10(amab),
+         logprop.afab = log10.afab/log10(yr.max),
+         logprop.amab = log10.amab/log10(yr.max),
+         decade = round(year, digits = -1)) |>
+  ungroup() |> 
+  filter(decade >= 1950) |> #filter(name == "William", region == "Oceania") ##|> #summary()
+  ggplot(aes(x = logprop.afab,
+             y = logprop.amab)) +
+  theme_bw() +
+  
+#  geom_point(alpha = 1, shape = ".", color = "black") +
+  
+  geom_density2d_filled(data = rating_data |> 
+                          filter(name %in% filter_name,
+                                 name != "Godzilla") |>
+                          mutate(decade = round(birthyear, digits = -1),
+                                 location.influence = case_when(
+                                   location.influence == "__other" ~ location.longest,
+                                   .default = location.influence),
+                                 region = case_when(
+                                   location.influence %in% c("Canada",
+                                                             "United States of America") ~
+                                     "North\nAmerica",
+                                   location.influence %in% c(
+                                     "UK - England and Wales",
+                                     "Ireland",
+                                     "UK - Scotland") ~ "Europe",
+                                   location.influence %in% c("Australia",
+                                                             "New Zealand") ~ "Oceania")) |> 
+                          filter(decade >= 1950),
+                        aes(x = fem/100,
+                            y = masc/100),
+                        contour_var = "ndensity",
+                        bins = 15) +
+   geom_point(data = rating_data |> 
+                    filter(name %in% filter_name,
+                           name != "Godzilla") |>
+                    mutate(decade = round(birthyear, digits = -1),
+                           location.influence = case_when(
+                             location.influence == "__other" ~ location.longest,
+                             .default = location.influence),
+                           region = case_when(
+                             location.influence %in% c("Canada",
+                                                       "United States of America") ~
+                               "North\nAmerica",
+                             location.influence %in% c("UK - England and Wales",
+                                                       "Ireland","UK - Scotland") ~ 
+                               "Europe",
+                             location.influence %in% c("Australia",
+                                                       "New Zealand") ~ "Oceania")) |> 
+               filter(decade >= 1950),
+             aes(x = fem/100,
+                 y = masc/100),
+             color = "black",
+             shape = 4,
+             size = 1,
+             alpha = .5) +
+
+  scale_fill_viridis_d(option = "turbo", end = .9, begin = .1) +
+  
+  ggnewscale::new_scale_fill() +
+  
+  #geom_density2d() +
+  #
+  geom_density2d_filled(aes(alpha = after_stat(level)),
+                        contour_var = "ndensity", bins = 50) +
+
+  geom_abline(slope = 1, intercept = 0, color = "white", linewidth = .5, alpha = .5) +
+  
+  scale_fill_grey(start = 0, end = .7) +
+  scale_alpha_discrete(range = c(.6,0)) +
+  scale_x_continuous(labels = scales::percent_format(), limits = c(0,1))+
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0,1)) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  facet_grid(decade~name) +
+  coord_equal() +
+  #gganimate::transition_time(decade) +
+  
+  xlab("afab/typicality") +
+  ylab("amab/typicality") +
+  ggtitle(paste0("Population influence on ratings for a set of sample names across regions"),
+          subtitle = "Grayscale = population; Color = ratings; Age of influence = birthyear") +
+  NULL
+```
+
+### ethnicity
+
+```{r}
+rating_data |> 
+  mutate(ethnicity = str_to_lower(ethnicity),
+         ethnicity.cat = case_when(ethnicity %in% c("white mixed latinamerican",
+                                                    "mixed",
+                                                    "pākehā/anglo-indian",
+                                                    "hispanic white") ~ "other",#"more than one",
+                                   ethnicity %in% c("white/jewish",
+                                                    "ashkenazi jewish, white-passing",
+                                                    "ashkenazi jewish",
+                                                    "white and jewish",
+                                                    "white, ashkenazi jewish",
+                                                    "white, jewish",
+                                                    "ashkenazi jewish, white",
+                                                    "white, ashkenazi") ~ "jewish",
+                                   ethnicity %in% c("asian american",
+                                                    "i am black but grew up mostly around white people (but my family is black).") ~ "other",
+                                   .default = "white"),
+         decade = round(birthyear, digits = -1),
+         location.influence = case_when(location.influence == "__other" ~ location.longest,
+                                        .default = location.influence),
+         region = case_when(location.influence %in% c("Canada","United States of America") ~
+                              "North\nAmerica",
+                            location.influence %in% c("UK - England and Wales",
+                                                       "Ireland","UK - Scotland") ~ 
+                              "Europe",
+                            location.influence %in% c("Australia","New Zealand") ~ 
+                              "Oceania")) |> 
+  group_by(ethnicity.cat,gender.cat,region) |> 
+  summarise(n = n()/51,
+            .groups = "drop") |> 
+  pivot_wider(names_from = gender.cat,
+              values_from = n,
+              values_fill = 0)
+```
+
+
 

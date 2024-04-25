@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Newcastle &amp; Princeton">
+<meta name="dcterms.date" content="2024-04-05">
+
+<title>Name Norming</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Name_Norming_list_generation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Name_Norming_list_generation_files/libs/quarto-html/quarto.js"></script>
+<script src="Name_Norming_list_generation_files/libs/quarto-html/popper.min.js"></script>
+<script src="Name_Norming_list_generation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Name_Norming_list_generation_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Name_Norming_list_generation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Name_Norming_list_generation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Name_Norming_list_generation_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Name_Norming_list_generation_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Name_Norming_list_generation_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+<link href="Name_Norming_list_generation_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="Name_Norming_list_generation_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
+  <li><a href="#usa-ssa-data" id="toc-usa-ssa-data" class="nav-link" data-scroll-target="#usa-ssa-data">USA SSA data</a></li>
+  <li><a href="#compared-to-top-tumblr-survey-names" id="toc-compared-to-top-tumblr-survey-names" class="nav-link" data-scroll-target="#compared-to-top-tumblr-survey-names">Compared to top Tumblr Survey names</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Name Norming</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Newcastle &amp; Princeton </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 5, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse); <span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ purrr     1.0.2
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.0     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flextable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'flextable'
+
+The following object is masked from 'package:purrr':
+
+    compose</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="purpose" class="level1">
+<h1>Purpose</h1>
+<p>We are gathering gender norming data for names that could be given to men/boys, women/girls, and nonbinary people.</p>
+<p>There are three sources for how we gathered these names.</p>
+<ol type="1">
+<li>Tumblr survey of nonbinary names</li>
+<li>Made up names based on phonotactic/phonaesthemic/semantic principles (citations?)</li>
+<li>USA Social Security Administration names assigned at birth datasets</li>
+</ol>
+</section>
+<section id="usa-ssa-data" class="level1">
+<h1>USA SSA data</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in Lauren's database, filtered for only USA name data</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>usa_ssa <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/large_files/names_combined.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"USA"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>usa_ssa <span class="sc">|&gt;</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"asab"</span>, </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> <span class="fu">c</span>(number,proportion,rank),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_fill =</span> <span class="dv">0</span>) <span class="ot">-&gt;</span> wide_names</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>usa_ssa <span class="sc">|&gt;</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"asab"</span>, </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> <span class="fu">c</span>(number,proportion,rank),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_fill =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ratio_numrFM =</span> <span class="fu">case_when</span>(number_M <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">~</span> number_F<span class="sc">/</span>number_M,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">.default =</span> <span class="dv">0</span>),</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">log_ratio_numrFM =</span> <span class="fu">log</span>(ratio_numrFM) <span class="sc">|&gt;</span> <span class="fu">abs</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_if</span>(is.numeric, <span class="fu">list</span>(<span class="sc">~</span><span class="fu">na_if</span>(., <span class="cn">Inf</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(log_ratio_numrFM)) <span class="ot">-&gt;</span> discarded_names</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>usa_ssa <span class="sc">|&gt;</span> </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"asab"</span>, </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> <span class="fu">c</span>(number,proportion,rank),</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_fill =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ratio_numrFM =</span> <span class="fu">case_when</span>(number_M <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">~</span> number_F<span class="sc">/</span>number_M,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">.default =</span> <span class="dv">0</span>),</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">log_ratio_numrFM =</span> <span class="fu">log</span>(ratio_numrFM) <span class="sc">|&gt;</span> <span class="fu">abs</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_if</span>(is.numeric, <span class="fu">list</span>(<span class="sc">~</span><span class="fu">na_if</span>(., <span class="cn">Inf</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(log_ratio_numrFM)) <span class="sc">|&gt;</span> </span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">|&gt;</span> </span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_F =</span> <span class="fu">sum</span>(number_F),</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>            <span class="at">total_M =</span> <span class="fu">sum</span>(number_M),</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_F =</span> <span class="fu">mean</span>(number_F, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_M =</span> <span class="fu">mean</span>(number_M, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>            <span class="at">entries =</span> <span class="fu">n</span>(),</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean.logratio2 =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(<span class="fu">log</span>(mean_F<span class="sc">/</span>mean_M)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean.logratio =</span> <span class="fu">mean</span>(log_ratio_numrFM, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">median.logratio =</span> <span class="fu">median</span>(log_ratio_numrFM, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd.logratio =</span> <span class="fu">sd</span>(log_ratio_numrFM, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>            <span class="at">se.logratio =</span> <span class="fu">sd</span>(log_ratio_numrFM, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">n</span>()),</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>            <span class="at">max.logratio =</span> <span class="fu">max</span>(log_ratio_numrFM, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>            <span class="at">min.logratio =</span> <span class="fu">min</span>(log_ratio_numrFM, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="ot">-&gt;</span> balanced_USA_summary_data</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="co">#write_csv(balanced_USA_summary_data, "data/large_files/balanced_USA_summary_data.csv")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This set of balanced names was gathered from the USA SSA data in the following manner. First, every name was given its own row for each year it was attested, with attestations for AMAB and AFAB babies in paired columns (missing data were given the value 0). Then, each name was assigned a ratio of AFAB to AMAB names (when AMAB names were non-zero). When there were no AMAB names attested in a given year, the ratio was calculated at 0 to avoid infinite values in the next step. Next, the logarith was calculated for all ratios, and the absolute value of the result was reported. This provides a score for how balanced a ratio is, with values closer to 0 associated with ratios closer to 1:1. At this stage, any log-ratios calculated to be infinite or missing data were discarded, comprising 1,721,422 entries, or 90.44% of the data, leaving 181,868 entries and 9,955 unique names for analysis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>balanced_USA_summary_data <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Baby"</span>,<span class="st">"Infant"</span>,<span class="st">"Unborn"</span>,<span class="st">"Unknown"</span>,<span class="st">"Unkown"</span>,<span class="st">"Unnamed"</span>,<span class="st">"Notnamed"</span>,<span class="st">"Stillborn"</span>,<span class="st">"Female"</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>         entries <span class="sc">&gt;</span> <span class="dv">1</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         min.logratio <span class="sc">&lt;=</span> <span class="fl">0.1</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         max.logratio <span class="sc">&lt;=</span> <span class="dv">2</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         sd.logratio <span class="sc">&lt;=</span> .<span class="dv">5</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         mean.logratio <span class="sc">&lt;=</span> <span class="dv">1</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         median.logratio <span class="sc">&lt;=</span> <span class="dv">1</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>         mean.logratio2 <span class="sc">&lt;=</span><span class="dv">1</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>         <span class="co">#mean_M &gt;= 25,</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>         <span class="co">#mean_F &gt;= 25,</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>         total_M <span class="sc">&gt;=</span> <span class="dv">1000</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>         total_F <span class="sc">&gt;=</span> <span class="dv">1000</span>) <span class="ot">-&gt;</span> final_list; final_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["total_F"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["total_M"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["mean_F"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["mean_M"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["entries"],"name":[6],"type":["int"],"align":["right"]},{"label":["mean.logratio2"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["mean.logratio"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["median.logratio"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["sd.logratio"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["se.logratio"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["max.logratio"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["min.logratio"],"name":[13],"type":["dbl"],"align":["right"]}],"data":[{"1":"Alexi","2":"4128","3":"1606","4":"80.94118","5":"31.49020","6":"51","7":"0.944046413","8":"0.7671720","9":"0.7765288","10":"0.4590284","11":"0.06427683","12":"1.6148288","13":"0.000000000"},{"1":"Amari","2":"18366","3":"25339","4":"483.31579","5":"666.81579","6":"38","7":"0.321843582","8":"0.5182520","9":"0.5545074","10":"0.2461712","11":"0.03993424","12":"0.9600261","13":"0.050819248"},{"1":"An","2":"1227","3":"1055","4":"25.56250","5":"21.97917","6":"48","7":"0.151031399","8":"0.2864519","9":"0.2226879","10":"0.2282246","11":"0.03294138","12":"1.0775589","13":"0.000000000"},{"1":"Ardell","2":"2485","3":"2033","4":"40.08065","5":"32.79032","6":"62","7":"0.200760125","8":"0.4343150","9":"0.3018935","10":"0.3622647","11":"0.04600766","12":"1.4816045","13":"0.000000000"},{"1":"Arie","2":"3423","3":"2335","4":"30.83784","5":"21.03604","6":"111","7":"0.382505468","8":"0.5495139","9":"0.5389965","10":"0.3509420","11":"0.03330994","12":"1.6650078","13":"0.000000000"},{"1":"Aries","2":"2099","3":"3587","4":"43.72917","5":"74.72917","6":"48","7":"0.535855158","8":"0.4853448","9":"0.5088216","10":"0.3025130","11":"0.04366399","12":"1.0281606","13":"0.000000000"},{"1":"Arin","2":"2518","3":"2023","4":"46.62963","5":"37.46296","6":"54","7":"0.218883377","8":"0.6146708","9":"0.6288638","10":"0.3577004","11":"0.04867686","12":"1.2919837","13":"0.045462374"},{"1":"Aris","2":"1535","3":"2230","4":"22.91045","5":"33.28358","6":"67","7":"0.373471204","8":"0.4512449","9":"0.3566749","10":"0.2956857","11":"0.03612376","12":"1.3350011","13":"0.000000000"},{"1":"Armani","2":"10234","3":"13163","4":"301.00000","5":"387.14706","6":"34","7":"0.251694353","8":"0.3805011","9":"0.2748939","10":"0.3852563","11":"0.06607091","12":"1.7047481","13":"0.031875209"},{"1":"Armoni","2":"1954","3":"1253","4":"67.37931","5":"43.20690","6":"29","7":"0.444337878","8":"0.4852755","9":"0.5533852","10":"0.2649895","11":"0.04920731","12":"0.9162907","13":"0.000000000"},{"1":"Aven","2":"1472","3":"2232","4":"56.61538","5":"85.84615","6":"26","7":"0.416276024","8":"0.5879114","9":"0.5769812","10":"0.3927300","11":"0.07702070","12":"1.6817586","13":"0.054067221"},{"1":"Azariah","2":"5937","3":"4718","4":"185.53125","5":"147.43750","6":"32","7":"0.229818974","8":"0.4795217","9":"0.4837920","10":"0.3382390","11":"0.05979277","12":"1.0986123","13":"0.029199155"},{"1":"Barrie","2":"1630","3":"1230","4":"28.10345","5":"21.20690","6":"58","7":"0.281565845","8":"0.7133432","9":"0.6698872","10":"0.4712531","11":"0.06187856","12":"1.5926308","13":"0.000000000"},{"1":"Braylin","2":"1520","3":"2846","4":"54.28571","5":"101.64286","6":"28","7":"0.627204165","8":"0.6585663","9":"0.6998587","10":"0.3326746","11":"0.06286959","12":"1.4271164","13":"0.039220713"},{"1":"Briar","2":"4994","3":"5149","4":"128.05128","5":"132.02564","6":"39","7":"0.030565329","8":"0.7996782","9":"0.6440145","10":"0.4600393","11":"0.07366524","12":"1.9459101","13":"0.000000000"},{"1":"Brighton","2":"1894","3":"2753","4":"54.11429","5":"78.65714","6":"35","7":"0.374000231","8":"0.5151326","9":"0.4700036","10":"0.3148068","11":"0.05321206","12":"1.1499056","13":"0.029852963"},{"1":"Burnice","2":"1514","3":"1199","4":"28.03704","5":"22.20370","6":"54","7":"0.233267279","8":"0.4040487","9":"0.3923853","10":"0.2713362","11":"0.03692418","12":"1.1451323","13":"0.000000000"},{"1":"Campbell","2":"6334","3":"4411","4":"186.29412","5":"129.73529","6":"34","7":"0.361830527","8":"0.6493579","9":"0.6559235","10":"0.3678723","11":"0.06308959","12":"1.3350011","13":"0.024097552"},{"1":"Carlin","2":"1891","3":"2321","4":"22.24706","5":"27.30588","6":"85","7":"0.204892338","8":"0.3735790","9":"0.3101549","10":"0.3096635","11":"0.03358772","12":"1.4663371","13":"0.000000000"},{"1":"Cedar","2":"1242","3":"2123","4":"25.34694","5":"43.32653","6":"49","7":"0.536107199","8":"0.4621482","9":"0.4054651","10":"0.2882230","11":"0.04117472","12":"1.2089603","13":"0.000000000"},{"1":"Charly","2":"2290","3":"1155","4":"49.78261","5":"25.10870","6":"46","7":"0.684451474","8":"0.7776814","9":"0.7520387","10":"0.4732781","11":"0.06978104","12":"1.9252909","13":"0.066691374"},{"1":"Codie","2":"1740","3":"2562","4":"36.25000","5":"53.37500","6":"48","7":"0.386903090","8":"0.7134844","9":"0.6931472","10":"0.3756894","11":"0.05422609","12":"1.5755364","13":"0.057158414"},{"1":"Cris","2":"1083","3":"2073","4":"25.78571","5":"49.35714","6":"42","7":"0.649261865","8":"0.8259314","9":"0.7478546","10":"0.4384387","11":"0.06765257","12":"1.7917595","13":"0.085766822"},{"1":"Dakotah","2":"2185","3":"3065","4":"56.02564","5":"78.58974","6":"39","7":"0.338431741","8":"0.6205444","9":"0.6528733","10":"0.3103608","11":"0.04969750","12":"1.1700713","13":"0.058840500"},{"1":"Dann","2":"1056","3":"1046","4":"22.00000","5":"21.79167","6":"48","7":"0.009514820","8":"0.5295856","9":"0.5427701","10":"0.3235976","11":"0.04670730","12":"1.4733057","13":"0.000000000"},{"1":"Daylin","2":"1632","3":"1647","4":"51.00000","5":"51.46875","6":"32","7":"0.009149195","8":"0.4263534","9":"0.4639392","10":"0.3168380","11":"0.05600958","12":"1.2039728","13":"0.033901552"},{"1":"Deane","2":"1249","3":"2598","4":"15.61250","5":"32.47500","6":"80","7":"0.732398687","8":"0.6877658","9":"0.7308875","10":"0.3527156","11":"0.03943481","12":"1.5755364","13":"0.000000000"},{"1":"Dell","2":"2530","3":"3597","4":"25.55556","5":"36.33333","6":"99","7":"0.351880862","8":"0.5364899","9":"0.5162165","10":"0.3723247","11":"0.03742004","12":"1.8067973","13":"0.000000000"},{"1":"Devyn","2":"8719","3":"6641","4":"207.59524","5":"158.11905","6":"42","7":"0.272241998","8":"0.4839456","9":"0.3947539","10":"0.3995641","11":"0.06165408","12":"1.2901505","13":"0.007220248"},{"1":"Dominque","2":"3844","3":"2334","4":"89.39535","5":"54.27907","6":"43","7":"0.498929957","8":"0.5003464","9":"0.4629222","10":"0.4069805","11":"0.06206395","12":"1.7420598","13":"0.000000000"},{"1":"Dru","2":"1694","3":"2543","4":"23.85915","5":"35.81690","6":"71","7":"0.406251890","8":"0.7752500","9":"0.7239188","10":"0.4172615","11":"0.04951983","12":"1.6613977","13":"0.000000000"},{"1":"Earlie","2":"1302","3":"2047","4":"19.14706","5":"30.10294","6":"68","7":"0.452473763","8":"0.5070663","9":"0.4607029","10":"0.3229344","11":"0.03916155","12":"1.6486586","13":"0.000000000"},{"1":"Finley","2":"20161","3":"14132","4":"672.03333","5":"471.06667","6":"30","7":"0.355308316","8":"0.4695701","9":"0.4274083","10":"0.2535895","11":"0.04629889","12":"1.1574528","13":"0.078038108"},{"1":"Garnett","2":"2784","3":"3425","4":"30.93333","5":"38.05556","6":"90","7":"0.207212729","8":"0.6109919","9":"0.4981667","10":"0.4433498","11":"0.04673317","12":"1.8562980","13":"0.000000000"},{"1":"Gentry","2":"2510","3":"2993","4":"44.82143","5":"53.44643","6":"56","7":"0.175993476","8":"0.4649167","9":"0.3404248","10":"0.4312685","11":"0.05763068","12":"1.7227666","13":"0.025975486"},{"1":"Golden","2":"2105","3":"2592","4":"17.54167","5":"21.60000","6":"120","7":"0.208114311","8":"0.4891175","9":"0.4054651","10":"0.3608197","11":"0.03293818","12":"1.4816045","13":"0.000000000"},{"1":"Haiden","2":"1636","3":"3884","4":"51.12500","5":"121.37500","6":"32","7":"0.864611312","8":"0.7642535","9":"0.8116560","10":"0.3598737","11":"0.06361729","12":"1.5271998","13":"0.000000000"},{"1":"Indiana","2":"1423","3":"1240","4":"43.12121","5":"37.57576","6":"33","7":"0.137655939","8":"0.2691695","9":"0.2326223","10":"0.2000795","11":"0.03482937","12":"0.8043728","13":"0.000000000"},{"1":"Isa","2":"2066","3":"2495","4":"36.89286","5":"44.55357","6":"56","7":"0.188674359","8":"0.4518898","9":"0.3531096","10":"0.3827127","11":"0.05114214","12":"1.6094379","13":"0.000000000"},{"1":"Jae","2":"1189","3":"1484","4":"16.06757","5":"20.05405","6":"74","7":"0.221628527","8":"0.3876295","9":"0.3677248","10":"0.2490105","11":"0.02894688","12":"1.0986123","13":"0.000000000"},{"1":"Jaedyn","2":"2517","3":"2057","4":"100.68000","5":"82.28000","6":"25","7":"0.201819105","8":"0.5842850","9":"0.5179431","10":"0.4036274","11":"0.08072549","12":"1.3862944","13":"0.036179657"},{"1":"Jamey","2":"3001","3":"6674","4":"40.01333","5":"88.98667","6":"75","7":"0.799273814","8":"0.6275357","9":"0.5212969","10":"0.4811697","11":"0.05556070","12":"1.8834679","13":"0.000000000"},{"1":"Jammie","2":"3980","3":"2380","4":"48.53659","5":"29.02439","6":"82","7":"0.514181332","8":"0.5385507","9":"0.4740657","10":"0.3730015","11":"0.04119113","12":"1.5686159","13":"0.000000000"},{"1":"Jaylin","2":"8763","3":"10042","4":"265.54545","5":"304.30303","6":"33","7":"0.136237986","8":"0.5083437","9":"0.4982468","10":"0.2581665","11":"0.04494103","12":"0.9195113","13":"0.001906578"},{"1":"Jessy","2":"1998","3":"4100","4":"38.42308","5":"78.84615","6":"52","7":"0.718840293","8":"0.7755492","9":"0.7360175","10":"0.3604809","11":"0.04998971","12":"1.5686159","13":"0.028987537"},{"1":"Jody","2":"55791","3":"31372","4":"557.91000","5":"313.72000","6":"100","7":"0.575696791","8":"0.6524340","9":"0.6931472","10":"0.4086631","11":"0.04086631","12":"1.7969186","13":"0.000000000"},{"1":"Jonnie","2":"5676","3":"3173","4":"46.90909","5":"26.22314","6":"121","7":"0.581569247","8":"0.6402026","9":"0.5901992","10":"0.3655136","11":"0.03322851","12":"1.7176515","13":"0.021053409"},{"1":"Jordin","2":"4359","3":"2410","4":"108.97500","5":"60.25000","6":"40","7":"0.592615926","8":"0.5623309","9":"0.5473784","10":"0.3660718","11":"0.05788103","12":"1.3038507","13":"0.000000000"},{"1":"Jourdan","2":"2309","3":"1788","4":"54.97619","5":"42.57143","6":"42","7":"0.255716854","8":"0.4888202","9":"0.3745462","10":"0.3092656","11":"0.04772072","12":"1.2527630","13":"0.045809536"},{"1":"Jule","2":"1769","3":"1326","4":"18.23711","5":"13.67010","6":"97","7":"0.288247523","8":"0.3907840","9":"0.3364722","10":"0.2916019","11":"0.02960769","12":"1.2809338","13":"0.000000000"},{"1":"Kalin","2":"1487","3":"1714","4":"35.40476","5":"40.80952","6":"42","7":"0.142069153","8":"0.3756713","9":"0.2919922","10":"0.3669148","11":"0.05661619","12":"1.6094379","13":"0.014815086"},{"1":"Kamari","2":"5032","3":"9972","4":"143.77143","5":"284.91429","6":"35","7":"0.683963646","8":"0.5592179","9":"0.5626767","10":"0.2523456","11":"0.04265419","12":"1.0811772","13":"0.000000000"},{"1":"Kamdyn","2":"1965","3":"3369","4":"85.43478","5":"146.47826","6":"23","7":"0.539123719","8":"0.6850176","9":"0.7183374","10":"0.3693006","11":"0.07700450","12":"1.2611312","13":"0.000000000"},{"1":"Karsen","2":"1634","3":"3180","4":"51.06250","5":"99.37500","6":"32","7":"0.665850200","8":"0.9401092","9":"0.9611531","10":"0.4328585","11":"0.07651930","12":"1.7394910","13":"0.049596941"},{"1":"Kary","2":"1713","3":"1290","4":"30.58929","5":"23.03571","6":"56","7":"0.283604001","8":"0.5340368","9":"0.5293832","10":"0.3444097","11":"0.04602368","12":"1.3862944","13":"0.000000000"},{"1":"Kenyatta","2":"4243","3":"3149","4":"74.43860","5":"55.24561","6":"57","7":"0.298185624","8":"0.5607071","9":"0.5175824","10":"0.4467403","11":"0.05917219","12":"1.5730703","13":"0.000000000"},{"1":"Kimani","2":"1559","3":"1348","4":"47.24242","5":"40.84848","6":"33","7":"0.145422578","8":"0.6397200","9":"0.4964369","10":"0.4388400","11":"0.07639223","12":"1.7346011","13":"0.000000000"},{"1":"Kit","2":"1775","3":"3048","4":"22.75641","5":"39.07692","6":"78","7":"0.540685215","8":"0.6915626","9":"0.6260809","10":"0.4480598","11":"0.05073278","12":"1.9740810","13":"0.000000000"},{"1":"Kodi","2":"3255","3":"3048","4":"69.25532","5":"64.85106","6":"47","7":"0.065706638","8":"0.3431538","9":"0.2935472","10":"0.2600120","11":"0.03792664","12":"1.1631508","13":"0.026317308"},{"1":"Kodie","2":"1191","3":"1302","4":"29.04878","5":"31.75610","6":"41","7":"0.089108253","8":"0.4300301","9":"0.4519851","10":"0.2676515","11":"0.04180014","12":"0.9490806","13":"0.000000000"},{"1":"Krishna","2":"1839","3":"2195","4":"30.65000","5":"36.58333","6":"60","7":"0.176960101","8":"0.6566716","9":"0.6505498","10":"0.4476575","11":"0.05779234","12":"1.8325815","13":"0.000000000"},{"1":"Kylin","2":"1239","3":"1737","4":"36.44118","5":"51.08824","6":"34","7":"0.337854885","8":"0.3909868","9":"0.2982088","10":"0.3357154","11":"0.05757471","12":"1.2039728","13":"0.000000000"},{"1":"Lakota","2":"1563","3":"1446","4":"44.65714","5":"41.31429","6":"35","7":"0.077805928","8":"0.1884501","9":"0.1690763","10":"0.1336211","11":"0.02258609","12":"0.4895482","13":"0.000000000"},{"1":"Lannie","2":"1140","3":"1784","4":"15.00000","5":"23.47368","6":"76","7":"0.447829772","8":"0.6815575","9":"0.6810984","10":"0.4332938","11":"0.04970221","12":"1.9828147","13":"0.000000000"},{"1":"Laramie","2":"1137","3":"1041","4":"24.19149","5":"22.14894","6":"47","7":"0.088211425","8":"0.6163800","9":"0.5198755","10":"0.4540024","11":"0.06622306","12":"1.8458267","13":"0.000000000"},{"1":"Larkin","2":"1877","3":"1122","4":"36.09615","5":"21.57692","6":"52","7":"0.514561951","8":"0.4976660","9":"0.4054651","10":"0.3737276","11":"0.05182670","12":"1.7004097","13":"0.000000000"},{"1":"Lavern","2":"6818","3":"9514","4":"71.76842","5":"100.14737","6":"95","7":"0.333198224","8":"0.4871477","9":"0.5108256","10":"0.2834311","11":"0.02907942","12":"1.1895841","13":"0.000000000"},{"1":"Lorenza","2":"2908","3":"3668","4":"25.06897","5":"31.62069","6":"116","7":"0.232180995","8":"0.4726824","9":"0.4460966","10":"0.3296527","11":"0.03060749","12":"1.6094379","13":"0.000000000"},{"1":"Maxie","2":"3824","3":"4552","4":"33.25217","5":"39.58261","6":"115","7":"0.174269702","8":"0.6974635","9":"0.6190392","10":"0.4817254","11":"0.04492112","12":"1.8718022","13":"0.000000000"},{"1":"Merlyn","2":"1336","3":"3350","4":"16.70000","5":"41.87500","6":"80","7":"0.919280271","8":"0.8015387","9":"0.8113416","10":"0.4163658","11":"0.04655111","12":"1.8289385","13":"0.000000000"},{"1":"Micaiah","2":"1461","3":"2608","4":"37.46154","5":"66.87179","6":"39","7":"0.579462511","8":"0.6124489","9":"0.6396585","10":"0.3922127","11":"0.06280429","12":"1.4992348","13":"0.000000000"},{"1":"Micha","2":"1126","3":"1082","4":"20.10714","5":"19.32143","6":"56","7":"0.039860349","8":"0.4802170","9":"0.4681657","10":"0.3463379","11":"0.04628135","12":"1.2878543","13":"0.000000000"},{"1":"Michal","2":"3899","3":"3641","4":"46.97590","5":"43.86747","6":"83","7":"0.068461741","8":"0.4427616","9":"0.3677248","10":"0.3663133","11":"0.04020811","12":"1.8294998","13":"0.000000000"},{"1":"Mikah","2":"1570","3":"3018","4":"36.51163","5":"70.18605","6":"43","7":"0.653518741","8":"0.6517027","9":"0.5877867","10":"0.4197327","11":"0.06400863","12":"1.5743466","13":"0.037041272"},{"1":"Montana","2":"7902","3":"3692","4":"168.12766","5":"78.55319","6":"47","7":"0.760947575","8":"0.6620983","9":"0.6372667","10":"0.4596578","11":"0.06704798","12":"1.5146038","13":"0.000000000"},{"1":"Myrl","2":"1642","3":"1144","4":"30.40741","5":"21.18519","6":"54","7":"0.361384118","8":"0.6262227","9":"0.5036313","10":"0.4200356","11":"0.05715960","12":"1.6863990","13":"0.050010421"},{"1":"Natividad","2":"1811","3":"1711","4":"18.11000","5":"17.11000","6":"100","7":"0.056801184","8":"0.3906193","9":"0.3077683","10":"0.2850977","11":"0.02850977","12":"1.2527630","13":"0.000000000"},{"1":"Nicola","2":"5008","3":"2478","4":"58.91765","5":"29.15294","6":"85","7":"0.703584851","8":"0.7473319","9":"0.7198154","10":"0.4295077","11":"0.04658665","12":"1.6916760","13":"0.048790164"},{"1":"Ocean","2":"2773","3":"3068","4":"81.55882","5":"90.23529","6":"34","7":"0.101096117","8":"0.3166439","9":"0.3219750","10":"0.2188075","11":"0.03752518","12":"0.9808293","13":"0.025975486"},{"1":"Odie","2":"1589","3":"2089","4":"20.90789","5":"27.48684","6":"76","7":"0.273580595","8":"0.5590771","9":"0.4543718","10":"0.4421095","11":"0.05071343","12":"1.9459101","13":"0.000000000"},{"1":"Ollie","2":"41367","3":"17000","4":"289.27972","5":"118.88112","6":"143","7":"0.889270117","8":"0.8734704","9":"0.8232003","10":"0.4577273","11":"0.03827708","12":"1.7617786","13":"0.000000000"},{"1":"Ossie","2":"2800","3":"1450","4":"35.00000","5":"18.12500","6":"80","7":"0.658055861","8":"0.6783785","9":"0.7105864","10":"0.4102059","11":"0.04586241","12":"1.5686159","13":"0.000000000"},{"1":"Ozell","2":"1063","3":"1191","4":"21.26000","5":"23.82000","6":"50","7":"0.113698191","8":"0.7495211","9":"0.6810984","10":"0.4639555","11":"0.06561321","12":"1.9218126","13":"0.040821995"},{"1":"Parris","2":"1637","3":"1531","4":"27.28333","5":"25.51667","6":"60","7":"0.066944182","8":"0.7516399","9":"0.7752987","10":"0.4464327","11":"0.05763421","12":"1.8718022","13":"0.039220713"},{"1":"Peyton","2":"82835","3":"50017","4":"1314.84127","5":"793.92063","6":"63","7":"0.504487730","8":"0.7039372","9":"0.6931472","10":"0.4361255","11":"0.05494665","12":"1.4499906","13":"0.017137516"},{"1":"Phoenix","2":"13694","3":"20990","4":"360.36842","5":"552.36842","6":"38","7":"0.427088353","8":"0.4722445","9":"0.4419919","10":"0.2755629","11":"0.04470220","12":"1.7227666","13":"0.087011377"},{"1":"Reign","2":"5826","3":"2748","4":"233.04000","5":"109.92000","6":"25","7":"0.751457284","8":"0.6515037","9":"0.6406291","10":"0.3335659","11":"0.06671318","12":"1.3558352","13":"0.000000000"},{"1":"Reilly","2":"5348","3":"4376","4":"124.37209","5":"101.76744","6":"43","7":"0.200587594","8":"0.3479801","9":"0.1900436","10":"0.3515788","11":"0.05361526","12":"1.7176515","13":"0.014388737"},{"1":"Remy","2":"6988","3":"9824","4":"129.40741","5":"181.92593","6":"54","7":"0.340633979","8":"0.3043619","9":"0.2931675","10":"0.1681515","11":"0.02288253","12":"0.7621401","13":"0.000000000"},{"1":"Rhyan","2":"2902","3":"1417","4":"63.08696","5":"30.80435","6":"46","7":"0.716858194","8":"0.7512796","9":"0.7798345","10":"0.4616640","11":"0.06806865","12":"1.7122953","13":"0.000000000"},{"1":"Rian","2":"3356","3":"4859","4":"64.53846","5":"93.44231","6":"52","7":"0.370082867","8":"0.5531689","9":"0.3723374","10":"0.4542534","11":"0.06299362","12":"1.8908504","13":"0.000000000"},{"1":"Ridley","2":"1059","3":"1109","4":"50.42857","5":"52.80952","6":"21","7":"0.046133642","8":"0.4380151","9":"0.4054651","10":"0.2879283","11":"0.06283112","12":"1.0986123","13":"0.040821995"},{"1":"Rio","2":"1950","3":"3681","4":"48.75000","5":"92.02500","6":"40","7":"0.635355082","8":"0.4534047","9":"0.3748588","10":"0.3780053","11":"0.05976788","12":"1.4946166","13":"0.000000000"},{"1":"Rowan","2":"18481","3":"36036","4":"410.68889","5":"800.80000","6":"45","7":"0.667775261","8":"0.5607003","9":"0.4949703","10":"0.3655030","11":"0.05448597","12":"1.7578579","13":"0.004842624"},{"1":"Ryen","2":"1011","3":"1142","4":"26.60526","5":"30.05263","6":"38","7":"0.121841171","8":"0.4672755","9":"0.3306992","10":"0.3883466","11":"0.06299814","12":"1.2237754","13":"0.028987537"},{"1":"Sage","2":"24589","3":"13509","4":"447.07273","5":"245.61818","6":"55","7":"0.598943058","8":"0.4501666","9":"0.4303912","10":"0.2993418","11":"0.04036323","12":"1.0444853","13":"0.000000000"},{"1":"Salem","2":"4317","3":"3211","4":"93.84783","5":"69.80435","6":"46","7":"0.295978301","8":"0.3357701","9":"0.3225073","10":"0.2386910","11":"0.03519306","12":"0.9343092","13":"0.000000000"},{"1":"Sammie","2":"7732","3":"20774","4":"55.22857","5":"148.38571","6":"140","7":"0.988334643","8":"0.8217686","9":"0.8341392","10":"0.4948914","11":"0.04182596","12":"1.9760632","13":"0.000000000"},{"1":"Scout","2":"4247","3":"1694","4":"137.00000","5":"54.64516","6":"31","7":"0.919120255","8":"0.7648021","9":"0.7217206","10":"0.3494301","11":"0.06275950","12":"1.3266220","13":"0.093090423"},{"1":"Seneca","2":"1579","3":"1702","4":"32.89583","5":"35.45833","6":"48","7":"0.075012295","8":"0.6157242","9":"0.4983530","10":"0.4223785","11":"0.06096508","12":"1.7730673","13":"0.024692613"},{"1":"Sevyn","2":"2344","3":"1168","4":"123.36842","5":"61.47368","6":"19","7":"0.696565987","8":"0.4683681","9":"0.5389965","10":"0.3567583","11":"0.08184596","12":"1.0929466","13":"0.000000000"},{"1":"Shai","2":"1525","3":"1813","4":"33.15217","5":"39.41304","6":"46","7":"0.172988522","8":"0.4036689","9":"0.4519851","10":"0.2342839","11":"0.03454328","12":"0.9162907","13":"0.000000000"},{"1":"Shalom","2":"1071","3":"1991","4":"23.28261","5":"43.28261","6":"46","7":"0.620044234","8":"0.6149948","9":"0.5771990","10":"0.3676006","11":"0.05419975","12":"1.4350845","13":"0.000000000"},{"1":"Shay","2":"7551","3":"4753","4":"114.40909","5":"72.01515","6":"66","7":"0.462904007","8":"0.4819459","9":"0.3928166","10":"0.3251997","11":"0.04002932","12":"1.4170660","13":"0.008097210"},{"1":"Shea","2":"11872","3":"8153","4":"182.64615","5":"125.43077","6":"65","7":"0.375796729","8":"0.4141951","9":"0.4184523","10":"0.2333486","11":"0.02894333","12":"1.0216512","13":"0.000000000"},{"1":"Shiloh","2":"11662","3":"6313","4":"215.96296","5":"116.90741","6":"54","7":"0.613724693","8":"0.5175827","9":"0.4681256","10":"0.2874785","11":"0.03912087","12":"1.1306150","13":"0.013245227"},{"1":"Sol","2":"3067","3":"2019","4":"46.46970","5":"30.59091","6":"66","7":"0.418097546","8":"0.5081390","9":"0.5170369","10":"0.2954297","11":"0.03636488","12":"1.3350011","13":"0.000000000"},{"1":"Storm","2":"2335","3":"3268","4":"44.05660","5":"61.66038","6":"53","7":"0.336166286","8":"0.4513952","9":"0.3364722","10":"0.3800596","11":"0.05220520","12":"1.6850753","13":"0.000000000"},{"1":"Sutton","2":"7860","3":"4867","4":"212.43243","5":"131.54054","6":"37","7":"0.479308876","8":"0.5910060","9":"0.5677130","10":"0.2701568","11":"0.04441351","12":"1.1314021","13":"0.087011377"},{"1":"Taylen","2":"1139","3":"1801","4":"39.27586","5":"62.10345","6":"29","7":"0.458191382","8":"0.4723202","9":"0.4353181","10":"0.3296787","11":"0.06121980","12":"1.2459370","13":"0.000000000"},{"1":"Teegan","2":"1804","3":"1478","4":"69.38462","5":"56.84615","6":"26","7":"0.199316599","8":"0.4209045","9":"0.3406564","10":"0.3292538","11":"0.06457198","12":"1.1653037","13":"0.020408872"},{"1":"Tenzin","2":"1101","3":"1457","4":"40.77778","5":"53.96296","6":"27","7":"0.280160669","8":"0.2880568","9":"0.2623643","10":"0.1401546","11":"0.02697277","12":"0.6007739","13":"0.032260862"},{"1":"Tommie","2":"17582","3":"34353","4":"122.95105","5":"240.23077","6":"143","7":"0.669813700","8":"0.7092428","9":"0.6802438","10":"0.4018835","11":"0.03360719","12":"1.8607523","13":"0.000000000"},{"1":"Tory","2":"3857","3":"6895","4":"53.56944","5":"95.76389","6":"72","7":"0.580906832","8":"0.5447494","9":"0.4434246","10":"0.4416512","11":"0.05204909","12":"1.8040296","13":"0.000000000"},{"1":"Trinidad","2":"4198","3":"5306","4":"36.50435","5":"46.13913","6":"115","7":"0.234230034","8":"0.5343614","9":"0.4895482","10":"0.3288026","11":"0.03066100","12":"1.7578579","13":"0.000000000"},{"1":"Tristyn","2":"2015","3":"2147","4":"67.16667","5":"71.56667","6":"30","7":"0.063452323","8":"0.4025861","9":"0.3819783","10":"0.2630670","11":"0.04802924","12":"1.2237754","13":"0.000000000"},{"1":"Tru","2":"1694","3":"2367","4":"70.58333","5":"98.62500","6":"24","7":"0.334530734","8":"0.5785693","9":"0.5586232","10":"0.3250857","11":"0.06635784","12":"1.3705460","13":"0.095310180"},{"1":"True","2":"1525","3":"1702","4":"34.65909","5":"38.68182","6":"44","7":"0.109809620","8":"0.3155370","9":"0.2433143","10":"0.2752829","11":"0.04150046","12":"1.0608720","13":"0.000000000"},{"1":"Tylar","2":"1321","3":"1582","4":"35.70270","5":"42.75676","6":"37","7":"0.180300844","8":"0.4609694","9":"0.4536672","10":"0.2907965","11":"0.04780665","12":"1.2992830","13":"0.022472856"},{"1":"Verdell","2":"2041","3":"1095","4":"31.89062","5":"17.10938","6":"64","7":"0.622685521","8":"0.7240736","9":"0.7039003","10":"0.3259541","11":"0.04074426","12":"1.4586150","13":"0.087011377"},{"1":"Vernie","2":"3900","3":"2641","4":"43.82022","5":"29.67416","6":"89","7":"0.389818920","8":"0.6197161","9":"0.5187938","10":"0.4138923","11":"0.04387249","12":"1.7917595","13":"0.000000000"},{"1":"Wynn","2":"1186","3":"1947","4":"19.76667","5":"32.45000","6":"60","7":"0.495703426","8":"0.7176817","9":"0.7480546","10":"0.3778701","11":"0.04878282","12":"1.5755364","13":"0.063178902"},{"1":"Yuri","2":"3267","3":"2098","4":"60.50000","5":"38.85185","6":"54","7":"0.442887623","8":"0.7502090","9":"0.7324469","10":"0.4078078","11":"0.05549561","12":"1.8382795","13":"0.023810649"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>Of these 9,955 unique names, the following filter criteria were applied to reduce the list.</p>
+<ol type="1">
+<li>The following “names” were removed, as they are typically placeholders for babies who have been registered with the SSA but not yet named:
+<ul>
+<li>Baby, Infant, Unknown, Unnamed, Notnamed, and Unkown (a misspelling of <em>Unknown</em> that appears in the years 1995-1999).</li>
+</ul></li>
+<li>Any names that appeared in precisely one year were removed.</li>
+<li>Any names for which a given year’s log ratio was greater than 2 or no year’s log ratio went below 0.1 were removed.</li>
+<li>Any names with a standard deviation of log ratio greater than .5 were removed.</li>
+<li>Any names for which the mean log ratio (as calculated two ways) or median log ratio was greater than 1 were removed.</li>
+<li>Any names for which fewer than 1000 babies were attested over the course of 143 years were removed.</li>
+</ol>
+<p>This resulted in a list of 123 names.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>final_list <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(min.logratio, max.logratio, sd.logratio) <span class="sc">|&gt;</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">order_logratio =</span> <span class="fu">rank</span>(min.logratio, <span class="at">ties.method =</span> <span class="st">"first"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(mean.logratio, median.logratio, se.logratio) <span class="sc">|&gt;</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">order_mean =</span> <span class="fu">rank</span>(mean.logratio, <span class="at">ties.method =</span> <span class="st">"first"</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">mean.asab =</span> (mean_F<span class="sc">+</span>mean_M)<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">weighted.frequency =</span> mean.asab<span class="sc">*</span>entries) <span class="sc">|&gt;</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>weighted.frequency) <span class="sc">|&gt;</span> </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">order_common =</span> <span class="fu">rank</span>(<span class="sc">-</span>weighted.frequency,<span class="at">ties.method =</span> <span class="st">"first"</span>), </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">combined_order =</span> order_logratio <span class="sc">+</span> order_mean <span class="sc">+</span> order_common) <span class="sc">|&gt;</span> </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(combined_order, sd.logratio) <span class="do">##|&gt; view()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["total_F"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["total_M"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["mean_F"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["mean_M"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["entries"],"name":[6],"type":["int"],"align":["right"]},{"label":["mean.logratio2"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["mean.logratio"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["median.logratio"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["sd.logratio"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["se.logratio"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["max.logratio"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["min.logratio"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["order_logratio"],"name":[14],"type":["int"],"align":["right"]},{"label":["order_mean"],"name":[15],"type":["int"],"align":["right"]},{"label":["mean.asab"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["weighted.frequency"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["order_common"],"name":[18],"type":["int"],"align":["right"]},{"label":["combined_order"],"name":[19],"type":["int"],"align":["right"]}],"data":[{"1":"Remy","2":"6988","3":"9824","4":"129.40741","5":"181.92593","6":"54","7":"0.340633979","8":"0.3043619","9":"0.2931675","10":"0.1681515","11":"0.02288253","12":"0.7621401","13":"0.000000000","14":"2","15":"5","16":"155.66667","17":"8406.0","18":"15","19":"22"},{"1":"Shea","2":"11872","3":"8153","4":"182.64615","5":"125.43077","6":"65","7":"0.375796729","8":"0.4141951","9":"0.4184523","10":"0.2333486","11":"0.02894333","12":"1.0216512","13":"0.000000000","14":"8","15":"21","16":"154.03846","17":"10012.5","18":"12","19":"41"},{"1":"Sage","2":"24589","3":"13509","4":"447.07273","5":"245.61818","6":"55","7":"0.598943058","8":"0.4501666","9":"0.4303912","10":"0.2993418","11":"0.04036323","12":"1.0444853","13":"0.000000000","14":"10","15":"28","16":"346.34545","17":"19049.0","18":"7","19":"45"},{"1":"Salem","2":"4317","3":"3211","4":"93.84783","5":"69.80435","6":"46","7":"0.295978301","8":"0.3357701","9":"0.3225073","10":"0.2386910","11":"0.03519306","12":"0.9343092","13":"0.000000000","14":"6","15":"8","16":"81.82609","17":"3764.0","18":"34","19":"48"},{"1":"Lavern","2":"6818","3":"9514","4":"71.76842","5":"100.14737","6":"95","7":"0.333198224","8":"0.4871477","9":"0.5108256","10":"0.2834311","11":"0.02907942","12":"1.1895841","13":"0.000000000","14":"17","15":"48","16":"85.95789","17":"8166.0","18":"16","19":"81"},{"1":"Kamari","2":"5032","3":"9972","4":"143.77143","5":"284.91429","6":"35","7":"0.683963646","8":"0.5592179","9":"0.5626767","10":"0.2523456","11":"0.04265419","12":"1.0811772","13":"0.000000000","14":"13","15":"68","16":"214.34286","17":"7502.0","18":"18","19":"99"},{"1":"Lakota","2":"1563","3":"1446","4":"44.65714","5":"41.31429","6":"35","7":"0.077805928","8":"0.1884501","9":"0.1690763","10":"0.1336211","11":"0.02258609","12":"0.4895482","13":"0.000000000","14":"1","15":"1","16":"42.98571","17":"1504.5","18":"102","19":"104"},{"1":"Aries","2":"2099","3":"3587","4":"43.72917","5":"74.72917","6":"48","7":"0.535855158","8":"0.4853448","9":"0.5088216","10":"0.3025130","11":"0.04366399","12":"1.0281606","13":"0.000000000","14":"9","15":"47","16":"59.22917","17":"2843.0","18":"50","19":"106"},{"1":"True","2":"1525","3":"1702","4":"34.65909","5":"38.68182","6":"44","7":"0.109809620","8":"0.3155370","9":"0.2433143","10":"0.2752829","11":"0.04150046","12":"1.0608720","13":"0.000000000","14":"11","15":"6","16":"36.67045","17":"1613.5","18":"93","19":"110"},{"1":"Shai","2":"1525","3":"1813","4":"33.15217","5":"39.41304","6":"46","7":"0.172988522","8":"0.4036689","9":"0.4519851","10":"0.2342839","11":"0.03454328","12":"0.9162907","13":"0.000000000","14":"4","15":"19","16":"36.28261","17":"1669.0","18":"89","19":"112"},{"1":"Tristyn","2":"2015","3":"2147","4":"67.16667","5":"71.56667","6":"30","7":"0.063452323","8":"0.4025861","9":"0.3819783","10":"0.2630670","11":"0.04802924","12":"1.2237754","13":"0.000000000","14":"20","15":"18","16":"69.36667","17":"2081.0","18":"75","19":"113"},{"1":"Carlin","2":"1891","3":"2321","4":"22.24706","5":"27.30588","6":"85","7":"0.204892338","8":"0.3735790","9":"0.3101549","10":"0.3096635","11":"0.03358772","12":"1.4663371","13":"0.000000000","14":"32","15":"11","16":"24.77647","17":"2106.0","18":"74","19":"117"},{"1":"Reilly","2":"5348","3":"4376","4":"124.37209","5":"101.76744","6":"43","7":"0.200587594","8":"0.3479801","9":"0.1900436","10":"0.3515788","11":"0.05361526","12":"1.7176515","13":"0.014388737","14":"81","15":"10","16":"113.06977","17":"4862.0","18":"26","19":"117"},{"1":"Indiana","2":"1423","3":"1240","4":"43.12121","5":"37.57576","6":"33","7":"0.137655939","8":"0.2691695","9":"0.2326223","10":"0.2000795","11":"0.03482937","12":"0.8043728","13":"0.000000000","14":"3","15":"2","16":"40.34848","17":"1331.5","18":"114","19":"119"},{"1":"Rio","2":"1950","3":"3681","4":"48.75000","5":"92.02500","6":"40","7":"0.635355082","8":"0.4534047","9":"0.3748588","10":"0.3780053","11":"0.05976788","12":"1.4946166","13":"0.000000000","14":"36","15":"32","16":"70.38750","17":"2815.5","18":"51","19":"119"},{"1":"Natividad","2":"1811","3":"1711","4":"18.11000","5":"17.11000","6":"100","7":"0.056801184","8":"0.3906193","9":"0.3077683","10":"0.2850977","11":"0.02850977","12":"1.2527630","13":"0.000000000","14":"22","15":"15","16":"17.61000","17":"1761.0","18":"84","19":"121"},{"1":"Armani","2":"10234","3":"13163","4":"301.00000","5":"387.14706","6":"34","7":"0.251694353","8":"0.3805011","9":"0.2748939","10":"0.3852563","11":"0.06607091","12":"1.7047481","13":"0.031875209","14":"97","15":"13","16":"344.07353","17":"11698.5","18":"11","19":"121"},{"1":"Michal","2":"3899","3":"3641","4":"46.97590","5":"43.86747","6":"83","7":"0.068461741","8":"0.4427616","9":"0.3677248","10":"0.3663133","11":"0.04020811","12":"1.8294998","13":"0.000000000","14":"63","15":"27","16":"45.42169","17":"3770.0","18":"33","19":"123"},{"1":"Lorenza","2":"2908","3":"3668","4":"25.06897","5":"31.62069","6":"116","7":"0.232180995","8":"0.4726824","9":"0.4460966","10":"0.3296527","11":"0.03060749","12":"1.6094379","13":"0.000000000","14":"45","15":"41","16":"28.34483","17":"3288.0","18":"38","19":"124"},{"1":"Ardell","2":"2485","3":"2033","4":"40.08065","5":"32.79032","6":"62","7":"0.200760125","8":"0.4343150","9":"0.3018935","10":"0.3622647","11":"0.04600766","12":"1.4816045","13":"0.000000000","14":"35","15":"25","16":"36.43548","17":"2259.0","18":"68","19":"128"},{"1":"An","2":"1227","3":"1055","4":"25.56250","5":"21.97917","6":"48","7":"0.151031399","8":"0.2864519","9":"0.2226879","10":"0.2282246","11":"0.03294138","12":"1.0775589","13":"0.000000000","14":"12","15":"3","16":"23.77083","17":"1141.0","18":"117","19":"132"},{"1":"Storm","2":"2335","3":"3268","4":"44.05660","5":"61.66038","6":"53","7":"0.336166286","8":"0.4513952","9":"0.3364722","10":"0.3800596","11":"0.05220520","12":"1.6850753","13":"0.000000000","14":"51","15":"30","16":"52.85849","17":"2801.5","18":"52","19":"133"},{"1":"Jordin","2":"4359","3":"2410","4":"108.97500","5":"60.25000","6":"40","7":"0.592615926","8":"0.5623309","9":"0.5473784","10":"0.3660718","11":"0.05788103","12":"1.3038507","13":"0.000000000","14":"26","15":"71","16":"84.61250","17":"3384.5","18":"37","19":"134"},{"1":"Sevyn","2":"2344","3":"1168","4":"123.36842","5":"61.47368","6":"19","7":"0.696565987","8":"0.4683681","9":"0.5389965","10":"0.3567583","11":"0.08184596","12":"1.0929466","13":"0.000000000","14":"14","15":"37","16":"92.42105","17":"1756.0","18":"85","19":"136"},{"1":"Aris","2":"1535","3":"2230","4":"22.91045","5":"33.28358","6":"67","7":"0.373471204","8":"0.4512449","9":"0.3566749","10":"0.2956857","11":"0.03612376","12":"1.3350011","13":"0.000000000","14":"28","15":"29","16":"28.09701","17":"1882.5","18":"81","19":"138"},{"1":"Sol","2":"3067","3":"2019","4":"46.46970","5":"30.59091","6":"66","7":"0.418097546","8":"0.5081390","9":"0.5170369","10":"0.2954297","11":"0.03636488","12":"1.3350011","13":"0.000000000","14":"27","15":"54","16":"38.53030","17":"2543.0","18":"58","19":"139"},{"1":"Cedar","2":"1242","3":"2123","4":"25.34694","5":"43.32653","6":"49","7":"0.536107199","8":"0.4621482","9":"0.4054651","10":"0.2882230","11":"0.04117472","12":"1.2089603","13":"0.000000000","14":"19","15":"34","16":"34.33673","17":"1682.5","18":"87","19":"140"},{"1":"Jule","2":"1769","3":"1326","4":"18.23711","5":"13.67010","6":"97","7":"0.288247523","8":"0.3907840","9":"0.3364722","10":"0.2916019","11":"0.02960769","12":"1.2809338","13":"0.000000000","14":"24","15":"16","16":"15.95361","17":"1547.5","18":"100","19":"140"},{"1":"Kylin","2":"1239","3":"1737","4":"36.44118","5":"51.08824","6":"34","7":"0.337854885","8":"0.3909868","9":"0.2982088","10":"0.3357154","11":"0.05757471","12":"1.2039728","13":"0.000000000","14":"18","15":"17","16":"43.76471","17":"1488.0","18":"105","19":"140"},{"1":"Devyn","2":"8719","3":"6641","4":"207.59524","5":"158.11905","6":"42","7":"0.272241998","8":"0.4839456","9":"0.3947539","10":"0.3995641","11":"0.06165408","12":"1.2901505","13":"0.007220248","14":"78","15":"45","16":"182.85714","17":"7680.0","18":"17","19":"140"},{"1":"Jae","2":"1189","3":"1484","4":"16.06757","5":"20.05405","6":"74","7":"0.221628527","8":"0.3876295","9":"0.3677248","10":"0.2490105","11":"0.02894688","12":"1.0986123","13":"0.000000000","14":"15","15":"14","16":"18.06081","17":"1336.5","18":"113","19":"142"},{"1":"Kodi","2":"3255","3":"3048","4":"69.25532","5":"64.85106","6":"47","7":"0.065706638","8":"0.3431538","9":"0.2935472","10":"0.2600120","11":"0.03792664","12":"1.1631508","13":"0.026317308","14":"92","15":"9","16":"67.05319","17":"3151.5","18":"41","19":"142"},{"1":"Shay","2":"7551","3":"4753","4":"114.40909","5":"72.01515","6":"66","7":"0.462904007","8":"0.4819459","9":"0.3928166","10":"0.3251997","11":"0.04002932","12":"1.4170660","13":"0.008097210","14":"79","15":"44","16":"93.21212","17":"6152.0","18":"20","19":"143"},{"1":"Jammie","2":"3980","3":"2380","4":"48.53659","5":"29.02439","6":"82","7":"0.514181332","8":"0.5385507","9":"0.4740657","10":"0.3730015","11":"0.04119113","12":"1.5686159","13":"0.000000000","14":"40","15":"63","16":"38.78049","17":"3180.0","18":"40","19":"143"},{"1":"Isa","2":"2066","3":"2495","4":"36.89286","5":"44.55357","6":"56","7":"0.188674359","8":"0.4518898","9":"0.3531096","10":"0.3827127","11":"0.05114214","12":"1.6094379","13":"0.000000000","14":"46","15":"31","16":"40.72321","17":"2280.5","18":"66","19":"143"},{"1":"Jaylin","2":"8763","3":"10042","4":"265.54545","5":"304.30303","6":"33","7":"0.136237986","8":"0.5083437","9":"0.4982468","10":"0.2581665","11":"0.04494103","12":"0.9195113","13":"0.001906578","14":"76","15":"55","16":"284.92424","17":"9402.5","18":"13","19":"144"},{"1":"Ocean","2":"2773","3":"3068","4":"81.55882","5":"90.23529","6":"34","7":"0.101096117","8":"0.3166439","9":"0.3219750","10":"0.2188075","11":"0.03752518","12":"0.9808293","13":"0.025975486","14":"91","15":"7","16":"85.89706","17":"2920.5","18":"47","19":"145"},{"1":"Armoni","2":"1954","3":"1253","4":"67.37931","5":"43.20690","6":"29","7":"0.444337878","8":"0.4852755","9":"0.5533852","10":"0.2649895","11":"0.04920731","12":"0.9162907","13":"0.000000000","14":"5","15":"46","16":"55.29310","17":"1603.5","18":"94","19":"145"},{"1":"Trinidad","2":"4198","3":"5306","4":"36.50435","5":"46.13913","6":"115","7":"0.234230034","8":"0.5343614","9":"0.4895482","10":"0.3288026","11":"0.03066100","12":"1.7578579","13":"0.000000000","14":"56","15":"61","16":"41.32174","17":"4752.0","18":"28","19":"145"},{"1":"Golden","2":"2105","3":"2592","4":"17.54167","5":"21.60000","6":"120","7":"0.208114311","8":"0.4891175","9":"0.4054651","10":"0.3608197","11":"0.03293818","12":"1.4816045","13":"0.000000000","14":"34","15":"50","16":"19.57083","17":"2348.5","18":"61","19":"145"},{"1":"Tory","2":"3857","3":"6895","4":"53.56944","5":"95.76389","6":"72","7":"0.580906832","8":"0.5447494","9":"0.4434246","10":"0.4416512","11":"0.05204909","12":"1.8040296","13":"0.000000000","14":"60","15":"64","16":"74.66667","17":"5376.0","18":"22","19":"146"},{"1":"Kodie","2":"1191","3":"1302","4":"29.04878","5":"31.75610","6":"41","7":"0.089108253","8":"0.4300301","9":"0.4519851","10":"0.2676515","11":"0.04180014","12":"0.9490806","13":"0.000000000","14":"7","15":"24","16":"30.40244","17":"1246.5","18":"116","19":"147"},{"1":"Burnice","2":"1514","3":"1199","4":"28.03704","5":"22.20370","6":"54","7":"0.233267279","8":"0.4040487","9":"0.3923853","10":"0.2713362","11":"0.03692418","12":"1.1451323","13":"0.000000000","14":"16","15":"20","16":"25.12037","17":"1356.5","18":"112","19":"148"},{"1":"Reign","2":"5826","3":"2748","4":"233.04000","5":"109.92000","6":"25","7":"0.751457284","8":"0.6515037","9":"0.6406291","10":"0.3335659","11":"0.06671318","12":"1.3558352","13":"0.000000000","14":"29","15":"89","16":"171.48000","17":"4287.0","18":"30","19":"148"},{"1":"Kenyatta","2":"4243","3":"3149","4":"74.43860","5":"55.24561","6":"57","7":"0.298185624","8":"0.5607071","9":"0.5175824","10":"0.4467403","11":"0.05917219","12":"1.5730703","13":"0.000000000","14":"42","15":"70","16":"64.84211","17":"3696.0","18":"36","19":"148"},{"1":"Rowan","2":"18481","3":"36036","4":"410.68889","5":"800.80000","6":"45","7":"0.667775261","8":"0.5607003","9":"0.4949703","10":"0.3655030","11":"0.05448597","12":"1.7578579","13":"0.004842624","14":"77","15":"69","16":"605.74444","17":"27258.5","18":"4","19":"150"},{"1":"Dominque","2":"3844","3":"2334","4":"89.39535","5":"54.27907","6":"43","7":"0.498929957","8":"0.5003464","9":"0.4629222","10":"0.4069805","11":"0.06206395","12":"1.7420598","13":"0.000000000","14":"55","15":"52","16":"71.83721","17":"3089.0","18":"43","19":"150"},{"1":"Shiloh","2":"11662","3":"6313","4":"215.96296","5":"116.90741","6":"54","7":"0.613724693","8":"0.5175827","9":"0.4681256","10":"0.2874785","11":"0.03912087","12":"1.1306150","13":"0.013245227","14":"80","15":"57","16":"166.43519","17":"8987.5","18":"14","19":"151"},{"1":"Jody","2":"55791","3":"31372","4":"557.91000","5":"313.72000","6":"100","7":"0.575696791","8":"0.6524340","9":"0.6931472","10":"0.4086631","11":"0.04086631","12":"1.7969186","13":"0.000000000","14":"59","15":"91","16":"435.81500","17":"43581.5","18":"2","19":"152"},{"1":"Montana","2":"7902","3":"3692","4":"168.12766","5":"78.55319","6":"47","7":"0.760947575","8":"0.6620983","9":"0.6372667","10":"0.4596578","11":"0.06704798","12":"1.5146038","13":"0.000000000","14":"38","15":"94","16":"123.34043","17":"5797.0","18":"21","19":"153"},{"1":"Azariah","2":"5937","3":"4718","4":"185.53125","5":"147.43750","6":"32","7":"0.229818974","8":"0.4795217","9":"0.4837920","10":"0.3382390","11":"0.05979277","12":"1.0986123","13":"0.029199155","14":"95","15":"42","16":"166.48438","17":"5327.5","18":"24","19":"161"},{"1":"Arie","2":"3423","3":"2335","4":"30.83784","5":"21.03604","6":"111","7":"0.382505468","8":"0.5495139","9":"0.5389965","10":"0.3509420","11":"0.03330994","12":"1.6650078","13":"0.000000000","14":"50","15":"65","16":"25.93694","17":"2879.0","18":"48","19":"163"},{"1":"Finley","2":"20161","3":"14132","4":"672.03333","5":"471.06667","6":"30","7":"0.355308316","8":"0.4695701","9":"0.4274083","10":"0.2535895","11":"0.04629889","12":"1.1574528","13":"0.078038108","14":"117","15":"38","16":"571.55000","17":"17146.5","18":"9","19":"164"},{"1":"Phoenix","2":"13694","3":"20990","4":"360.36842","5":"552.36842","6":"38","7":"0.427088353","8":"0.4722445","9":"0.4419919","10":"0.2755629","11":"0.04470220","12":"1.7227666","13":"0.087011377","14":"120","15":"39","16":"456.36842","17":"17342.0","18":"8","19":"167"},{"1":"Taylen","2":"1139","3":"1801","4":"39.27586","5":"62.10345","6":"29","7":"0.458191382","8":"0.4723202","9":"0.4353181","10":"0.3296787","11":"0.06121980","12":"1.2459370","13":"0.000000000","14":"21","15":"40","16":"50.68966","17":"1470.0","18":"106","19":"167"},{"1":"Dell","2":"2530","3":"3597","4":"25.55556","5":"36.33333","6":"99","7":"0.351880862","8":"0.5364899","9":"0.5162165","10":"0.3723247","11":"0.03742004","12":"1.8067973","13":"0.000000000","14":"61","15":"62","16":"30.94444","17":"3063.5","18":"44","19":"167"},{"1":"Rian","2":"3356","3":"4859","4":"64.53846","5":"93.44231","6":"52","7":"0.370082867","8":"0.5531689","9":"0.3723374","10":"0.4542534","11":"0.06299362","12":"1.8908504","13":"0.000000000","14":"70","15":"66","16":"78.99038","17":"4107.5","18":"32","19":"168"},{"1":"Tommie","2":"17582","3":"34353","4":"122.95105","5":"240.23077","6":"143","7":"0.669813700","8":"0.7092428","9":"0.6802438","10":"0.4018835","11":"0.03360719","12":"1.8607523","13":"0.000000000","14":"67","15":"102","16":"181.59091","17":"25967.5","18":"5","19":"174"},{"1":"Amari","2":"18366","3":"25339","4":"483.31579","5":"666.81579","6":"38","7":"0.321843582","8":"0.5182520","9":"0.5545074","10":"0.2461712","11":"0.03993424","12":"0.9600261","13":"0.050819248","14":"111","15":"58","16":"575.06579","17":"21852.5","18":"6","19":"175"},{"1":"Kamdyn","2":"1965","3":"3369","4":"85.43478","5":"146.47826","6":"23","7":"0.539123719","8":"0.6850176","9":"0.7183374","10":"0.3693006","11":"0.07700450","12":"1.2611312","13":"0.000000000","14":"23","15":"97","16":"115.95652","17":"2667.0","18":"56","19":"176"},{"1":"Vernie","2":"3900","3":"2641","4":"43.82022","5":"29.67416","6":"89","7":"0.389818920","8":"0.6197161","9":"0.5187938","10":"0.4138923","11":"0.04387249","12":"1.7917595","13":"0.000000000","14":"58","15":"82","16":"36.74719","17":"3270.5","18":"39","19":"179"},{"1":"Gentry","2":"2510","3":"2993","4":"44.82143","5":"53.44643","6":"56","7":"0.175993476","8":"0.4649167","9":"0.3404248","10":"0.4312685","11":"0.05763068","12":"1.7227666","13":"0.025975486","14":"90","15":"35","16":"49.13393","17":"2751.5","18":"54","19":"179"},{"1":"Jamey","2":"3001","3":"6674","4":"40.01333","5":"88.98667","6":"75","7":"0.799273814","8":"0.6275357","9":"0.5212969","10":"0.4811697","11":"0.05556070","12":"1.8834679","13":"0.000000000","14":"69","15":"85","16":"64.50000","17":"4837.5","18":"27","19":"181"},{"1":"Ollie","2":"41367","3":"17000","4":"289.27972","5":"118.88112","6":"143","7":"0.889270117","8":"0.8734704","9":"0.8232003","10":"0.4577273","11":"0.03827708","12":"1.7617786","13":"0.000000000","14":"57","15":"122","16":"204.08042","17":"29183.5","18":"3","19":"182"},{"1":"Garnett","2":"2784","3":"3425","4":"30.93333","5":"38.05556","6":"90","7":"0.207212729","8":"0.6109919","9":"0.4981667","10":"0.4433498","11":"0.04673317","12":"1.8562980","13":"0.000000000","14":"66","15":"76","16":"34.49444","17":"3104.5","18":"42","19":"184"},{"1":"Peyton","2":"82835","3":"50017","4":"1314.84127","5":"793.92063","6":"63","7":"0.504487730","8":"0.7039372","9":"0.6931472","10":"0.4361255","11":"0.05494665","12":"1.4499906","13":"0.017137516","14":"83","15":"101","16":"1054.38095","17":"66426.0","18":"1","19":"185"},{"1":"Micha","2":"1126","3":"1082","4":"20.10714","5":"19.32143","6":"56","7":"0.039860349","8":"0.4802170","9":"0.4681657","10":"0.3463379","11":"0.04628135","12":"1.2878543","13":"0.000000000","14":"25","15":"43","16":"19.71429","17":"1104.0","18":"119","19":"187"},{"1":"Earlie","2":"1302","3":"2047","4":"19.14706","5":"30.10294","6":"68","7":"0.452473763","8":"0.5070663","9":"0.4607029","10":"0.3229344","11":"0.03916155","12":"1.6486586","13":"0.000000000","14":"48","15":"53","16":"24.62500","17":"1674.5","18":"88","19":"189"},{"1":"Kalin","2":"1487","3":"1714","4":"35.40476","5":"40.80952","6":"42","7":"0.142069153","8":"0.3756713","9":"0.2919922","10":"0.3669148","11":"0.05661619","12":"1.6094379","13":"0.014815086","14":"82","15":"12","16":"38.10714","17":"1600.5","18":"95","19":"189"},{"1":"Micaiah","2":"1461","3":"2608","4":"37.46154","5":"66.87179","6":"39","7":"0.579462511","8":"0.6124489","9":"0.6396585","10":"0.3922127","11":"0.06280429","12":"1.4992348","13":"0.000000000","14":"37","15":"77","16":"52.16667","17":"2034.5","18":"77","19":"191"},{"1":"Kary","2":"1713","3":"1290","4":"30.58929","5":"23.03571","6":"56","7":"0.283604001","8":"0.5340368","9":"0.5293832","10":"0.3444097","11":"0.04602368","12":"1.3862944","13":"0.000000000","14":"30","15":"60","16":"26.81250","17":"1501.5","18":"103","19":"193"},{"1":"Teegan","2":"1804","3":"1478","4":"69.38462","5":"56.84615","6":"26","7":"0.199316599","8":"0.4209045","9":"0.3406564","10":"0.3292538","11":"0.06457198","12":"1.1653037","13":"0.020408872","14":"84","15":"22","16":"63.11538","17":"1641.0","18":"90","19":"196"},{"1":"Campbell","2":"6334","3":"4411","4":"186.29412","5":"129.73529","6":"34","7":"0.361830527","8":"0.6493579","9":"0.6559235","10":"0.3678723","11":"0.06308959","12":"1.3350011","13":"0.024097552","14":"88","15":"88","16":"158.01471","17":"5372.5","18":"23","19":"199"},{"1":"Maxie","2":"3824","3":"4552","4":"33.25217","5":"39.58261","6":"115","7":"0.174269702","8":"0.6974635","9":"0.6190392","10":"0.4817254","11":"0.04492112","12":"1.8718022","13":"0.000000000","14":"68","15":"100","16":"36.41739","17":"4188.0","18":"31","19":"199"},{"1":"Jonnie","2":"5676","3":"3173","4":"46.90909","5":"26.22314","6":"121","7":"0.581569247","8":"0.6402026","9":"0.5901992","10":"0.3655136","11":"0.03322851","12":"1.7176515","13":"0.021053409","14":"85","15":"87","16":"36.56612","17":"4424.5","18":"29","19":"201"},{"1":"Haiden","2":"1636","3":"3884","4":"51.12500","5":"121.37500","6":"32","7":"0.864611312","8":"0.7642535","9":"0.8116560","10":"0.3598737","11":"0.06361729","12":"1.5271998","13":"0.000000000","14":"39","15":"112","16":"86.25000","17":"2760.0","18":"53","19":"204"},{"1":"Sammie","2":"7732","3":"20774","4":"55.22857","5":"148.38571","6":"140","7":"0.988334643","8":"0.8217686","9":"0.8341392","10":"0.4948914","11":"0.04182596","12":"1.9760632","13":"0.000000000","14":"74","15":"120","16":"101.80714","17":"14253.0","18":"10","19":"204"},{"1":"Larkin","2":"1877","3":"1122","4":"36.09615","5":"21.57692","6":"52","7":"0.514561951","8":"0.4976660","9":"0.4054651","10":"0.3737276","11":"0.05182670","12":"1.7004097","13":"0.000000000","14":"52","15":"51","16":"28.83654","17":"1499.5","18":"104","19":"207"},{"1":"Ossie","2":"2800","3":"1450","4":"35.00000","5":"18.12500","6":"80","7":"0.658055861","8":"0.6783785","9":"0.7105864","10":"0.4102059","11":"0.04586241","12":"1.5686159","13":"0.000000000","14":"41","15":"95","16":"26.56250","17":"2125.0","18":"72","19":"208"},{"1":"Alexi","2":"4128","3":"1606","4":"80.94118","5":"31.49020","6":"51","7":"0.944046413","8":"0.7671720","9":"0.7765288","10":"0.4590284","11":"0.06427683","12":"1.6148288","13":"0.000000000","14":"47","15":"114","16":"56.21569","17":"2867.0","18":"49","19":"210"},{"1":"Shalom","2":"1071","3":"1991","4":"23.28261","5":"43.28261","6":"46","7":"0.620044234","8":"0.6149948","9":"0.5771990","10":"0.3676006","11":"0.05419975","12":"1.4350845","13":"0.000000000","14":"31","15":"79","16":"33.28261","17":"1531.0","18":"101","19":"211"},{"1":"Daylin","2":"1632","3":"1647","4":"51.00000","5":"51.46875","6":"32","7":"0.009149195","8":"0.4263534","9":"0.4639392","10":"0.3168380","11":"0.05600958","12":"1.2039728","13":"0.033901552","14":"99","15":"23","16":"51.23438","17":"1639.5","18":"92","19":"214"},{"1":"Sutton","2":"7860","3":"4867","4":"212.43243","5":"131.54054","6":"37","7":"0.479308876","8":"0.5910060","9":"0.5677130","10":"0.2701568","11":"0.04441351","12":"1.1314021","13":"0.087011377","14":"121","15":"75","16":"171.98649","17":"6363.5","18":"19","19":"215"},{"1":"Brighton","2":"1894","3":"2753","4":"54.11429","5":"78.65714","6":"35","7":"0.374000231","8":"0.5151326","9":"0.4700036","10":"0.3148068","11":"0.05321206","12":"1.1499056","13":"0.029852963","14":"96","15":"56","16":"66.38571","17":"2323.5","18":"63","19":"215"},{"1":"Dann","2":"1056","3":"1046","4":"22.00000","5":"21.79167","6":"48","7":"0.009514820","8":"0.5295856","9":"0.5427701","10":"0.3235976","11":"0.04670730","12":"1.4733057","13":"0.000000000","14":"33","15":"59","16":"21.89583","17":"1051.0","18":"123","19":"215"},{"1":"Briar","2":"4994","3":"5149","4":"128.05128","5":"132.02564","6":"39","7":"0.030565329","8":"0.7996782","9":"0.6440145","10":"0.4600393","11":"0.07366524","12":"1.9459101","13":"0.000000000","14":"72","15":"118","16":"130.03846","17":"5071.5","18":"25","19":"215"},{"1":"Tenzin","2":"1101","3":"1457","4":"40.77778","5":"53.96296","6":"27","7":"0.280160669","8":"0.2880568","9":"0.2623643","10":"0.1401546","11":"0.02697277","12":"0.6007739","13":"0.032260862","14":"98","15":"4","16":"47.37037","17":"1279.0","18":"115","19":"217"},{"1":"Deane","2":"1249","3":"2598","4":"15.61250","5":"32.47500","6":"80","7":"0.732398687","8":"0.6877658","9":"0.7308875","10":"0.3527156","11":"0.03943481","12":"1.5755364","13":"0.000000000","14":"43","15":"98","16":"24.04375","17":"1923.5","18":"80","19":"221"},{"1":"Odie","2":"1589","3":"2089","4":"20.90789","5":"27.48684","6":"76","7":"0.273580595","8":"0.5590771","9":"0.4543718","10":"0.4421095","11":"0.05071343","12":"1.9459101","13":"0.000000000","14":"71","15":"67","16":"24.19737","17":"1839.0","18":"83","19":"221"},{"1":"Tylar","2":"1321","3":"1582","4":"35.70270","5":"42.75676","6":"37","7":"0.180300844","8":"0.4609694","9":"0.4536672","10":"0.2907965","11":"0.04780665","12":"1.2992830","13":"0.022472856","14":"86","15":"33","16":"39.22973","17":"1451.5","18":"109","19":"228"},{"1":"Kit","2":"1775","3":"3048","4":"22.75641","5":"39.07692","6":"78","7":"0.540685215","8":"0.6915626","9":"0.6260809","10":"0.4480598","11":"0.05073278","12":"1.9740810","13":"0.000000000","14":"73","15":"99","16":"30.91667","17":"2411.5","18":"59","19":"231"},{"1":"Jourdan","2":"2309","3":"1788","4":"54.97619","5":"42.57143","6":"42","7":"0.255716854","8":"0.4888202","9":"0.3745462","10":"0.3092656","11":"0.04772072","12":"1.2527630","13":"0.045809536","14":"107","15":"49","16":"48.77381","17":"2048.5","18":"76","19":"232"},{"1":"Rhyan","2":"2902","3":"1417","4":"63.08696","5":"30.80435","6":"46","7":"0.716858194","8":"0.7512796","9":"0.7798345","10":"0.4616640","11":"0.06806865","12":"1.7122953","13":"0.000000000","14":"53","15":"110","16":"46.94565","17":"2159.5","18":"70","19":"233"},{"1":"Krishna","2":"1839","3":"2195","4":"30.65000","5":"36.58333","6":"60","7":"0.176960101","8":"0.6566716","9":"0.6505498","10":"0.4476575","11":"0.05779234","12":"1.8325815","13":"0.000000000","14":"64","15":"92","16":"33.61667","17":"2017.0","18":"79","19":"235"},{"1":"Dru","2":"1694","3":"2543","4":"23.85915","5":"35.81690","6":"71","7":"0.406251890","8":"0.7752500","9":"0.7239188","10":"0.4172615","11":"0.04951983","12":"1.6613977","13":"0.000000000","14":"49","15":"115","16":"29.83803","17":"2118.5","18":"73","19":"237"},{"1":"Jaedyn","2":"2517","3":"2057","4":"100.68000","5":"82.28000","6":"25","7":"0.201819105","8":"0.5842850","9":"0.5179431","10":"0.4036274","11":"0.08072549","12":"1.3862944","13":"0.036179657","14":"100","15":"73","16":"91.48000","17":"2287.0","18":"65","19":"238"},{"1":"Merlyn","2":"1336","3":"3350","4":"16.70000","5":"41.87500","6":"80","7":"0.919280271","8":"0.8015387","9":"0.8113416","10":"0.4163658","11":"0.04655111","12":"1.8289385","13":"0.000000000","14":"62","15":"119","16":"29.28750","17":"2343.0","18":"62","19":"243"},{"1":"Kimani","2":"1559","3":"1348","4":"47.24242","5":"40.84848","6":"33","7":"0.145422578","8":"0.6397200","9":"0.4964369","10":"0.4388400","11":"0.07639223","12":"1.7346011","13":"0.000000000","14":"54","15":"86","16":"44.04545","17":"1453.5","18":"108","19":"248"},{"1":"Nicola","2":"5008","3":"2478","4":"58.91765","5":"29.15294","6":"85","7":"0.703584851","8":"0.7473319","9":"0.7198154","10":"0.4295077","11":"0.04658665","12":"1.6916760","13":"0.048790164","14":"108","15":"107","16":"44.03529","17":"3743.0","18":"35","19":"250"},{"1":"Ridley","2":"1059","3":"1109","4":"50.42857","5":"52.80952","6":"21","7":"0.046133642","8":"0.4380151","9":"0.4054651","10":"0.2879283","11":"0.06283112","12":"1.0986123","13":"0.040821995","14":"104","15":"26","16":"51.61905","17":"1084.0","18":"121","19":"251"},{"1":"Arin","2":"2518","3":"2023","4":"46.62963","5":"37.46296","6":"54","7":"0.218883377","8":"0.6146708","9":"0.6288638","10":"0.3577004","11":"0.04867686","12":"1.2919837","13":"0.045462374","14":"106","15":"78","16":"42.04630","17":"2270.5","18":"67","19":"251"},{"1":"Ryen","2":"1011","3":"1142","4":"26.60526","5":"30.05263","6":"38","7":"0.121841171","8":"0.4672755","9":"0.3306992","10":"0.3883466","11":"0.06299814","12":"1.2237754","13":"0.028987537","14":"93","15":"36","16":"28.32895","17":"1076.5","18":"122","19":"251"},{"1":"Yuri","2":"3267","3":"2098","4":"60.50000","5":"38.85185","6":"54","7":"0.442887623","8":"0.7502090","9":"0.7324469","10":"0.4078078","11":"0.05549561","12":"1.8382795","13":"0.023810649","14":"87","15":"109","16":"49.67593","17":"2682.5","18":"55","19":"251"},{"1":"Dakotah","2":"2185","3":"3065","4":"56.02564","5":"78.58974","6":"39","7":"0.338431741","8":"0.6205444","9":"0.6528733","10":"0.3103608","11":"0.04969750","12":"1.1700713","13":"0.058840500","14":"114","15":"83","16":"67.30769","17":"2625.0","18":"57","19":"254"},{"1":"Jessy","2":"1998","3":"4100","4":"38.42308","5":"78.84615","6":"52","7":"0.718840293","8":"0.7755492","9":"0.7360175","10":"0.3604809","11":"0.04998971","12":"1.5686159","13":"0.028987537","14":"94","15":"116","16":"58.63462","17":"3049.0","18":"45","19":"255"},{"1":"Mikah","2":"1570","3":"3018","4":"36.51163","5":"70.18605","6":"43","7":"0.653518741","8":"0.6517027","9":"0.5877867","10":"0.4197327","11":"0.06400863","12":"1.5743466","13":"0.037041272","14":"101","15":"90","16":"53.34884","17":"2294.0","18":"64","19":"255"},{"1":"Barrie","2":"1630","3":"1230","4":"28.10345","5":"21.20690","6":"58","7":"0.281565845","8":"0.7133432","9":"0.6698872","10":"0.4712531","11":"0.06187856","12":"1.5926308","13":"0.000000000","14":"44","15":"103","16":"24.65517","17":"1430.0","18":"110","19":"257"},{"1":"Seneca","2":"1579","3":"1702","4":"32.89583","5":"35.45833","6":"48","7":"0.075012295","8":"0.6157242","9":"0.4983530","10":"0.4223785","11":"0.06096508","12":"1.7730673","13":"0.024692613","14":"89","15":"80","16":"34.17708","17":"1640.5","18":"91","19":"260"},{"1":"Braylin","2":"1520","3":"2846","4":"54.28571","5":"101.64286","6":"28","7":"0.627204165","8":"0.6585663","9":"0.6998587","10":"0.3326746","11":"0.06286959","12":"1.4271164","13":"0.039220713","14":"103","15":"93","16":"77.96429","17":"2183.0","18":"69","19":"265"},{"1":"Laramie","2":"1137","3":"1041","4":"24.19149","5":"22.14894","6":"47","7":"0.088211425","8":"0.6163800","9":"0.5198755","10":"0.4540024","11":"0.06622306","12":"1.8458267","13":"0.000000000","14":"65","15":"81","16":"23.17021","17":"1089.0","18":"120","19":"266"},{"1":"Aven","2":"1472","3":"2232","4":"56.61538","5":"85.84615","6":"26","7":"0.416276024","8":"0.5879114","9":"0.5769812","10":"0.3927300","11":"0.07702070","12":"1.6817586","13":"0.054067221","14":"112","15":"74","16":"71.23077","17":"1852.0","18":"82","19":"268"},{"1":"Tru","2":"1694","3":"2367","4":"70.58333","5":"98.62500","6":"24","7":"0.334530734","8":"0.5785693","9":"0.5586232","10":"0.3250857","11":"0.06635784","12":"1.3705460","13":"0.095310180","14":"123","15":"72","16":"84.60417","17":"2030.5","18":"78","19":"273"},{"1":"Lannie","2":"1140","3":"1784","4":"15.00000","5":"23.47368","6":"76","7":"0.447829772","8":"0.6815575","9":"0.6810984","10":"0.4332938","11":"0.04970221","12":"1.9828147","13":"0.000000000","14":"75","15":"96","16":"19.23684","17":"1462.0","18":"107","19":"278"},{"1":"Scout","2":"4247","3":"1694","4":"137.00000","5":"54.64516","6":"31","7":"0.919120255","8":"0.7648021","9":"0.7217206","10":"0.3494301","11":"0.06275950","12":"1.3266220","13":"0.093090423","14":"122","15":"113","16":"95.82258","17":"2970.5","18":"46","19":"281"},{"1":"Codie","2":"1740","3":"2562","4":"36.25000","5":"53.37500","6":"48","7":"0.386903090","8":"0.7134844","9":"0.6931472","10":"0.3756894","11":"0.05422609","12":"1.5755364","13":"0.057158414","14":"113","15":"104","16":"44.81250","17":"2151.0","18":"71","19":"288"},{"1":"Karsen","2":"1634","3":"3180","4":"51.06250","5":"99.37500","6":"32","7":"0.665850200","8":"0.9401092","9":"0.9611531","10":"0.4328585","11":"0.07651930","12":"1.7394910","13":"0.049596941","14":"109","15":"123","16":"75.21875","17":"2407.0","18":"60","19":"292"},{"1":"Myrl","2":"1642","3":"1144","4":"30.40741","5":"21.18519","6":"54","7":"0.361384118","8":"0.6262227","9":"0.5036313","10":"0.4200356","11":"0.05715960","12":"1.6863990","13":"0.050010421","14":"110","15":"84","16":"25.79630","17":"1393.0","18":"111","19":"305"},{"1":"Parris","2":"1637","3":"1531","4":"27.28333","5":"25.51667","6":"60","7":"0.066944182","8":"0.7516399","9":"0.7752987","10":"0.4464327","11":"0.05763421","12":"1.8718022","13":"0.039220713","14":"102","15":"111","16":"26.40000","17":"1584.0","18":"96","19":"309"},{"1":"Wynn","2":"1186","3":"1947","4":"19.76667","5":"32.45000","6":"60","7":"0.495703426","8":"0.7176817","9":"0.7480546","10":"0.3778701","11":"0.04878282","12":"1.5755364","13":"0.063178902","14":"115","15":"105","16":"26.10833","17":"1566.5","18":"99","19":"319"},{"1":"Charly","2":"2290","3":"1155","4":"49.78261","5":"25.10870","6":"46","7":"0.684451474","8":"0.7776814","9":"0.7520387","10":"0.4732781","11":"0.06978104","12":"1.9252909","13":"0.066691374","14":"116","15":"117","16":"37.44565","17":"1722.5","18":"86","19":"319"},{"1":"Verdell","2":"2041","3":"1095","4":"31.89062","5":"17.10938","6":"64","7":"0.622685521","8":"0.7240736","9":"0.7039003","10":"0.3259541","11":"0.04074426","12":"1.4586150","13":"0.087011377","14":"119","15":"106","16":"24.50000","17":"1568.0","18":"98","19":"323"},{"1":"Ozell","2":"1063","3":"1191","4":"21.26000","5":"23.82000","6":"50","7":"0.113698191","8":"0.7495211","9":"0.6810984","10":"0.4639555","11":"0.06561321","12":"1.9218126","13":"0.040821995","14":"105","15":"108","16":"22.54000","17":"1127.0","18":"118","19":"331"},{"1":"Cris","2":"1083","3":"2073","4":"25.78571","5":"49.35714","6":"42","7":"0.649261865","8":"0.8259314","9":"0.7478546","10":"0.4384387","11":"0.06765257","12":"1.7917595","13":"0.085766822","14":"118","15":"121","16":"37.57143","17":"1578.0","18":"97","19":"336"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>To order these names on a principled basis, each name was ranked independently on three sets of criteria (log ratio, arithmetic mean, and commonness). The log ratio ranking prioritized the minimum log ratio, then broke ties using the maximum log ratio, then the standard deviation of the log ratios. The mean ranking prioritized the mean log ratio, then broke ties with median log ratio and the standard error of the log ratio. The commonness ranking was calculated by averaging the mean number of AFAB and AMAB attestations per year and multiplied that by the number of entries (i.e.&nbsp;the number of years in which the name was attested), then ranking from largest to smallest value. Finally, these three rankings were added to create a “combined” ranking, whereby smallest values were ranked higher than larger values and ties were broken using the standard deviation of the log ratio in order to prioritize names with less variance in log ratio (i.e.&nbsp;balancedness).</p>
+</section>
+<section id="compared-to-top-tumblr-survey-names" class="level1">
+<h1>Compared to top Tumblr Survey names</h1>
+<p><a href="https://cassolotl.tumblr.com/post/717205595957166080/results-of-the-nonbinary-name-survey">Source</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>balanced_USA_summary_data <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(min.logratio, max.logratio, sd.logratio) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">order_logratio =</span> <span class="fu">rank</span>(min.logratio, <span class="at">ties.method =</span> <span class="st">"first"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(mean.logratio, median.logratio, se.logratio) <span class="sc">|&gt;</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">order_mean =</span> <span class="fu">rank</span>(mean.logratio, <span class="at">ties.method =</span> <span class="st">"first"</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">mean.asab =</span> (mean_F<span class="sc">+</span>mean_M)<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">weighted.frequency =</span> mean.asab<span class="sc">*</span>entries) <span class="sc">|&gt;</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>weighted.frequency) <span class="sc">|&gt;</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">order_common =</span> <span class="fu">rank</span>(<span class="sc">-</span>weighted.frequency,<span class="at">ties.method =</span> <span class="st">"first"</span>), </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">combined_order =</span> order_logratio <span class="sc">+</span> order_mean <span class="sc">+</span> order_common) <span class="sc">|&gt;</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(combined_order, mean.logratio) <span class="sc">|&gt;</span> </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">order =</span> <span class="fu">rank</span>(combined_order, <span class="at">ties.method =</span> <span class="st">"first"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filter(entries &lt; 25 &amp; mean.asab &lt; 25) |&gt; </span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filter(name %in% c("Alex","Sam","Dana","Alyx","Cody","Quinn","Kim","Mary","John","Remy","Lauren","Kirby","Kat","Kit","Ellis","Jordan","Morgan")) |&gt; </span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="do">##top tumblr names</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Alex"</span>,<span class="st">"Jay"</span>,<span class="st">"Sam"</span>,<span class="st">"Charlie"</span>,<span class="st">"Max"</span>,<span class="st">"Ash"</span>,<span class="st">"Robin"</span>,<span class="st">"Rowan"</span>,<span class="st">"Kit"</span>,<span class="st">"Eli"</span>,<span class="st">"Quinn"</span>,<span class="st">"Finn"</span>,<span class="st">"Bee"</span>,<span class="st">"Elliot"</span>,<span class="st">"Jamie"</span>,<span class="st">"Jack"</span>,<span class="st">"Aster"</span>,<span class="st">"Blue"</span>,<span class="st">"Crow"</span>,<span class="st">"Lee"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(order, name, entries, mean.logratio, order_logratio, order_mean, order_common, combined_order)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["order"],"name":[1],"type":["int"],"align":["right"]},{"label":["name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["entries"],"name":[3],"type":["int"],"align":["right"]},{"label":["mean.logratio"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["order_logratio"],"name":[5],"type":["int"],"align":["right"]},{"label":["order_mean"],"name":[6],"type":["int"],"align":["right"]},{"label":["order_common"],"name":[7],"type":["int"],"align":["right"]},{"label":["combined_order"],"name":[8],"type":["int"],"align":["right"]}],"data":[{"1":"57","2":"Rowan","3":"45","4":"0.5607003","5":"2248","6":"2752","7":"796","8":"5796"},{"1":"85","2":"Jamie","3":"120","4":"0.9245097","5":"1744","6":"4096","7":"187","8":"6027"},{"1":"178","2":"Blue","3":"29","4":"0.4477007","5":"910","6":"2149","7":"3608","8":"6667"},{"1":"191","2":"Robin","3":"113","4":"1.0838837","5":"2019","6":"4552","7":"200","8":"6771"},{"1":"280","2":"Kit","3":"78","4":"0.6915626","5":"1778","6":"3278","7":"2083","8":"7139"},{"1":"490","2":"Bee","3":"49","4":"0.5548121","5":"1746","6":"2720","7":"3308","8":"7774"},{"1":"676","2":"Quinn","3":"64","4":"1.3352009","5":"2349","6":"5187","7":"657","8":"8193"},{"1":"1827","2":"Aster","3":"12","4":"0.7802273","5":"1628","6":"3623","7":"4492","8":"9743"},{"1":"1889","2":"Charlie","3":"142","4":"2.5259566","5":"2341","6":"7140","7":"336","8":"9817"},{"1":"2862","2":"Lee","3":"143","4":"1.6699715","5":"5274","6":"5894","7":"237","8":"11405"},{"1":"4791","2":"Ash","3":"11","4":"2.4672264","5":"4559","6":"7081","7":"3235","8":"14875"},{"1":"4843","2":"Elliot","3":"39","4":"2.7836603","5":"6764","6":"7399","7":"853","8":"15016"},{"1":"5791","2":"Alex","3":"104","4":"4.0040034","5":"7867","6":"8465","7":"245","8":"16577"},{"1":"5885","2":"Jay","3":"112","4":"4.1842381","5":"7697","6":"8612","7":"369","8":"16678"},{"1":"6422","2":"Sam","3":"121","4":"4.2874801","5":"8341","6":"8683","7":"520","8":"17544"},{"1":"6546","2":"Finn","3":"24","4":"4.1110519","5":"8119","6":"8535","7":"1074","8":"17728"},{"1":"6752","2":"Eli","3":"52","4":"4.5695880","5":"8636","6":"8909","7":"483","8":"18028"},{"1":"7079","2":"Max","3":"73","4":"5.0022051","5":"8722","6":"9290","7":"486","8":"18498"},{"1":"7584","2":"Jack","3":"123","4":"5.6088697","5":"9280","6":"9732","7":"75","8":"19087"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

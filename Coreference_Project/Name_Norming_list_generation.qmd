@@ -1,0 +1,149 @@
+---
+title: "Name Norming"
+author: "Newcastle & Princeton"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-expand: true
+    df-print: paged
+---
+
+```{r setup}
+library(readr)
+library(readxl)
+library(tidyverse); theme_set(theme_bw())
+library(broom)
+library(flextable)
+
+options(scipen = 999)
+```
+
+# Purpose
+
+We are gathering gender norming data for names that could be given to men/boys, women/girls, and nonbinary people.
+
+There are three sources for how we gathered these names.
+
+1. Tumblr survey of nonbinary names
+2. Made up names based on phonotactic/phonaesthemic/semantic principles (citations?)
+3. USA Social Security Administration names assigned at birth datasets
+
+# USA SSA data
+```{r}
+# Read in Lauren's database, filtered for only USA name data
+usa_ssa <- read_csv("data/large_files/names_combined.csv", show_col_types = FALSE) |> 
+  filter(region == "USA")
+
+usa_ssa |> 
+  pivot_wider(names_from = "asab", 
+              values_from = c(number,proportion,rank),
+              values_fill = 0) -> wide_names
+
+usa_ssa |> 
+  pivot_wider(names_from = "asab", 
+              values_from = c(number,proportion,rank),
+              values_fill = 0) |> 
+  mutate(ratio_numrFM = case_when(number_M != 0 ~ number_F/number_M,
+                                  .default = 0),
+         log_ratio_numrFM = log(ratio_numrFM) |> abs()) |> 
+  mutate_if(is.numeric, list(~na_if(., Inf))) |> 
+  filter(is.na(log_ratio_numrFM)) -> discarded_names
+
+usa_ssa |> 
+  pivot_wider(names_from = "asab", 
+              values_from = c(number,proportion,rank),
+              values_fill = 0) |> 
+  mutate(ratio_numrFM = case_when(number_M != 0 ~ number_F/number_M,
+                                  .default = 0),
+         log_ratio_numrFM = log(ratio_numrFM) |> abs()) |> 
+  mutate_if(is.numeric, list(~na_if(., Inf))) |> 
+  filter(!is.na(log_ratio_numrFM)) |> 
+  group_by(name) |> 
+  summarise(total_F = sum(number_F),
+            total_M = sum(number_M),
+            mean_F = mean(number_F, na.rm = TRUE),
+            mean_M = mean(number_M, na.rm = TRUE),
+            entries = n(),
+            mean.logratio2 = mean(abs(log(mean_F/mean_M)), na.rm = TRUE),
+            mean.logratio = mean(log_ratio_numrFM, na.rm = TRUE),
+            median.logratio = median(log_ratio_numrFM, na.rm = TRUE),
+            sd.logratio = sd(log_ratio_numrFM, na.rm = TRUE),
+            se.logratio = sd(log_ratio_numrFM, na.rm = TRUE)/sqrt(n()),
+            max.logratio = max(log_ratio_numrFM, na.rm = TRUE),
+            min.logratio = min(log_ratio_numrFM, na.rm = TRUE),
+            .groups = "drop") -> balanced_USA_summary_data
+#write_csv(balanced_USA_summary_data, "data/large_files/balanced_USA_summary_data.csv")
+```
+
+This set of balanced names was gathered from the USA SSA data in the following manner. First, every name was given its own row for each year it was attested, with attestations for AMAB and AFAB babies in paired columns (missing data were given the value 0). Then, each name was assigned a ratio of AFAB to AMAB names (when AMAB names were non-zero). When there were no AMAB names attested in a given year, the ratio was calculated at 0 to avoid infinite values in the next step. Next, the logarith was calculated for all ratios, and the absolute value of the result was reported. This provides a score for how balanced a ratio is, with values closer to 0 associated with ratios closer to 1:1. At this stage, any log-ratios calculated to be infinite or missing data were discarded, comprising `r length(discarded_names$name) |> format(big.mark = ",")` entries, or `r (length(discarded_names$name)/length(wide_names$name)) |> scales::percent(accuracy = 0.01)` of the data, leaving `r (length(wide_names$name)-length(discarded_names$name)) |> format(big.mark = ",")` entries and `r unique(balanced_USA_summary_data$name) |> length() |> format(big.mark = ",")` unique names for analysis.
+
+```{r}
+balanced_USA_summary_data |> 
+  filter(!name %in% c("Baby","Infant","Unborn","Unknown","Unkown","Unnamed","Notnamed","Stillborn","Female"),
+         entries > 1,
+         min.logratio <= 0.1,
+         max.logratio <= 2,
+         sd.logratio <= .5,
+         mean.logratio <= 1,
+         median.logratio <= 1,
+         mean.logratio2 <=1,
+         #mean_M >= 25,
+         #mean_F >= 25,
+         total_M >= 1000,
+         total_F >= 1000) -> final_list; final_list
+```
+
+Of these `r unique(balanced_USA_summary_data$name) |> length() |> format(big.mark = ",")` unique names, the following filter criteria were applied to reduce the list.
+
+1. The following "names" were removed, as they are typically placeholders for babies who have been registered with the SSA but not yet named:
+    - Baby, Infant, Unknown, Unnamed, Notnamed, and Unkown (a misspelling of *Unknown* that appears in the years 1995-1999).
+2. Any names that appeared in precisely one year were removed.
+3. Any names for which a given year's log ratio was greater than 2 or no year's log ratio went below 0.1 were removed.
+4. Any names with a standard deviation of log ratio greater than .5 were removed.
+5. Any names for which the mean log ratio (as calculated two ways) or median log ratio was greater than 1 were removed.
+6. Any names for which fewer than 1000 babies were attested over the course of 143 years were removed.
+
+This resulted in a list of `r length(final_list$name)` names.
+
+```{r}
+final_list |> 
+  arrange(min.logratio, max.logratio, sd.logratio) |> 
+  mutate(order_logratio = rank(min.logratio, ties.method = "first")) |> 
+  arrange(mean.logratio, median.logratio, se.logratio) |> 
+  mutate(order_mean = rank(mean.logratio, ties.method = "first"),
+         mean.asab = (mean_F+mean_M)/2,
+         weighted.frequency = mean.asab*entries) |> 
+  arrange(-weighted.frequency) |> 
+  mutate(order_common = rank(-weighted.frequency,ties.method = "first"), 
+         combined_order = order_logratio + order_mean + order_common) |> 
+  arrange(combined_order, sd.logratio) ##|> view()
+```
+
+To order these names on a principled basis, each name was ranked independently on three sets of criteria (log ratio, arithmetic mean, and commonness). The log ratio ranking prioritized the minimum log ratio, then broke ties using the maximum log ratio, then the standard deviation of the log ratios. The mean ranking prioritized the mean log ratio, then broke ties with median log ratio and the standard error of the log ratio. The commonness ranking was calculated by averaging the mean number of AFAB and AMAB attestations per year and multiplied that by the number of entries (i.e. the number of years in which the name was attested), then ranking from largest to smallest value. Finally, these three rankings were added to create a "combined" ranking, whereby smallest values were ranked higher than larger values and ties were broken using the standard deviation of the log ratio in order to prioritize names with less variance in log ratio (i.e. balancedness).
+
+# Compared to top Tumblr Survey names
+
+[Source](https://cassolotl.tumblr.com/post/717205595957166080/results-of-the-nonbinary-name-survey)
+
+```{r}
+balanced_USA_summary_data |> 
+  arrange(min.logratio, max.logratio, sd.logratio) |> 
+  mutate(order_logratio = rank(min.logratio, ties.method = "first")) |> 
+  arrange(mean.logratio, median.logratio, se.logratio) |> 
+  mutate(order_mean = rank(mean.logratio, ties.method = "first"),
+         mean.asab = (mean_F+mean_M)/2,
+         weighted.frequency = mean.asab*entries) |> 
+  arrange(-weighted.frequency) |> 
+  mutate(order_common = rank(-weighted.frequency,ties.method = "first"), 
+         combined_order = order_logratio + order_mean + order_common) |> 
+  arrange(combined_order, mean.logratio) |> 
+  mutate(order = rank(combined_order, ties.method = "first")) |> 
+  #filter(entries < 25 & mean.asab < 25) |> 
+  #filter(name %in% c("Alex","Sam","Dana","Alyx","Cody","Quinn","Kim","Mary","John","Remy","Lauren","Kirby","Kat","Kit","Ellis","Jordan","Morgan")) |> 
+  ##top tumblr names
+  filter(name %in% c("Alex","Jay","Sam","Charlie","Max","Ash","Robin","Rowan","Kit","Eli","Quinn","Finn","Bee","Elliot","Jamie","Jack","Aster","Blue","Crow","Lee")) |> 
+  select(order, name, entries, mean.logratio, order_logratio, order_mean, order_common, combined_order)
+```
+

@@ -1,0 +1,527 @@
+---
+title: "Pilot analysis"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-expand: true
+    df-print: paged
+---
+
+# Set up
+
+```{r setupweiur}
+#| echo: false
+#| results: hide
+
+library(tidyverse); theme_set(theme_bw())
+library(readr)
+library(flextable)
+library(lme4)
+
+#practice <- read_csv("~/Documents/Research/Coreference/Name #Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_task-smjw.csv")
+#demog <- read_csv("~/Documents/Research/Coreference/Name #Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_questionnaire-i6tq.csv")
+#raw_data <- read_csv("~/Documents/Research/Coreference/Name #Survey/Pilot/2023-12-11/data_exp_150132-v4/data_exp_150132-v4_task-9t9c.csv")
+
+names_combined <- read_csv("data/large_files/names_combined.csv", show_col_types = FALSE)
+
+practiceV3 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v3/data_exp_150132-v3_task-smjw.csv")
+demogV3 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v3/data_exp_150132-v3_questionnaire-i6tq.csv")
+raw_dataV3 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v3/data_exp_150132-v3_task-9t9c.csv")
+
+practiceV4 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v4/data_exp_150132-v4_task-smjw.csv")
+demogV4 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v4/data_exp_150132-v4_questionnaire-i6tq.csv")
+raw_dataV4 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v4/data_exp_150132-v4_task-9t9c.csv")
+
+practiceV5 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v5/data_exp_150132-v5_task-smjw.csv")
+demogV5 <-    read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v5/data_exp_150132-v5_questionnaire-i6tq.csv")
+raw_dataV5 <- read_csv("~/Documents/Research/Coreference/Name Survey/Pilot/2023-12-19/data_exp_150132-v5/data_exp_150132-v5_task-9t9c.csv")
+```
+
+```{r}
+practice_data_all <- practiceV3 |> mutate(version = 3) |> 
+  rbind(practiceV4 |> mutate(version = 4)) |> 
+  rbind(practiceV5 |> mutate(version = 5))
+
+demographics_all <- demogV3 |> mutate(version = 3) |> 
+  rbind(demogV4 |> mutate(version = 4)) |> 
+  rbind(demogV5 |> mutate(version = 5))
+
+raw_data_all <- raw_dataV3 |> mutate(version = 3) |> 
+  rbind(raw_dataV4 |> mutate(version = 4)) |> 
+  rbind(raw_dataV5 |> mutate(version = 5))
+```
+
+Combine practice, rating and demographic data
+
+```{r}
+practice_data_all |> 
+  filter(!is.na(Display),
+         `Response Type` == "response") |> 
+  select(`Participant Private ID`, `Participant Status`, 
+         version, #`Task Version`, 
+         `Spreadsheet: display`, `Spreadsheet: name`,
+         `Object Name`, Response) |> 
+  mutate(freq_block = NA) |> 
+  pivot_wider(names_from = "Object Name",
+              values_from = "Response") |> 
+  rename(participant = `Participant Private ID`,
+         status = `Participant Status`,
+         #practice.version = `Task Version`,
+         task = `Spreadsheet: display`,
+         name = `Spreadsheet: name`,
+         masc = `Masc Slider`,
+         fem = `Fem Slider`,
+         neut = `Neut slider`,
+         comment = `Text Entry`) |> 
+  mutate(#participant = as.numeric(as.factor(participant)),
+         freq_block = as.factor(freq_block),
+         masc = as.numeric(masc),
+         fem = as.numeric(fem),
+         neut = as.numeric(neut)) -> practice_clean
+```
+
+```{r}
+demographics_all |> 
+  filter(Key == "value") |> 
+  select(`Participant Private ID`, `Participant Status`, 
+         version, #`Task Version`, 
+         #Question,
+         `Object Name`, Response) |> 
+  pivot_wider(names_from = `Object Name`,
+              values_from = Response) |> 
+  rename(participant = `Participant Private ID`,
+         status = `Participant Status`,
+         #practice.version = `Task Version`,
+         #question = Question,
+         gender.free = `Gender free text`,
+         gender.cat = `Gender Dropdown`,
+         asb = `ASB Dropdown`,
+         familiarity = `Familiarity Dropdown`,
+         location.childhood = Childhood,
+         location.adulthood = Adulthood,
+         ethnicity = `Ethnicity-comment`,
+         location.longest = `Lived longest`,
+         location.influence = `Biggest influence`,
+         birthyear = `Your age`,
+         parent1 = `Parent 1`,
+         parent2 = `Parent 2`,
+         gpar1 = `Grandparent 1`,
+         gpar2 = `Grandparent 2`,
+         gpar3 = `Grandparent 3`,
+         gpar4 = `Grandparent 4`,
+         child1 = `Oldest Child`,
+         child2 = `Youngest Child`,
+         gchild1 = `Oldest Grandchild`,
+         gchild2 = `Youngest Grandchild`,
+         exp.comment = `Comment Box`) |> 
+  mutate(birthyear = as.numeric(birthyear),
+         parent1   = as.numeric(parent1),
+         parent2   = as.numeric(parent2),
+         gpar1     = as.numeric(gpar1  ),
+         gpar2     = as.numeric(gpar2  ),
+         gpar3     = as.numeric(gpar3  ),
+         gpar4     = as.numeric(gpar4  ),
+         child1    = as.numeric(child1 ),
+         child2    = as.numeric(child2 ),
+         gchild1   = as.numeric(gchild1),
+         gchild2   = as.numeric(gchild2)) -> demog_clean
+```
+
+```{r}
+raw_data_all |> 
+  filter(!is.na(Response),!is.na(Display)) |> 
+  select(`Participant Private ID`, `Participant Status`, 
+         version, #`Task Version`, 
+         `Spreadsheet: display`, `Spreadsheet: name`, `Spreadsheet: freq_block`,
+         `Object Name`,`Response`) |> 
+  pivot_wider(names_from = "Object Name",
+              values_from = "Response") |> 
+  rename(participant = `Participant Private ID`,
+         status = `Participant Status`,
+         task = `Spreadsheet: display`,
+         name = `Spreadsheet: name`,
+         freq_block = `Spreadsheet: freq_block`,
+         masc = `Masc Slider`,
+         fem = `Fem Slider`,
+         neut = `Neut slider`,
+         comment = `Text Entry`) |> 
+  mutate(#participant = as.numeric(as.factor(participant)),
+         freq_block = as.factor(freq_block),
+         masc = as.numeric(masc),
+         fem = as.numeric(fem),
+         neut = as.numeric(neut)) -> ratings_clean
+```
+
+
+```{r}
+practice_clean |> 
+  rbind(ratings_clean) |> 
+  left_join(demog_clean, 
+            by = join_by(participant, status, version)) -> rating_data
+```
+
+
+How many ratings for each name?
+
+```{r}
+rating_data |> 
+  group_by(name, freq_block) |> summarise(n = n(), .groups = "drop") |> 
+  arrange(desc(n))
+```
+
+
+# Govt Name Corpus info
+
+Create a breakdown of the absolute value of the log of the ratio of ASABs for the population data across all years and regions. (This can be distinguished in more detail in other ways.)
+
+```{r}
+names_combined |> 
+    # not useful right now
+  select(-c(rank, proportion)) |> 
+    # remove default baby names
+  filter(!name %in% c("Baby","Infant","Female","Notnamed","Stillborn","Unborn","Unnamed","Unknown","Unkown")) |> 
+  pivot_wider(names_from = asab,
+              values_from = number,
+              values_fill = NA) |> 
+  rename(afab = `F`, amab = M) |> 
+  group_by(name) |> 
+  summarise(log.ratio = (sum(afab, na.rm = TRUE)/sum(amab, na.rm = TRUE)) |> log() |> abs(),
+            regions = n_distinct(region),
+            years = n_distinct(year),
+            total_afab = sum(afab, na.rm = TRUE),
+            total_amab = sum(amab, na.rm = TRUE),
+            total_people = sum(afab, na.rm = TRUE)+sum(amab, na.rm = TRUE),
+            .groups = "drop") |> #view() #
+  mutate(log.ratio = case_when(log.ratio > 1000 ~ NA,
+                               .default = log.ratio)) -> combined.breakdown; combined.breakdown
+```
+
+
+In the combined name corpus, there are `r names_combined |> pull(name) |> length() |> format(big.mark = ",")` entries, with `r names_combined |> filter(asab == "F") |> pull(name) |> length() |> format(big.mark = ",")` of them registered for babies assigned female at birt (AFAB) and `r names_combined |> filter(asab == "M") |> pull(name) |> length() |> format(big.mark = ",")` registered for babies assigned male at birth (AMAB). This means that `r ((names_combined |> filter(asab == "F") |> pull(name) |> length()) / (names_combined |> pull(name) |> length())) |> scales::percent(accuracy = 0.01)` of the entries in this database are for names registered to AFAB babies. This results in `r names_combined |> pull(name) |> unique() |> length() |> format(big.mark = ",")` unique names spread over `r names_combined |> pull(region) |> unique() |> length()` regions across all years (which are detailed below).
+
+```{r}
+#| echo: false
+# number of years per region
+names_combined |> group_by(region) |> 
+  summarise(`Earliest year` = min(year),
+            `Latest year` = max(year),
+            `Total range of years` = max(year)-min(year) + 1, # inclusive years
+            .groups = "drop") |> 
+  arrange(-`Total range of years`) |> 
+  flextable() |> 
+  width(width = 6) |> 
+  colformat_double(big.mark = "", digits = 0)
+```
+
+
+How many unisex names? (unique)
+How many of the names in the database are attested for both AFAB and AMAB babies?
+How many of the names in the rating set are attested for both AFAB and AMAB babies?
+
+```{r}
+#| echo: false
+names_combined |> 
+  group_by(name,asab) |> 
+  summarise(n = n(), .groups = "drop") |> 
+  pivot_wider(names_from = asab,
+              values_from = n) |> 
+  rename(fem = `F`, msc = `M`) -> name_counts
+```
+
+In the database, there are `r name_counts |> filter(!is.na(fem),!is.na(msc)) |> pull(name) |> length() |> format(big.mark = ",")` names that are attested at least once for both AMAB and AFAB babies across all years. Of these names, `r name_counts |> filter(!is.na(fem),!is.na(msc), name %in% unique(rating_data$name)) |> pull(name) |> length() |> format(big.mark = ",")` have been rated for gender typicality at least once.
+
+In the database, there are `r name_counts |> filter(!is.na(fem),is.na(msc)) |> pull(name) |> length() |> format(big.mark = ",")` names that are attested at least once for both AFAB babies across all years, but never for AMAB babies. Of these names, `r name_counts |> filter(!is.na(fem),is.na(msc), name %in% unique(rating_data$name)) |> pull(name) |> length() |> format(big.mark = ",")` have been rated for gender typicality at least once.
+
+In the database, there are `r name_counts |> filter(is.na(fem),!is.na(msc)) |> pull(name) |> length() |> format(big.mark = ",")` names that are attested at least once for both AMAB babies across all years, but never for AFAB babies. Of these names, `r name_counts |> filter(is.na(fem),!is.na(msc), name %in% unique(rating_data$name)) |> pull(name) |> length() |> format(big.mark = ",")` have been rated for gender typicality at least once.
+
+A separate question is whether a name is considered unisex overall or whether it should be determined on a yearly and/or regional basis.
+
+# Raw data
+
+How many ratings for each name in the three different categories, as defined above?
+
+```{r}
+rating_data |> 
+  filter(name %in% (name_counts |> filter(!is.na(fem),!is.na(msc)) |> pull(name))) |> 
+  group_by(name, freq_block) |> summarise(n = n(), .groups = "drop") |> 
+  arrange(-n)
+
+rating_data |> 
+  filter(name %in% (name_counts |> filter(!is.na(fem),is.na(msc)) |> pull(name))) |> 
+  group_by(name, freq_block) |> summarise(n = n(), .groups = "drop") |> 
+  arrange(-n)
+
+rating_data |> 
+  filter(name %in% (name_counts |> filter(is.na(fem),!is.na(msc)) |> pull(name))) |> 
+  group_by(name, freq_block) |> summarise(n = n(), .groups = "drop") |> 
+  arrange(-n)
+```
+
+> TO DO: in next iteration, include frequency data and/or log.ratio in this analysis
+
+Bad bad stupid wrong:
+```{r}
+#| eval: false
+filter_name <-  #c("Charlie")
+                c("Alex","Andrea","Ashley","Charlie","Jamie",
+                  "Lee","Morgan","Robin","Riley","Dale","Sam",
+                  "James","William","Edward",# original stopped here
+                  #"Godzilla",
+                  "Mary","Shannon","Julia","John","Elizabeth",
+                  "Laura","Charley","Jordan",
+                  "Cameron","Gabriel","Jean","Jessie","Nicola","Terry"); rating_data |> 
+  filter(name %in% filter_name) |> 
+  ggplot(aes(x = fem, 
+             y = masc)) +
+  geom_density2d_filled(contour_var = "ndensity") +
+  geom_point(#aes(color = neut),
+             color = "black",
+             shape = 4,
+             alpha = .5) +
+  
+  # NOT GOOD YET BECAUSE WHITE DOT CANT BE IN TOP RIGHT CORNER ... YET
+  geom_point(#inherit.aes = FALSE,
+             data = combined.breakdown |> 
+               filter(name %in% filter_name) |> 
+               mutate(max.asab = case_when(total_afab > total_amab ~ total_afab,
+                                           .default = total_amab),
+                      fem  = (total_afab/total_people)*100,
+                      masc = (total_amab/total_people)*100),
+             shape = 21, fill = "gray80", color = "white", size = 1, alpha = .9) +
+  # USE PROPORTION OF LARGER OF TWO ASAB COUNTS
+  geom_point(data = combined.breakdown |> 
+               filter(name %in% filter_name) |> 
+               mutate(max.asab = case_when(total_afab > total_amab ~ total_afab,
+                                           .default = total_amab),
+                      fem  = (total_afab/max.asab)*100,
+                      masc = (total_amab/max.asab)*100),
+             shape = 21, fill = "gray80", color = "white", size = 1, alpha = .9) +
+  # COMBINE THE TWO STRATEGIES
+  geom_point(data = combined.breakdown |> 
+               filter(name %in% filter_name) |> 
+               mutate(max.asab = case_when(total_afab > total_amab ~ total_afab,
+                                           .default = total_amab),
+                      fem  = (((total_afab/max.asab)+(total_afab/total_people))/2)*100,
+                      masc = (((total_amab/max.asab)+(total_amab/total_people))/2)*100),
+             shape = 21, fill = "white", color = "gray80", size = 3, alpha = .9) +
+  
+  # REGIONAL POINTS 
+  geom_point(data = regional.breakdown |> 
+               filter(name %in% filter_name) |> 
+               mutate(max.asab = case_when(total_afab>total_amab~total_afab,
+                                           .default = total_amab),
+                      max.f.prop = total_afab/max.asab,
+                      total.f.prop = total_afab/total_people,
+                      max.m.prop = total_amab/max.asab,
+                      total.m.prop = total_amab/total_people,
+                      fem  = ((max.f.prop+total.f.prop)/2)*100,
+                      masc = ((max.m.prop+total.m.prop)/2)*100),
+             shape = 23, fill = "violet", color = "white", size = 2, alpha = 1, nudge_x = 5) +
+  ggrepel::geom_text_repel(data = regional.breakdown |> 
+                             filter(name %in% filter_name) |> 
+                             mutate(max.asab = case_when(total_afab>total_amab~total_afab,
+                                                         .default = total_amab),
+                                    max.f.prop = total_afab/max.asab,
+                                    total.f.prop = total_afab/total_people,
+                                    max.m.prop = total_amab/max.asab,
+                                    total.m.prop = total_amab/total_people,
+                                    fem  = ((max.f.prop+total.f.prop)/2)*100,
+                                    masc = ((max.m.prop+total.m.prop)/2)*100),
+                           aes(label = region),
+                           shape = 4, fill = "white", color = "black", size = 2, alpha = 1, #nudge_x = 5,
+                           max.overlaps = 10) +
+  
+  scale_fill_viridis_d(option = "turbo", begin = .1) +
+  scale_x_continuous(limits = c(0,100),labels = scales::percent_format(scale = 1)) +
+  scale_y_continuous(limits = c(0,100),labels = scales::percent_format(scale = 1)) +
+  facet_wrap(~name, ncol = 7) + 
+  theme(legend.position = "none") +
+  coord_equal() +
+  NULL
+```
+
+i don't understand math and i'm very stupid and bad
+```{r}
+annual.regional.breakdown |> 
+  #filter(name %in% c("Morgan","Jamie","Lee","Charlie","Charley","Leigh","Quinn","Leslie")) |>  # NEED TO DEFINE FILTERED NAMES atio) |> 
+  #group_by(name,region) |> 
+  #mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+  #       log10.afab = log10(afab),
+  #       log10.amab = log10(amab),
+  #       logprop.afab = log10.afab/log10(yr.max),
+  #       logprop.amab = log10.amab/log10(yr.max)) |> 
+  mutate(total_people = afab + amab,
+         max.asab = case_when(afab>amab~afab,
+                              .default = amab),
+         max.f.prop = afab/max.asab,
+         total.f.prop = afab/total_people,
+         max.m.prop = amab/max.asab,
+         total.m.prop = amab/total_people,
+         fem  = ((max.f.prop+total.f.prop)/2),
+         masc = ((max.m.prop+total.m.prop)/2)) |> 
+  ungroup() |> 
+  ggplot(aes(x = fem,
+             y = masc)) +
+  theme_bw() +
+  geom_point(aes(),alpha = .75, size = 1, shape = 16) +
+  geom_point(aes(x =max.f.prop, y =max.m.prop),alpha = .75, size = 1, shape = 16, color = "red") +
+  geom_point(aes(x =total.f.prop, y =total.m.prop),alpha = .75, size = 1, shape = 16, color = "blue") +
+  geom_abline(slope = 1, intercept = 0) +
+  scale_color_viridis_d(option = "turbo", begin = .9, end = .1) +
+  scale_x_continuous(labels = scales::percent_format())+
+  scale_y_continuous(labels = scales::percent_format())
+
+```
+
+
+```{r}
+#| warning: false
+##| fig-width: 12
+##| fig-height: 6.5
+
+filter_name <-  #c("Charlie")
+                c("Alex","Andrea","Ashley","Charlie","Jamie",
+                  "Lee","Morgan","Robin","Riley","Dale","Sam",
+                  "James","William","Edward",# original stopped here
+                  #"Godzilla",
+                  "Mary","Shannon","Julia","John","Elizabeth",
+                  "Laura","Charley","Jordan",
+                  "Cameron","Gabriel","Jean","Jessie","Nicola","Terry")
+
+rating_data |> 
+  mutate(decade = round(birthyear, digits = -1)) |> 
+  filter(name %in% filter_name) |> 
+  ggplot(aes(x = fem, 
+             y = masc)) +
+  geom_density2d_filled(contour_var = "ndensity") +
+  geom_point(#aes(color = neut),
+             color = "black",
+             shape = 4,
+             alpha = .5) +
+  
+  # proportion of total people
+  geom_point(#inherit.aes = FALSE,
+             data = combined.breakdown |> 
+               filter(name %in% filter_name) |> 
+               mutate(max.asab = case_when(total_afab > total_amab ~ total_afab,
+                                           .default = total_amab),
+                      fem  = (total_afab/total_people)*100,
+                      masc = (total_amab/total_people)*100),
+             shape = 21, fill = "gray90", color = "white", size = 1, alpha = .9) +
+  # proportion of the largest subset
+  geom_point(#inherit.aes = FALSE,
+             data = combined.breakdown |> 
+               filter(name %in% filter_name) |>  
+               mutate(max.asab = case_when(total_afab > total_amab ~ total_afab,
+                                           .default = total_amab),
+                      fem  = (total_afab/max.asab)*100,
+                      masc = (total_amab/max.asab)*100),
+             shape = 21, fill = "gray90", color = "white", size = 1, alpha = .9) +
+  # COMBINE THE TWO STRATEGIES for more dynamic
+  geom_point(#inherit.aes = FALSE,
+             data = combined.breakdown |> 
+               filter(name %in% filter_name) |> 
+               mutate(max.asab = case_when(total_afab > total_amab ~ total_afab,
+                                           .default = total_amab),
+                      fem  = (((total_afab/max.asab)+(total_afab/total_people))/2)*100,
+                      masc = (((total_amab/max.asab)+(total_amab/total_people))/2)*100),
+             shape = 21, fill = "white", color = "white", size = 3, alpha = .9) +
+  
+  # ANNUAL POINTS -- what is going on here
+  geom_path(#inherit.aes = FALSE,
+            data = annual.regional.breakdown |> 
+               filter(name %in% filter_name) |> 
+               group_by(name) |> 
+               mutate(max.asab = case_when(max(afab)>max(amab)~max(afab),
+                                           .default = max(amab)),
+                      total_people = afab+amab,
+                     decade = round(year, digits = -1)) |> 
+               ungroup() |> 
+               mutate(#max.asab = case_when(total_afab > total_amab ~ total_afab,
+                      #                     .default = total_amab),
+                      fem  = (((afab/max.asab)+(afab/total_people))/2)*100,
+                      masc = (((amab/max.asab)+(amab/total_people))/2)*100),
+            aes(group = region, color = region),
+            #color = "gray90", 
+            size = 1, alpha = .5) +
+  geom_point(#inherit.aes = FALSE,
+             data = annual.regional.breakdown |> 
+               filter(name %in% filter_name) |> 
+               group_by(name) |> 
+               mutate(max.asab = case_when(max(afab)>max(amab)~max(afab),
+                                           .default = max(amab)),
+                      total_people = afab+amab,
+                     decade = round(year, digits = -1)) |> 
+               ungroup() |> 
+               mutate(max.f.prop = afab/max.asab,
+                      max.m.prop = amab/max.asab,
+                      tot.f.prop = afab/total_people,
+                      tot.m.prop = amab/total_people,
+                      fem  = (((max.f.prop)+(tot.f.prop))/2)*100,
+                      masc = (((max.m.prop)+(tot.m.prop))/2)*100),
+             aes(label = year, group = region),
+             shape = 16, fill = "white", color = "white", size = .1, alpha = 1, nudge_x = 5) +
+  #ggrepel::geom_text_repel(#inherit.aes = FALSE,
+  #          data = annual.breakdown |> 
+  #            filter(name %in% filter_name) |> 
+  #            group_by(name) |> 
+  #            mutate(max.asab = case_when(max(total_afab)>max(total_amab)~max(total_afab),
+  #                                        .default = max(total_amab)),
+  #                   decade = round(year, digits = -1)) |> 
+  #            ungroup() |> 
+  #            mutate(#max.asab = case_when(total_afab > total_amab ~ total_afab,
+  #                   #                     .default = total_amab),
+  #                   fem  = (((total_afab/max.asab)+(total_afab/total_people))/2)*100,
+  #                   masc = (((total_amab/max.asab)+(total_amab/total_people))/2)*100),
+  #          aes(label = year),
+  #          shape = 4, fill = "white", color = "black", size = 2, alpha = 1, #nudge_x = 5,
+  #          max.overlaps = 40) +
+  
+  scale_fill_viridis_d(option = "turbo", begin = .1) +
+  scale_x_continuous(limits = c(0,100),labels = scales::percent_format(scale = 1)) +
+  scale_y_continuous(limits = c(0,100),labels = scales::percent_format(scale = 1)) +
+  facet_wrap(~name, ncol = 7) + 
+    #facet_wrap(~decade, ncol = 6) +
+  theme(legend.position = "none") +
+  #coord_equal() +
+  NULL
+```
+
+Gotta do just the countries/years first before overlaying on ratings
+but we got rid of proportions, might want to rbing those back
+
+```{r}
+annual.regional.breakdown |> 
+  filter(name %in% c("Morgan")) |>  # NEED TO DEFINE FILTERED NAMES atio) |> 
+  group_by(name,region) |> 
+  mutate(yr.max = case_when(max(afab)>max(amab)~max(afab), .default = max(amab)),
+         log10.afab = log10(afab),
+         log10.amab = log10(amab),
+         logprop.afab = log10.afab/log10(yr.max),
+         logprop.amab = log10.amab/log10(yr.max)) |> 
+  ungroup() |> 
+  ggplot(aes(x = logprop.afab,
+             y = logprop.amab)) +
+  theme_bw() +
+  geom_point(aes(color = region), alpha = .75, size = 1, shape = 16) +
+  geom_path(#data = annual.regional.breakdown |> mutate(log10.afab=log10(afab),log10.amab=log10(amab)) |> filter(name %in% filter_name),
+            aes(group = region, color = region),
+            #color = "gray20",
+            size = 0.5,
+            alpha = 0.5) +
+  geom_abline(slope = 1, intercept = 0) +
+  facet_wrap(~ name) +
+  scale_color_viridis_d(option = "turbo", begin = .9, end = .1) +
+  scale_x_continuous(labels = scales::percent_format())+
+  scale_y_continuous(labels = scales::percent_format())
+```
+
+
+```{r}
+annual.regional.breakdown |> 
+  mutate(annual.max = case_when(afab>amab~afab, .default = amab),
+         annual.tot = afab+amab)
+```
+

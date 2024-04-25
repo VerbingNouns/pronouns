@@ -6,6 +6,7 @@ format:
     toc: true
     toc-location: left
     toc-expand: true
+    df-print: paged
 ---
 
 ```{r setup}
@@ -32,7 +33,7 @@ While there are many projects around collating and exploring baby name data, I h
 
 There are some good and fairly comprehensive ones out there, but many of them don't document their gathering and wrangling processes or are designed for different purposes. Here is mine.
 
-When designing linguistic stimuli, sometimes we use gender stereotypes to probe comprehension processes. Sometimes we just need a bunch of names in order to vary the content of sentences without distracting from other aspects. Sometimes we need gender ambiguous names. Sometimes we need gender balanced names. Sometimes we need names that evoke certain beliefs or stereotypes. Regardless, the social properties of names change over time as new stereotypes and distributions come to the forefront and are incorporated into individuals understanding of the world.
+When designing linguistic stimuli, sometimes we use gender stereotypes to probe comprehension processes. Sometimes we just need a bunch of names in order to vary the content of sentences without distracting from other aspects. Sometimes we need gender-ambiguous names. Sometimes we need gender-balanced names. Sometimes we need names that evoke certain beliefs or stereotypes to create stimuli that allow us to probe different syntactic, semantic, and social phenomena. Regardless, the social properties of names change over time as new stereotypes and distributions come to the forefront and are incorporated into individuals understanding of the world.
 
 My project aims to:
 
@@ -107,7 +108,7 @@ read_csv(file = "data/Canada/17100147-eng/17100147.csv",
          proportion = proportion/100,
          asab = case_when(asab == "Male" ~ "M",
                           asab == "Female" ~ "F",
-                          TRUE ~ "X")) -> names_Canada
+                          .default = "X")) -> names_Canada
 ```
 
 ## United Kingdom
@@ -163,7 +164,7 @@ read_csv("data/Scotland/babies-first-names-all-names-all-years.csv",
   rename(year = yr, asab = sex, name = FirstForename) |> 
   mutate(asab = case_when(asab == "B" ~ "M",
                           asab == "G" ~ "F",
-                          TRUE ~ "X"),
+                          .default = "X"),
          region = "Scotland",
          name = str_to_title(name)) |> 
   group_by(year,asab) |> 
@@ -187,7 +188,7 @@ read_excel("data/NorthernIreland/Data for Dashboard 2022.xlsx",
   mutate(region = "Northern Ireland",
          asab = case_when(asab == 1 ~ "M",
                           asab == 2 ~ "F",
-                          TRUE ~ "X"),
+                          .default = "X"),
          name = str_to_title(name)) |> 
   group_by(year, name, asab) |> 
   summarise(number = sum(number), .groups = "keep") |> 
@@ -204,7 +205,7 @@ read_excel("data/NorthernIreland/Data for Dashboard 2022.xlsx",
          proportion = case_when(asab == "M" ~ number/Males,
                                 asab == "F" ~ number/Females),
          region = "Northern Ireland") |> 
-  select(-c(`All Births`,Males,Females)) -> names_NI
+  select(-c(`All Births`, Males, Females)) -> names_NI
 ```
 
 
@@ -353,7 +354,7 @@ names_nsw <- read_csv("data/Australia/NSW/popular_baby_names_1952_to_2022-v2.csv
          name = str_to_title(name),
          asab = case_when(asab == "Male" ~ "M",
                           asab == "Female" ~ "F",
-                          TRUE ~ "X"))
+                          .default = "X"))
 ```
 
 ### Northern Territory
@@ -419,7 +420,7 @@ read_csv(file = list.files(path = "data/Australia/Queensland",
           mutate(name = str_to_title(name),
                  asab = case_when(asab == "Male" ~ "M",
                                   asab == "Female" ~ "F",
-                                  TRUE ~ "X"),
+                                  .default = "X"),
                  rank = rank(-number) |> as.integer(),
                  region = "Queensland") |> 
           ungroup() |> select(-file)) |> 
@@ -466,11 +467,12 @@ read_csv(file = list.files(path = "data/Australia/SouthAustralia/Baby Names 1944
          rank = rank(-number, ties.method = "first") |> as.integer(),
          asab = case_when(asab == "female" ~ "F",
                           asab == "male" ~ "M",
-                          TRUE ~ "X"),
+                          .default = "X"),
          region = "South Australia",
          year = str_sub(year, -4, -1) |> as.numeric()) |> 
   select(-Position) |> 
   filter(name != "TOTAL", # 2016 included "TOTAL" as if it were a name
+         name != "Total", # 2016 included "TOTAL" as if it were a name
          name != "(Not") |> # REMOVE HIGHER FREQUENCY BAD DATA
   ungroup() -> names_soz
 ```
@@ -534,7 +536,7 @@ read_csv("data/Australia/Victoria/popular_baby_names.csv",
   mutate(region = "Victoria",
          asab = case_when(asab == "MALE" ~ "M",
                           asab == "FEMALE" ~ "F",
-                          TRUE ~ "X"),
+                          .default = "X"),
          name = str_to_title(name)) -> names_victoria
 ```
 
@@ -590,7 +592,7 @@ names_nsw |>
                      population = `Births registered`),
             by = join_by("year")) |> 
   mutate(proportion = case_when(is.na(proportion) ~ number/(population*.5), # no births by ASAB data, going by .5 of annual births
-                                TRUE ~ proportion)) |> 
+                                .default = proportion)) |> 
   select(-population) -> names_Australia
 ```
 
@@ -617,7 +619,7 @@ names_Australia |>
 
 Write to file for ease of use elsewhere
 ```{r write_names_combined, eval=FALSE}
-write_csv(names_combined, "data/large_files/names_combined.csv")
+#write_csv(names_combined, "data/large_files/names_combined.csv")
 
 #write_csv(names_Australia, "data/large_files/names_Australia.csv")
 #write_csv(names_Canada, "data/large_files/names_Canada.csv")
@@ -629,32 +631,400 @@ write_csv(names_combined, "data/large_files/names_combined.csv")
 #write_csv(names_USA, "data/large_files/names_USA.csv")
 ```
 
-## List of names
+# Experiments and norming
+
+Getting different types of log ratios for each name in different breakdowns.
+
+```{r}
+names_combined |> 
+    # not useful right now
+  select(-c(rank, proportion)) |> 
+    # remove default baby names
+  filter(!name %in% c("Baby","Infant","Female","Notnamed","Stillborn","Unborn","Unnamed","Unknown","Unkown")) |> 
+  pivot_wider(names_from = asab,
+              values_from = number,
+              values_fill = 0) |> 
+  rename(afab = `F`, amab = M) |> 
+  mutate(annual.regional.log.ratio = case_when(afab > 0 & amab > 0 ~ abs(log(afab/amab)),
+                                               .default = NA)) -> annual.regional.breakdown
+
+names_combined |> 
+    # not useful right now
+  select(-c(rank, proportion)) |> 
+    # remove default baby names
+  filter(!name %in% c("Baby","Infant","Female","Notnamed","Stillborn","Unborn","Unnamed","Unknown","Unkown")) |> 
+  pivot_wider(names_from = asab,
+              values_from = number,
+              values_fill = NA) |> 
+  rename(afab = `F`, amab = M) |> 
+  group_by(name,year) |> 
+  summarise(annual.log.ratio = (sum(afab, na.rm = TRUE)/sum(amab, na.rm = TRUE)) |> log() |> abs(),
+            regions = n_distinct(region),
+            total_afab = sum(afab, na.rm = TRUE),
+            total_amab = sum(amab, na.rm = TRUE),
+            total_people = sum(afab, na.rm = TRUE)+sum(amab, na.rm = TRUE),
+            .groups = "drop") |> #view() #
+  mutate(annual.log.ratio = case_when(annual.log.ratio > 1000 ~ NA,
+                                      .default = annual.log.ratio)) -> annual.breakdown
+
+names_combined |> 
+    # not useful right now
+  select(-c(rank, proportion)) |> 
+    # remove default baby names
+  filter(!name %in% c("Baby","Infant","Female","Notnamed","Stillborn","Unborn","Unnamed","Unknown","Unkown")) |> 
+  pivot_wider(names_from = asab,
+              values_from = number,
+              values_fill = NA) |> 
+  rename(afab = `F`, amab = M) |> 
+  group_by(name,region) |> 
+  summarise(regional.log.ratio = (sum(afab, na.rm = TRUE)/sum(amab, na.rm = TRUE)) |> log() |> abs(),
+            years = n_distinct(year),
+            total_afab = sum(afab, na.rm = TRUE),
+            total_amab = sum(amab, na.rm = TRUE),
+            total_people = sum(afab, na.rm = TRUE)+sum(amab, na.rm = TRUE),
+            .groups = "drop") |> #view() #
+  mutate(regional.log.ratio = case_when(regional.log.ratio > 1000 ~ NA,
+                                        .default = regional.log.ratio)) -> regional.breakdown
+
+names_combined |> 
+    # not useful right now
+  select(-c(rank, proportion)) |> 
+    # remove default baby names
+  filter(!name %in% c("Baby","Infant","Female","Notnamed","Stillborn","Unborn","Unnamed","Unknown","Unkown")) |> 
+  pivot_wider(names_from = asab,
+              values_from = number,
+              values_fill = NA) |> 
+  rename(afab = `F`, amab = M) |> 
+  group_by(name) |> 
+  summarise(log.ratio = (sum(afab, na.rm = TRUE)/sum(amab, na.rm = TRUE)) |> log() |> abs(),
+            regions = n_distinct(region),
+            years = n_distinct(year),
+            total_afab = sum(afab, na.rm = TRUE),
+            total_amab = sum(amab, na.rm = TRUE),
+            total_people = sum(afab, na.rm = TRUE)+sum(amab, na.rm = TRUE),
+            .groups = "drop") |> #view() #
+  mutate(log.ratio = case_when(log.ratio > 1000 ~ NA,
+                               .default = log.ratio)) -> combined.breakdown
+```
+
+
+```{r test}
+combined.breakdown |> 
+  mutate(plotem = case_when(name %in% c("Sage","Sevyn","Tenzin","Lakota") ~ "plot",
+                            .default = NA)) |> 
+  filter(log.ratio < 2) |> 
+  ggplot(aes(x = log.ratio, y = total_people)) +
+  theme_bw() +
+  geom_text(aes(label = name), size = 1.5, color = "black") +
+  geom_label(aes(label = name, color = plotem, fill = plotem), size = 1.5) +
+  #geom_point(alpha = .5) +
+  #ggrepel::geom_text_repel(aes(label = name), max.overlaps = 40) +
+  scale_y_log10() +
+  #facet_wrap(~region, scales = "free_y") +
+  scale_x_continuous(breaks = seq(from = 0, to = 16, by = 1)) +
+  scale_color_manual(values = c(NULL,"red"), na.value = NA) +
+  scale_fill_manual(values = c(NULL,"white"), na.value = NA) +
+  NULL
+
+
+regional.breakdown |> 
+  filter(region == "USA",
+         #regional.log.ratio > 5,
+         #regional.log.ratio < 6
+         ) |> 
+  ggplot(aes(x = regional.log.ratio, y = total_people, color = region)) +
+  theme_bw() +
+  #geom_point(alpha = .5) +
+  #ggrepel::geom_text_repel(aes(label = name), max.overlaps = 40) +
+  geom_text(aes(label = name), size = 2) +
+  #scale_y_log10() +
+  #facet_wrap(~region, scales = "free_y") +
+  scale_x_continuous(breaks = seq(from = 0, to = 16, by = 1)) +
+  NULL
+
+regional.breakdown |> 
+  filter(region == "New Zealand",
+         #regional.log.ratio > 5
+  ) |> 
+  ggplot(aes(x = regional.log.ratio, y = total_people, color = region)) +
+  theme_bw() +
+  geom_point(alpha = .5) +
+  ggrepel::geom_text_repel(aes(label = name), max.overlaps = 40) +
+  #scale_y_log10() +
+  #facet_wrap(~region, scales = "free_y") +
+  scale_x_continuous(breaks = seq(from = 0, to = 16, by = 1)) +
+  NULL
+
+regional.breakdown |> 
+  filter(region == "Australia",
+         #regional.log.ratio > 5
+  ) |> 
+  ggplot(aes(x = regional.log.ratio, y = total_people, color = region)) +
+  theme_bw() +
+  geom_point(alpha = .5) +
+  #ggrepel::geom_text_repel(aes(label = name), max.overlaps = 40) +
+  #scale_y_log10() +
+  #facet_wrap(~region, scales = "free_y") +
+  scale_x_continuous(breaks = seq(from = 0, to = 16, by = 1)) +
+  NULL
+
+regional.breakdown |> 
+  filter(region == "Canada",
+         #regional.log.ratio > 5
+  ) |> 
+  ggplot(aes(x = regional.log.ratio, y = total_people, color = region)) +
+  theme_bw() +
+  geom_point(alpha = .5) +
+  #ggrepel::geom_text_repel(aes(label = name), max.overlaps = 40) +
+  #scale_y_log10() +
+  #facet_wrap(~region, scales = "free_y") +
+  scale_x_continuous(breaks = seq(from = 0, to = 16, by = 1)) +
+  NULL
+
+```
+
+
+## List of names for Name Explorer ratings
 
 In order to elicit ratings of the names in this dataset for research and norming purposes, I need to create a list of all the names without any repeats. I will format it for use in Gorilla (online survey tool).
+
+Here is a table of all the names and their frequencies in the database as rounded to the nearest 100 (number of years for region).
 
 ```{r}
 names_combined |> 
   group_by(name) |> 
   summarise(count = n(),
             .groups = "drop") |> 
-  filter(count >= 100) |> 
-  mutate(freq_block = round(count, digits = -2)) -> names_for_rating
+  #filter(count > 3) |> 
+  mutate(#freq_block = round(count, digits = -1), # old spreadsheet
+         freq_block = case_when(count <= 100 ~ round(count, digits = -1),
+                                .default = round(count, digits = -2))
+         )
+```
 
-names_for_rating |> group_by(freq_block) |> summarise(n = n())
+A summary of how many names fall into each frequency block
 
+```{r}
+names_combined |> 
+  group_by(name) |> 
+  summarise(count = n(),
+            .groups = "drop") |> 
+  mutate(freq_block = case_when(count <= 100 ~ round(count, digits = -1),
+                                .default = round(count, digits = -2))) |> 
+  group_by(freq_block) |> summarise(n = n())
+```
 
+## Gorilla spreadsheet stimuli
 
-names_for_rating |> 
+### Original pilot
+
+Create the original spreadsheet for Gorilla.
+
+```{r}
+names_combined |> 
+  group_by(name) |> 
+  summarise(count = n(),
+            .groups = "drop") |> 
+  filter(count > 3) |> # old spreadsheet
+  mutate(freq_block = round(count, digits = -1), # old spreadsheet
+         #freq_block = case_when(count <= 100 ~ round(count, digits = -1),
+         #                       .default = round(count, digits = -2))
+         ) |> 
   select(-count) |> 
-  mutate(display = "Rating") |> 
-  select(display, name, freq_block) -> Name_Rating_Spreadsheet
+  filter(freq_block >= 100) |> # old spreadsheet
+  mutate(display = "Rating",
+         freq_block = round(freq_block, digits = -2)) |> # added this in, not sure if it does re-generate original though
+  select(display, name, freq_block) -> original_gorilla; original_gorilla |> arrange(-freq_block)#Name_Rating_Spreadsheet; Name_Rating_Spreadsheet
 
+# Old spreadsheet, with only 100s and greater, no breakdown below 100, filter(count > 3)
 #write_csv(Name_Rating_Spreadsheet, "data/large_files/Name_Rating_Spreadsheet.csv")
 ```
 
+### Second Gorilla attempt, log ratio based
 
-# Demonstration
+Attempt a different type of spreadsheet for Gorilla.
+
+```{r}
+# combine three types of names to create a subset of names to rate
+rbind(
+  # these are the most frequent names with HIGH AMAB ratios
+  combined.breakdown |> 
+    filter(log.ratio>3) |> 
+    mutate(freq = log(total_amab)) |> 
+    mutate(freq_block = round(freq, digits = 0),
+           ppl_per_year = total_amab/years) |> 
+    #group_by(freq_block) |> summarise(n = n())
+    arrange(ppl_per_year) |> 
+    filter(freq > 11) |> 
+    mutate(type_rank = rank(-log.ratio, ties.method = "first"),
+           type = "amab-biased"),
+  # these are the most frequent names with HIGH AFAB ratios
+  combined.breakdown |> 
+    filter(log.ratio>3) |> 
+    mutate(freq = log(total_afab)) |> 
+    mutate(freq_block = round(freq, digits = 0),
+           ppl_per_year = total_afab/years) |> 
+    #group_by(freq_block) |> summarise(n = n())
+    arrange(ppl_per_year) |> 
+    filter(freq > 10.9) |> # just to get Ashleigh in the list, if I'm honest...
+    mutate(type_rank = rank(-log.ratio, ties.method = "first"),
+           type = "afab-biased")
+) |> 
+rbind(
+  # these are the most frequent names with HIGHLY BALANCED ratios
+  combined.breakdown |> 
+    filter(log.ratio<=3) |> 
+    mutate(freq = log(total_people)) |> 
+    mutate(freq_block = round(freq, digits = 0),
+           ppl_per_year = total_people/years) |> 
+    #group_by(freq_block) |> summarise(n = n())
+    arrange(ppl_per_year) |> 
+    filter(freq > 9) |> 
+    mutate(type_rank = rank(log.ratio, ties.method = "first"),
+           type = "equi-biased")
+) -> gorilla_subset; gorilla_subset
+```
+
+`r length(gorilla_subset$type)` names. There are:
+
+- `r length(gorilla_subset$type[gorilla_subset$type == "amab-biased"])` highly frequent AMAB-biased names (minimum AMAB people 'per year' attested = `r min(gorilla_subset$ppl_per_year[gorilla_subset$type == "amab-biased"])`)
+- `r length(gorilla_subset$type[gorilla_subset$type == "afab-biased"])` highly frequent AFAB-biased names (minimum AFAB people 'per year' attested = `r min(gorilla_subset$ppl_per_year[gorilla_subset$type == "afab-biased"])`)
+- `r length(gorilla_subset$type[gorilla_subset$type == "equi-biased"])` highly frequent equi-biased names (minimum total people 'per year' attested = `r min(gorilla_subset$ppl_per_year[gorilla_subset$type == "equi-biased"])`)
+
+```{r}
+gorilla_subset |>
+  mutate(display = "Rating",
+         freq_block = case_when(type_rank <= 10 ~ 0,
+                                type_rank <= 30 & type_rank > 10 ~ 1,
+                                type_rank <= 90 & type_rank > 30 ~ 2,
+                                type_rank <= 170 & type_rank > 90 ~ 3,
+                                type_rank <= 300 & type_rank > 170 ~ 4,
+                                .default = 5
+                                )) |> 
+  #group_by(freq_block) |> 
+  #summarise(n = n())
+  select(display, name, freq_block,type) -> Name_Rating_Spreadsheet; Name_Rating_Spreadsheet
+
+# New spreadsheet with amab/afab-biased and equi-biased names
+#write_csv(Name_Rating_Spreadsheet, "data/large_files/Name_Rating_Spreadsheet_3Types.csv")  
+```
+
+```{r}
+Name_Rating_Spreadsheet |> filter(name == "Andrea")
+```
+
+
+### Visualization of population data for these names
+
+```{r}
+gorilla_subset |> 
+  ggplot(aes(x = total_afab, 
+             y = total_amab)) + 
+  theme_bw() +
+  geom_point(aes(size = total_people,
+                 color = type),
+             alpha = .5) +
+  ggrepel::geom_text_repel(aes(label = name),
+                           max.overlaps = 10, size = 2) +
+  scale_y_log10(limits = c(1,10000000)) + scale_x_log10(limits = c(1,10000000)) +
+  coord_equal(ratio = 1) +
+  NULL
+```
+
+```{r}
+gorilla_subset |> 
+  filter(name %in% original_gorilla$name) |> 
+  ggplot(aes(x = log.ratio, y = ppl_per_year, color = type)) +
+  theme_bw() +
+  geom_point(alpha = .5) +
+  ggrepel::geom_text_repel(aes(label = name),
+                           max.overlaps = 20, 
+                           size = 2) +
+  scale_y_log10()
+```
+
+
+## List of names for SEPTA Name Norming experiment
+
+The SEPTA Name Norming experiment used only the USA data, but this code generates the list for all regions, for an expanded and more detailed list.
+
+**Primary question**: Of the names that are assigned to *both* AMAB and AFAB babies, which ones occur at very close to 1:1 ratios?
+
+The main considerations here are finding names that are consistently assigned in a balanced way, over the years, but not over-privileging names that have been attested for many more years or in particular regions, as different regions report over different timeframes. Furthermore, some names have rapidly shifted "gender valence", so there are many possible ways to assign rankings. The logic of this method is described within the code annotations.
+
+```{r namenorming_logratio}
+names_combined |> 
+    # Include this line to recreate the Name Norming stimuli from this database
+  # filter(region == "USA") |> 
+    # Put attestations of AMAB and AFAB babies in adjacent columns to calculate ratios, etc
+  pivot_wider(names_from = "asab", 
+              values_from = c(number,proportion,rank),
+                # Unattested cells are given the value 0, since there are no babies with that name in that year.
+              values_fill = 0) |> 
+    # Since dividing by 0 produces an infinite number, only finite ratios are calculated. 
+    # All infinite values are given the value 0, which is equivalent for later calculations
+  mutate(ratio_numrFM = case_when(number_M != 0 ~ number_F/number_M,
+                                  .default = 0),
+           # Calculate the absolute value of the log ratio as a measure of 'balancedness'
+         log_ratio_numrFM = log(ratio_numrFM) |> abs()) |> 
+    # For all infinite log ratios (when the ratio was assigned a value of 0), remove value (assign NA)
+  mutate_if(is.numeric, list(~na_if(., Inf))) |> 
+    # Remove NAs and placeholder baby names
+  filter(!is.na(log_ratio_numrFM),
+         !name %in% c("Baby","Infant","Notnamed","Unknown","Unkown","Unnamed")) |> 
+  group_by(name) |> 
+    # calculations for ranking appropriateness of each name
+  summarise(  # how many babies are recorded as being given each name overall
+            total_F = sum(number_F, na.rm = TRUE),
+            total_M = sum(number_M, na.rm = TRUE),
+              # how many years in each region recorded this name?
+            entries = n(),
+              # how many regions is the name attested in
+            regions = n_distinct(region),
+              # how many babies are given this name per year per region?
+            mean_F = mean(number_F, na.rm = TRUE)/n_distinct(region),
+            mean_M = mean(number_M, na.rm = TRUE)/n_distinct(region),
+              # Do not calculate the mean log ratio this way, but I don't know why yet
+            ##mean.logratio2 = mean(abs(log(mean_F/mean_M)), na.rm = TRUE),
+              # Take the mean of the absolute log ratio values for each name
+            mean.logratio = mean(log_ratio_numrFM, na.rm = TRUE),
+              # Medians, less affected by outliers
+            median.logratio = median(log_ratio_numrFM, na.rm = TRUE),
+              # Standard deviation to measure the variance, which will be greater for names that changed valence than those with more static balancedness
+            sd.logratio = sd(log_ratio_numrFM, na.rm = TRUE),
+              # Standard error to measure certainty of the mean value
+            se.logratio = sd(log_ratio_numrFM, na.rm = TRUE)/sqrt(n()),
+              # Maximum log ratio to set a threshold for how large the ratios could be in a given year
+            max.logratio = max(log_ratio_numrFM, na.rm = TRUE),
+              # Minimum log ratio to prioritize names that had perfectly balanced years
+            min.logratio = min(log_ratio_numrFM, na.rm = TRUE),
+            .groups = "drop") |> 
+  mutate(  # mean number of babies per region per year across ASABs
+         mean.asab = (mean_F+mean_M)/2,
+           # babies per year per region, redistributed to 
+         weighted.frequency = mean.asab*entries*regions) |> 
+    # arrange focusing on range of log ratios, for dealing with tie-breaking
+  arrange(min.logratio, max.logratio, sd.logratio, -weighted.frequency, -mean.asab, -regions, -entries) |> 
+    # ranks based on range of log ratio
+  mutate(order_logratio = rank(min.logratio, ties.method = "first")) |> 
+    # arrange focusing on average values of log ratio, for dealing with tie-breaking
+  arrange(mean.logratio, median.logratio, se.logratio, -weighted.frequency) |> 
+    # ranks based on average log ratio values
+  mutate(order_mean = rank(mean.logratio, ties.method = "first")) |> 
+    # arrange focusing on commonness, for dealing with tie-breaking
+  arrange(-weighted.frequency, sd.logratio) |> 
+    # rank based on commonness
+  mutate(order_common = rank(-weighted.frequency,ties.method = "first"), 
+           # add previous three ranks to create new ranking value
+         combined_order = order_logratio + order_mean + order_common*3, # 3 seems to work across regions?
+           # re-rank based on combined rank for simplicity
+         rank_order = rank(combined_order, ties.method = "first")) |> 
+    # rearrange based on final ranking, for display purposes
+  arrange(rank_order) -> names_balanced; names_balanced
+```
+
+
+# HERE BE DRAGONS
 
 Briefly, here are some tests of the dataset to demonstrate its utility.
 
@@ -662,30 +1032,76 @@ Briefly, here are some tests of the dataset to demonstrate its utility.
 
 The names in `unisex_names` are a complete list of names that occur at least once in both AMAB and AFAB entries. This does not account for data entry errors or other noise in the datasets.
 
-```{r unisex}
-# create a list of AFAB names
-names_combined |> 
-  filter(asab == "F",
-         region == "USA" & number > 50 |
-           region != "USA" & number > 0) -> afab_names
-
-# create a list of AMAB names
-names_combined |> filter(asab == "M",
-         region == "USA" & number > 50 |
-           region != "USA" & number > 0) -> amab_names
-
-# find intersection of AFAB and AMAB names, regardless of frequency
-intersect(afab_names |> 
-            pull(name), 
-          amab_names |> 
-            pull(name)) -> unisex_names
+```{r unisex_old}
+#| eval: false
+#| include: false
+## create a list of AFAB names
+#names_combined |> 
+#  filter(#region == "USA" & number > 50 | # I no longer am certain it's useful to get rid of these lower frequency #names
+#         #  region != "USA" & number > 0,
+#         asab == "F") -> afab_names
+#
+## create a list of AMAB names
+#names_combined |> filter(#region == "USA" & number > 50 |  # I no longer am certain it's useful to get rid of #these lower frequency names
+#                         #  region != "USA" & number > 0,
+#                         asab == "M") -> amab_names
+#
+## find intersection of AFAB and AMAB names, regardless of frequency
+#intersect(afab_names |> 
+#            pull(name), 
+#          amab_names |> 
+#            pull(name)) -> unisex_names
 ```
+
+```{r}
+#| eval: false
+#| include: false
+#names_combined |> 
+#  pivot_wider(names_from = "asab", 
+#              values_from = c(number,proportion,rank),
+#              values_fill = 0) |> 
+#  mutate(ratio_numrFM = case_when(number_M != 0 ~ number_F/number_M,
+#                                  .default = 0),
+#         log_ratio_numrFM = log(ratio_numrFM) |> abs(),
+#         #ratio_propFM = case_when(proportion_M !=0 ~ proportion_F/proportion_M,
+#         #                         .default = 0),
+#         #log_ratio_propFM = log(ratio_propFM) |> abs(),
+#         #ratio_rankFM = case_when(rank_M != 0 ~ rank_F/rank_M,
+#         #                         .default = 0),
+#         #log_ratio_rankFM = log(ratio_rankFM) |> abs()
+#         ) |> 
+#  mutate_if(is.numeric, list(~na_if(., Inf))) |> 
+#
+#  group_by(name, region) |> 
+#  summarise(total_F = sum(number_F),
+#            total_M = sum(number_M),
+#            entries = n(),
+#            mean.logratio = mean(log_ratio_numrFM, na.rm = TRUE),
+#            median.logratio = median(log_ratio_numrFM, na.rm = TRUE),
+#            sd.logratio = sd(log_ratio_numrFM, na.rm = TRUE),
+#            se.logratio = sd(log_ratio_numrFM, na.rm = TRUE)/sqrt(n()),
+#            max.ratio = max(log_ratio_numrFM, na.rm = TRUE),
+#            min.ratio = min(log_ratio_numrFM, na.rm = TRUE),
+#            #max.logratio = case_when(number_F>0 & number_M>0 ~ max(log_ratio_numrFM, na.rm = TRUE),
+#            #                         .default = NA),
+#            #min.logratio = min(log_ratio_numrFM, na.rm = TRUE),
+#            .groups = "drop") -> names_balanced; beepr::beep()
+```
+
+From the combined names dataset, I separated and expanded the names to compare the number of attestations of a name across se
+
+```{r}
+names_balanced$name[1:100] -> unisex_names
+```
+
 
 Of the `unisex_names`, which ones occur in at least 0.05% of the population? This helps control for wildly different population sizes of each country, but also helps weed out noise from data entry errors. 
 
 However, I believe the large population of the USA and some possible larger-scale data entry errors could be boosting names like "Mary" and "Samantha" into this list. It is worth exploring in the future.
 
 ```{r list_top_unisex}
+#| eval: false
+#| include: false
 names_combined |> 
   ## CHECK FOR DUPLICATES BEFORE PIVOTING
   # group_by(name,asab,region,year) |> 
